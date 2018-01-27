@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WelcomeToHell : MonoBehaviour {
+[RequireComponent(typeof(AudioSource))]
+public class WelcomeToHell : MonoBehaviour
+{
+	/*# Config #*/
+	[SerializeField] private AudioClip _likeIveBeenThereBefore_c;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+	/*# Cache #*/
+	private AudioSource _beenThereBeforeSource;
 	
-	// Update is called once per frame
-	void Update () {
-		
+	private void Awake()
+	{
+		this._beenThereBeforeSource = this.GetComponent<AudioSource>();
+		this._beenThereBeforeSource.clip = this._likeIveBeenThereBefore_c;
+		this._beenThereBeforeSource.Play();
 	}
 }
