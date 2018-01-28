@@ -23,6 +23,9 @@ public class Node : MonoBehaviour
 	/*# Local Reference #*/
 	private Renderer _renderer;
 
+	/*# Injected config #*/
+	public Color regionColor { get; private set; }
+	
 	private void Awake()
 	{
 		this._renderer = this.GetComponentInChildren<Renderer>();
@@ -99,8 +102,19 @@ public class Node : MonoBehaviour
 		for (int i = 0; i < closestNodes.Count; i++)
 		{
 			Rail newRail = RailGenerator.GetNewRail();
-			newRail.setNodes(this, closestNodes[i].node);
+			newRail.initialize(this, closestNodes[i].node);
 		}
+	}
+
+
+	public void initialize(Color regionColor)
+	{
+		this.regionColor = regionColor;
+		var albedoAlpha = this._renderer.material.GetColor("_Color").a;
+		this._renderer.material.SetColor("_Color", new Color(this.regionColor.r, this.regionColor.g, this.regionColor.b, albedoAlpha));
+		
+		var emissionAlpha = this._renderer.material.GetColor("_EmissionColor").a;
+		this._renderer.material.SetColor("_EmissionColor", new Color(this.regionColor.r, this.regionColor.g, this.regionColor.b, emissionAlpha));
 	}
 
 	public void TrackRail(Rail rail)
@@ -143,14 +157,5 @@ public class Node : MonoBehaviour
 	}
 	
 	#region aesthetic 
-
-	public void setColor(Color newColor)
-	{
-		var albedoAlpha = this._renderer.material.GetColor("_Color").a;
-		this._renderer.material.SetColor("_Color", new Color(newColor.r, newColor.g, newColor.b, albedoAlpha));
-		
-		var emissionAlpha = this._renderer.material.GetColor("_EmissionColor").a;
-		this._renderer.material.SetColor("_EmissionColor", new Color(newColor.r, newColor.g, newColor.b, emissionAlpha));
-	}
 	#endregion
 }
