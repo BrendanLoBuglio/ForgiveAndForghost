@@ -18,18 +18,6 @@ public class RailGenerator : MonoBehaviour
 
 	void Update()
 	{
-		Vector3 scale = spawnBox.transform.localScale;
-		Vector3 center = spawnBox.transform.position;
-		//Vector3 startPoint = center - scale / 2;
-		//Vector3 endPoint = center + scale / 2;
-		//Debug.DrawLine(startPoint, endPoint, Color.red);
-		Vector3 startPoint = center + (spawnBox.transform.TransformVector(Vector3.forward).normalized * (scale.z * spawnBox.transform.parent.localScale.z)/2);
-		Vector3 endPoint = center - (spawnBox.transform.TransformVector(Vector3.forward).normalized * (scale.z * spawnBox.transform.parent.localScale.z)/2);
-
-		//Vector3 endPoint = center - (spawnBox.transform.TransformVector(Vector3.forward) * scale.z);
-		Debug.DrawLine(startPoint, endPoint, Color.red);
-		//Debug.DrawLine(spawnBox.bounds.min, spawnBox.bounds.max);
-
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			GenerateNodes();
@@ -86,21 +74,24 @@ public class RailGenerator : MonoBehaviour
 	protected Vector3 GetRandomPointWithinBox(BoxCollider box)
 	{
 		Vector3 pos = Vector3.zero;
-		/*Bounds bounds = box.bounds;
-		pos.x = Random.Range(bounds.min.x, bounds.max.x);
-		pos.y = Random.Range(bounds.min.y, bounds.max.y);
-		pos.z = Random.Range(bounds.min.z, bounds.max.z);*/
 
-		Vector3 scale = spawnBox.transform.localScale;
+		Vector3 localScale = spawnBox.transform.localScale;
+		Vector3 parentLocalScale = spawnBox.transform.parent.localScale;
 		Vector3 center = spawnBox.transform.position;
-		Vector3 startPoint = center + (spawnBox.transform.TransformVector(Vector3.forward).normalized * (scale.z * spawnBox.transform.parent.localScale.z)/2);
-		Vector3 endPoint = center - (spawnBox.transform.TransformVector(Vector3.forward).normalized * (scale.z * spawnBox.transform.parent.localScale.z)/2);
+
+		float xScaleGlobal = localScale.x * parentLocalScale.x;
+		float yScaleGlobal = localScale.y * parentLocalScale.y;
+		float zScaleGlobal = localScale.z * parentLocalScale.z;
+
+		Vector3 startPoint = center + (spawnBox.transform.TransformVector(Vector3.forward).normalized * zScaleGlobal / 2);
+		Vector3 endPoint = center - (spawnBox.transform.TransformVector(Vector3.forward).normalized * zScaleGlobal / 2);
 		Vector3 randomPointOnLine = Vector3.Lerp(startPoint, endPoint, Random.Range(0f, 1f));
-		float randomX = Random.Range(-scale.x * spawnBox.transform.parent.localScale.x / 2, scale.x * spawnBox.transform.parent.localScale.x / 2);
-		float randomY = Random.Range(-scale.y * spawnBox.transform.parent.localScale.y / 2, scale.y * spawnBox.transform.parent.localScale.y / 2);
-		//randomX = randomY = 0;
+
+		float randomX = Random.Range(-xScaleGlobal / 2, xScaleGlobal / 2);
+		float randomY = Random.Range(-yScaleGlobal / 2, yScaleGlobal / 2);
 		Vector3 randomOffset = new Vector3(randomX, randomY, 0);
 		randomOffset = spawnBox.transform.TransformDirection(randomOffset);
+
 		pos = randomPointOnLine + randomOffset;
 
 		return pos;
