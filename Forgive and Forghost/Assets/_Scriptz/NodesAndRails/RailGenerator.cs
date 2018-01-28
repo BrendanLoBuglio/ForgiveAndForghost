@@ -13,6 +13,7 @@ public class RailGenerator : MonoBehaviour
 	public int numNodesToGenerate;
 	public float nodeDensityInMillionths;
     public bool thisOne;
+	[SerializeField] private Color nodeColor = Color.white;
 
 	protected List<Vector3> _testPoints = new List<Vector3>();
 	protected List<Node> _currentNodes = new List<Node>();
@@ -124,6 +125,8 @@ public class RailGenerator : MonoBehaviour
 		for (int i = 0; i < _currentNodes.Count; i++)
 		{
 			_currentNodes[i].FindClosestNodes();
+			this._currentNodes[i].setColor(this.nodeColor);
+			Debug.Log($"Set node at {i} to color {this.nodeColor}");
 		}
 
 		Debug.Log("generated nodes!");

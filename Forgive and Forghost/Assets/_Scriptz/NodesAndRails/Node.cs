@@ -20,7 +20,15 @@ public class Node : MonoBehaviour
 
 	public List<Rail> rails;
 
-    public Rail GetFirstRail()
+	/*# Local Reference #*/
+	private Renderer _renderer;
+
+	private void Awake()
+	{
+		this._renderer = this.GetComponentInChildren<Renderer>();
+	}
+
+	public Rail GetFirstRail()
     {
         return rails[0];
     }
@@ -133,4 +141,16 @@ public class Node : MonoBehaviour
 
 		Destroy(gameObject);
 	}
+	
+	#region aesthetic 
+
+	public void setColor(Color newColor)
+	{
+		var albedoAlpha = this._renderer.material.GetColor("_Color").a;
+		this._renderer.material.SetColor("_Color", new Color(newColor.r, newColor.g, newColor.b, albedoAlpha));
+		
+		var emissionAlpha = this._renderer.material.GetColor("_EmissionColor").a;
+		this._renderer.material.SetColor("_EmissionColor", new Color(newColor.r, newColor.g, newColor.b, emissionAlpha));
+	}
+	#endregion
 }
