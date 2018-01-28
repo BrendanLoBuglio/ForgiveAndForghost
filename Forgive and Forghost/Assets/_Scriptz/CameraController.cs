@@ -20,9 +20,10 @@ public class CameraController : MonoBehaviour {
     private float smoothDampVel = 0;
     private Material playerMaterial;
     private Color playerColor;
-    private Vector2 mouseInput = Vector2.zero;
     private float rotationLerpVal;
     private float rotationDampVel;
+
+    private float playerRotationDampVel;
 
 	void Start () {
         playerMaterial = playerRenderer.material;
@@ -31,6 +32,14 @@ public class CameraController : MonoBehaviour {
 	}
 		
 	void Update () {
+        if (Input.GetKeyDown(KeyCode.LeftBracket))
+        {
+            targetFirstPersonLerpAmount -= .1f;
+        }
+        if (Input.GetKeyDown(KeyCode.RightBracket))
+        {
+            targetFirstPersonLerpAmount += .1f;
+        }
         lerpAmount = Mathf.SmoothDamp(lerpAmount, targetFirstPersonLerpAmount, ref smoothDampVel, smoothDampTime, 100, Time.deltaTime);
         targetPosition = Vector3.Lerp(thirdPersonPosition.position, firstPersonPosition.position, lerpAmount);
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref positionDampVel, smoothDampTime, 100, Time.deltaTime);
@@ -49,15 +58,23 @@ public class CameraController : MonoBehaviour {
             }
             rotationLerpVal = Mathf.SmoothDamp(rotationLerpVal, 1, ref rotationDampVel, smoothDampTime, 100, Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, thirdPersonPosition.rotation, rotationLerpVal);
-            
+            Vector3 euler = playerRenderer.transform.localRotation.eulerAngles;
+            euler.y = Mathf.SmoothDamp(euler.y, 0, ref playerRotationDampVel, smoothDampTime, 100, Time.deltaTime);
+            playerRenderer.transform.localRotation= Quaternion.Euler(euler);
         }
         else
         {
-            mouseInput.x = Input.GetAxis("Mouse X");
-            mouseInput.y = Input.GetAxis("Mouse Y");
-
-        }
-
-       
+            if(Quaternion.Angle(transform.rotation, firstPersonPosition.rotation) > .01f )
+            {
+                rotationLerpVal = 0;
+            }
+            rotationLerpVal = Mathf.SmoothDamp(rotationLerpVal, 1, ref rotationDampVel, smoothDampTime, 100, Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, firstPersonPosition.rotation, rotationLerpVal);
+            float xInput = Input.GetAxis("Mouse X");
+            playerRenderer.transform.Rotate(Vector3.up, xInput);
+        }   
+        float yInput = -Input.GetAxis("Mouse Y");
+        thirdPersonPosition.transform.Rotate(Vector3.right, yInput);
+        firstPersonPosition.transform.Rotate(Vector3.right, yInput);       
     }
 }

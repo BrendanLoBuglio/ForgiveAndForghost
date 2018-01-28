@@ -15,7 +15,13 @@ public class Rail : MonoBehaviour
         this.width = this.GetComponent<CapsuleCollider>().radius;
     }
 
-    public Vector3 asAxis => (endNode.transform.position - originNode.transform.position).normalized;
+    public Vector3 asAxis
+    {
+        get
+        {
+            return (endNode.transform.position - originNode.transform.position).normalized;
+        }
+    }
 
 	[Header("References")]
 	public LineRenderer lineRenderer;
