@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class Node : MonoBehaviour
@@ -107,14 +108,25 @@ public class Node : MonoBehaviour
 	}
 
 
-	public void initialize(Color regionColor)
+	public void initialize(Color regionColorIn)
 	{
-		this.regionColor = regionColor;
+		float h, s, v;
+		Color.RGBToHSV(regionColorIn, out h, out s, out v);
+		var satOffset = 1000f;
+		var perlinScale = 20f;
+		
+		var perlinHueModifier = Mathf.Lerp(0.9f, 1.1f, Mathf.PerlinNoise(this.transform.position.x / perlinScale, this.transform.position.y / perlinScale));
+		var perlinSatModifier = Mathf.Lerp(0.9f, 1.1f, Mathf.PerlinNoise(satOffset + this.transform.position.x / perlinScale, satOffset + this.transform.position.y / perlinScale));
+		regionColorIn = Color.HSVToRGB(h * perlinHueModifier, s * perlinSatModifier, v);
+		
+		this.regionColor = regionColorIn;
 		var albedoAlpha = this._renderer.material.GetColor("_Color").a;
 		this._renderer.material.SetColor("_Color", new Color(this.regionColor.r, this.regionColor.g, this.regionColor.b, albedoAlpha));
 		
 		var emissionAlpha = this._renderer.material.GetColor("_EmissionColor").a;
 		this._renderer.material.SetColor("_EmissionColor", new Color(this.regionColor.r, this.regionColor.g, this.regionColor.b, emissionAlpha));
+		
+		
 	}
 
 	public void TrackRail(Rail rail)
