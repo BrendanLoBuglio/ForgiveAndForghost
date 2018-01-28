@@ -32,10 +32,14 @@ public class PlayerGhost : MonoBehaviour {
     private ParticleSystem speedLineParticleSystem;
     private float fastSpeedLineEmissionRate;
 
+    void Awake()
+    {
+        speedLineParticleSystem = GetComponentInChildren<ParticleSystem>();
+    }
+
     void Start () {
         this.currentRail = startingRail;
         this.transform.position = this.startingRail.originNode.transform.position;
-        speedLineParticleSystem = GetComponentInChildren<ParticleSystem>();
         fastSpeedLineEmissionRate = speedLineParticleSystem.emission.rateOverTime.constant;
 	}
 	
