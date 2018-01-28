@@ -5,14 +5,11 @@ using UnityEngine;
 public class RailGenerator : MonoBehaviour
 {
 	[Header("References")]
-	public Node nodePrefab;
-	public Rail railPrefab;
 	public BoxCollider spawnBox;
 
 	[Header("Settings")]
 	public int numNodesToGenerate;
 	public float nodeDensityInMillionths;
-    public bool thisOne;
 	[SerializeField] private Color nodeColor = Color.white;
 
 	protected List<Vector3> _testPoints = new List<Vector3>();
@@ -32,19 +29,6 @@ public class RailGenerator : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.C))
 		{
 			CheckDensity();
-		}
-
-		if (Input.GetKeyDown(KeyCode.P))
-		{
-			GenerateNodes();
-
-            if (thisOne) {
-                bool hi = PlayerGhost.s == null;
-                Debug.Log($"player ghost is null: {hi}");
-                Debug.LogFormat("node count: {0}", _currentNodes.Count);
-                PlayerGhost.s.SetStartRail(_currentNodes[0].GetFirstRail());
-                PlayerGhost.s.Initialize();
-            }
 		}
 	}
 
@@ -99,7 +83,7 @@ public class RailGenerator : MonoBehaviour
 
 	protected int _uhhHowManyTriesShouldIDo = 60;
 
-	protected void GenerateNodes()
+	public void GenerateNodes()
 	{
 		_testPoints.Clear();
 		ClearNodesAndRails();
@@ -112,7 +96,7 @@ public class RailGenerator : MonoBehaviour
 			if (randomPointSuccessful)
 			{
 				_testPoints.Add(randomPos);
-				Node newNode = Instantiate(nodePrefab);
+				Node newNode = Instantiate(RailGeneratorManager.s.nodePrefab);
 				newNode.transform.position = randomPos;
 				_currentNodes.Add(newNode);
 				newNode.initialize(this.nodeColor);
@@ -123,12 +107,17 @@ public class RailGenerator : MonoBehaviour
 			}
 		}
 
+		Debug.Log("generated nodes!");
+	}
+
+	public void GenerateRails()
+	{
 		for (int i = 0; i < _currentNodes.Count; i++)
 		{
 			_currentNodes[i].FindClosestNodes();
 		}
 
-		Debug.Log("generated nodes!");
+		Debug.Log("generated rails!");
 	}
 
 	protected int _minNodeDistance = 40;
@@ -206,18 +195,8 @@ public class RailGenerator : MonoBehaviour
 		return pos;
 	}
 
-	public static Rail GetNewRail()
+	public Node GetFirstNode()
 	{
-		return Instantiate(RailGenerator.s.railPrefab);
-	}
-
-	private static RailGenerator _myPrivateSelf;
-	public static RailGenerator s
-	{
-		get
-		{
-			if (_myPrivateSelf == null) _myPrivateSelf = Object.FindObjectOfType<RailGenerator>();
-			return _myPrivateSelf;
-		}
+		return _currentNodes[0];
 	}
 }
