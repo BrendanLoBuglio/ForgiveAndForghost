@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
 
+    public float minXRot;
+    public float maxXRot;
+    public float mouseSensitivity = 3;
     public Transform firstPersonPosition;
     public Transform thirdPersonPosition;
     public Renderer playerRenderer;
@@ -71,10 +74,11 @@ public class CameraController : MonoBehaviour {
             rotationLerpVal = Mathf.SmoothDamp(rotationLerpVal, 1, ref rotationDampVel, smoothDampTime, 100, Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, firstPersonPosition.rotation, rotationLerpVal);
             float xInput = Input.GetAxis("Mouse X");
-            playerRenderer.transform.Rotate(Vector3.up, xInput);
+            playerRenderer.transform.Rotate(Vector3.up, xInput * Time.deltaTime * mouseSensitivity);
         }   
         float yInput = -Input.GetAxis("Mouse Y");
-        thirdPersonPosition.transform.Rotate(Vector3.right, yInput);
-        firstPersonPosition.transform.Rotate(Vector3.right, yInput);       
-    }
+        thirdPersonPosition.transform.Rotate(Vector3.right, yInput * Time.deltaTime * mouseSensitivity);
+        firstPersonPosition.transform.Rotate(Vector3.right, yInput * Time.deltaTime * mouseSensitivity);       
+    
+}
 }
