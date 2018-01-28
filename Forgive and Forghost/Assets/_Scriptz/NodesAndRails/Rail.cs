@@ -17,7 +17,6 @@ public class Rail : MonoBehaviour
 
     public void setIsSelected(bool isSelected)
     {
-	    
 	    this.lineRenderer.material.SetColor("_Color", isSelected ? this.originNode.regionColor : this._defaultColor);
 	    //this.lineRenderer.startColor = isSelected ? this.originNode.regionColor : this._defaultColor;
 	    //this.lineRenderer.endColor   = isSelected ? this.endNode.regionColor    : this._defaultColor;
