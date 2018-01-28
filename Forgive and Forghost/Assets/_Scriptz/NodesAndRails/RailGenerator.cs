@@ -12,7 +12,6 @@ public class RailGenerator : MonoBehaviour
 	[Header("Settings")]
 	public int numNodesToGenerate;
 	public float nodeDensityInMillionths;
-    public bool thisOne;
 	[SerializeField] private Color nodeColor = Color.white;
 
 	protected List<Vector3> _testPoints = new List<Vector3>();
@@ -32,19 +31,6 @@ public class RailGenerator : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.C))
 		{
 			CheckDensity();
-		}
-
-		if (Input.GetKeyDown(KeyCode.P))
-		{
-			GenerateNodes();
-
-            if (thisOne) {
-                bool hi = PlayerGhost.s == null;
-                Debug.Log($"player ghost is null: {hi}");
-                Debug.LogFormat("node count: {0}", _currentNodes.Count);
-                PlayerGhost.s.SetStartRail(_currentNodes[0].GetFirstRail());
-                PlayerGhost.s.Initialize();
-            }
 		}
 	}
 
@@ -99,7 +85,7 @@ public class RailGenerator : MonoBehaviour
 
 	protected int _uhhHowManyTriesShouldIDo = 60;
 
-	protected void GenerateNodes()
+	public void GenerateNodes()
 	{
 		_testPoints.Clear();
 		ClearNodesAndRails();
@@ -123,12 +109,17 @@ public class RailGenerator : MonoBehaviour
 			}
 		}
 
+		Debug.Log("generated nodes!");
+	}
+
+	public void GenerateRails()
+	{
 		for (int i = 0; i < _currentNodes.Count; i++)
 		{
 			_currentNodes[i].FindClosestNodes();
 		}
 
-		Debug.Log("generated nodes!");
+		Debug.Log("generated rails!");
 	}
 
 	protected int _minNodeDistance = 40;
@@ -204,6 +195,11 @@ public class RailGenerator : MonoBehaviour
 		pos = randomPointOnLine + randomOffset;
 
 		return pos;
+	}
+
+	public Node GetFirstNode()
+	{
+		return _currentNodes[0];
 	}
 
 	public static Rail GetNewRail()
