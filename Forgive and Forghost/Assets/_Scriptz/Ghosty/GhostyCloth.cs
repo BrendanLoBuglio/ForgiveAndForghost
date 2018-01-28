@@ -5,6 +5,7 @@ using UnityEngine;
 public class GhostyCloth : MonoBehaviour
 {
 	[Header("References")]
+	public Transform ghostyTopLevel;
 	public Cloth ghostyCloth;
 
 	[Header("Settings")]
@@ -12,7 +13,7 @@ public class GhostyCloth : MonoBehaviour
 
 	void Update()
 	{
-		Vector3 down = transform.TransformDirection (-transform.up);
+		Vector3 down = ghostyTopLevel.TransformVector (Vector3.down);
 		down = down.normalized * gravity;
 		ghostyCloth.externalAcceleration = down;
 	}
