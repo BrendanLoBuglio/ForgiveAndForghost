@@ -408,6 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515ef5570801c40a6bb1af85500e54d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ghostyTopLevel: {fileID: 4687910332945402}
   ghostyCloth: {fileID: 183659394625995116}
   gravity: 10
 --- !u!136 &136336413922161616
@@ -482,7 +483,7 @@ Cloth:
   m_UseGravity: 0
   m_Damping: 0
   m_ExternalAcceleration: {x: 0, y: 0, z: 0}
-  m_RandomAcceleration: {x: 10, y: 0, z: 10}
+  m_RandomAcceleration: {x: 0, y: 0, z: 0}
   m_WorldVelocityScale: 0
   m_WorldAccelerationScale: 0.01
   m_Friction: 0
