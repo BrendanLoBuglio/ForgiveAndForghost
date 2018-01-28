@@ -468,6 +468,7 @@ MonoBehaviour:
   _acceleration_c: 10
   _twistAcceleration_c: 270
   _twistMaxVelocity_c: 270
+  _easeIntoNodeDistance_c: 3
   _arrivedAtNodeTolerance_c: 0.5
 --- !u!1 &315034226
 GameObject:

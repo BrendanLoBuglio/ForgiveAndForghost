@@ -17,14 +17,14 @@ public class PlayerGhost : MonoBehaviour {
     [SerializeField] private float _twistAcceleration_c = 270f;
     [SerializeField] private float _twistMaxVelocity_c = 270f;
 
-    /// Must be at this distance or less to be arrived at the node
-    [SerializeField] private float _arrivedAtNodeTolerance_c = 0.5f;
-
+    [SerializeField] private float _easeIntoNodeDistance_c = 1f;
+    
     /*# Physical State #*/
     private float _currentSpeed = 0f;
     private float _angularVelocity = 0f;
     /// Current angle around rail axis, in degrees
     private float _twistAngle;
+    private bool _hasLockedIntoCurrentSelection = false;
 
     /*# Object Reference State #*/
     private Node _fromNode;
@@ -51,12 +51,22 @@ public class PlayerGhost : MonoBehaviour {
 	    var fromPos = this._fromNode.transform.position;
 	    var toPos = this._toNode.transform.position;
 	    var railAxis = (toPos - fromPos).normalized;
-	    
+		
+		var maxSpeedModifier = 1f; 
+		// If I'm locked into my choice, move a little bit faster:
+		if (this._hasLockedIntoCurrentSelection)
+			maxSpeedModifier = 1.5f;
+	    // Otherwise, as I'm reaching my destination node, clamp my max speed to slow down:
+	    else if ((this.transform.position - toPos).sqrMagnitude <= this._easeIntoNodeDistance_c * this._easeIntoNodeDistance_c)
+	        maxSpeedModifier = Mathf.Clamp01(Vector3.Distance(this.transform.position, toPos) / this._easeIntoNodeDistance_c);
+		
 	    // Apply acceleration:
-        this._currentSpeed = Mathf.Clamp(this._currentSpeed + Time.deltaTime * this._acceleration_c, 0f, this._maxSpeed_c);
-
+        this._currentSpeed = Mathf.Clamp(this._currentSpeed + Time.deltaTime * this._acceleration_c, 0f, maxSpeedModifier * this._maxSpeed_c);
+        // Move along rail:
+        this.transform.position += railAxis * this._currentSpeed * Time.deltaTime;
+		
         // Rotate:
-        var twistInput = -Input.GetAxis("Horizontal");
+        var twistInput = !this._hasLockedIntoCurrentSelection ? -Input.GetAxis("Horizontal") : 0f;
         if (Mathf.Abs(twistInput) > 0.001f)
             this._angularVelocity = Mathf.Clamp(this._angularVelocity + twistInput * this._twistAcceleration_c * Time.deltaTime, -this._twistMaxVelocity_c, this._twistMaxVelocity_c);
         else
@@ -65,29 +75,27 @@ public class PlayerGhost : MonoBehaviour {
         // Update my rotation along the current rail:
         this.transform.rotation = Quaternion.AngleAxis(this._twistAngle, railAxis) * Quaternion.LookRotation(railAxis);
 
-        // Move along rail:
-        this.transform.position += railAxis * this._currentSpeed * Time.deltaTime;
-
 	    // Calculate which rail is our next rail:
 	    var newSelectedRail = this.calculateWhichRailIsSelected();
-	    
 	    if (this._currentlySelectedRail != newSelectedRail) {
 	        this._currentlySelectedRail?.setIsSelected(false);
 	        newSelectedRail?.setIsSelected(true);
 	        this._currentlySelectedRail = newSelectedRail;
 	    }
-	    
+
+		// Check for input to lock the player into their current rail:
+		if (Input.GetKeyDown(KeyCode.Space) && this._currentlySelectedRail != null)
+			this._hasLockedIntoCurrentSelection = true;
+		
         // Check to see if I've passed the end of my current rail:
         if(Vector3.Dot(toPos - this.transform.position, toPos - fromPos) < 0f) {
             // If I have a selected rail, go to it:
-            if (this._currentlySelectedRail != null) {
+            if (this._currentlySelectedRail != null)
                 // If so, move to the next rail:
                 this.changeRail(this._currentlySelectedRail.endWhichIsNot(this._toNode));
-            }
             // Otherwise, dead end! Just stop me in my tracks:
-            else {
+            else
                 this.transform.position = this._toNode.transform.position;
-            }
         }
     }
     
@@ -129,6 +137,7 @@ public class PlayerGhost : MonoBehaviour {
     {
         this._fromNode = this._toNode;
         this._toNode = newNode;
+	    this._hasLockedIntoCurrentSelection = false;
     }
     
     private void updateWindParticles()
