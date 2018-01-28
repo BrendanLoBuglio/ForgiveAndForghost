@@ -61,9 +61,9 @@ public class CameraController : MonoBehaviour {
             }
             rotationLerpVal = Mathf.SmoothDamp(rotationLerpVal, 1, ref rotationDampVel, smoothDampTime, 100, Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, thirdPersonPosition.rotation, rotationLerpVal);
-            Vector3 euler = playerRenderer.transform.localRotation.eulerAngles;
-            euler.y = Mathf.SmoothDamp(euler.y, 0, ref playerRotationDampVel, smoothDampTime, 100, Time.deltaTime);
-            playerRenderer.transform.localRotation= Quaternion.Euler(euler);
+            //Vector3 euler = playerRenderer.transform.localRotation.eulerAngles;
+            //euler.y = Mathf.SmoothDamp(euler.y, 0, ref playerRotationDampVel, smoothDampTime, 100, Time.deltaTime);
+            //playerRenderer.transform.localRotation= Quaternion.Euler(euler);
         }
         else
         {
@@ -73,12 +73,30 @@ public class CameraController : MonoBehaviour {
             }
             rotationLerpVal = Mathf.SmoothDamp(rotationLerpVal, 1, ref rotationDampVel, smoothDampTime, 100, Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, firstPersonPosition.rotation, rotationLerpVal);
-            float xInput = Input.GetAxis("Mouse X");
-            playerRenderer.transform.Rotate(Vector3.up, xInput * Time.deltaTime * mouseSensitivity);
-        }   
+       }
+        float xInput = Input.GetAxis("Mouse X");
+        if (Input.GetKey(KeyCode.J))
+        {
+            xInput = -1;
+        }
+        if (Input.GetKey(KeyCode.L))
+        {
+            xInput = 1;
+        }
+        playerRenderer.transform.Rotate(Vector3.up, xInput * Time.deltaTime * mouseSensitivity);
+        //thirdPersonPosition.transform.Rotate(playerRenderer.transform.up, xInput * Time.deltaTime * mouseSensitivity, Space.World);
+
+
         float yInput = -Input.GetAxis("Mouse Y");
+        if (Input.GetKey(KeyCode.I)){
+            yInput = 1;
+        }
+        if (Input.GetKey(KeyCode.K))
+        {
+            yInput = -1;
+        }
         thirdPersonPosition.transform.Rotate(Vector3.right, yInput * Time.deltaTime * mouseSensitivity);
         firstPersonPosition.transform.Rotate(Vector3.right, yInput * Time.deltaTime * mouseSensitivity);       
     
-}
+    }
 }
