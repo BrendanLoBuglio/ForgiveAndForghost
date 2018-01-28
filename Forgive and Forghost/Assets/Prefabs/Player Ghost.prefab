@@ -277,7 +277,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1294606253830328}
   m_LocalRotation: {x: 0.13059388, y: -0, z: -8.2584783e-10, w: 0.991436}
-  m_LocalPosition: {x: -0, y: 1.74, z: -4.1500006}
+  m_LocalPosition: {x: -0, y: 6.01, z: -20.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4613740728862988}
@@ -344,7 +344,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1675542344278010}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -914,8 +914,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startingRail_c: {fileID: 0}
   _maxSpeed_c: 6
-  _maxSpeedBoostMultiplier_c: 4
-  _acceleration_c: 10
+  _maxSpeedBoostMultiplier_c: 10
+  _acceleration_c: 16
   _twistAcceleration_c: 270
   _twistMaxVelocity_c: 270
   _easeIntoNodeDistance_c: 3

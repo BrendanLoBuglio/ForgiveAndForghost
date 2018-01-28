@@ -22,6 +22,10 @@ public class RailGenerator : MonoBehaviour
 		int numNodes = Mathf.RoundToInt(density * GetVolume());
 		Debug.LogFormat("i calculated {0} nodex", numNodes);
 		numNodesToGenerate = numNodes;
+
+		if (this.spawnBox.GetComponent<Renderer>() != null) {
+			this.spawnBox.GetComponent<Renderer>().enabled = false;
+		}
 	}
 
 	void Update()
