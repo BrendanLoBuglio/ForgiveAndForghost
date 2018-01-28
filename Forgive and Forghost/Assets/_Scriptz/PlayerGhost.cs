@@ -34,11 +34,13 @@ public class PlayerGhost : MonoBehaviour {
 
     /*# Cache #*/
     public ParticleSystem sparkParticleSystem;
+    public ParticleSystem flareParticleSystem;
     public ParticleSystem _speedLineParticleSystem;
     public float maxGrindVolume;
     private AudioSource grindSource;
     private float _fastSpeedLineEmissionRate;
     private float sparkEmissionRate;
+    private float flareEmissionRate;
     private float grindDampVel;
 
 
@@ -78,6 +80,7 @@ public class PlayerGhost : MonoBehaviour {
         if (this._speedLineParticleSystem != null)
         this._fastSpeedLineEmissionRate = this._speedLineParticleSystem.emission.rateOverTime.constant;
         this.sparkEmissionRate = sparkParticleSystem.emission.rateOverTime.constant;
+        this.flareEmissionRate = flareParticleSystem.emission.rateOverTime.constant;
     }
 	
 	private void Update () {
@@ -182,7 +185,7 @@ public class PlayerGhost : MonoBehaviour {
     
     private void updateWindParticles()
     {
-        var lerpAmount = Mathf.InverseLerp(0, this._maxSpeed_c, this._currentSpeed);
+        var lerpAmount = Mathf.InverseLerp(0, this._maxSpeed_c * this._maxSpeedBoostMultiplier_c, this._currentSpeed);
         float targetGrindVolume = Mathf.Lerp(0, maxGrindVolume, lerpAmount);
         lerpAmount *= lerpAmount;
         grindSource.volume = Mathf.SmoothDamp(grindSource.volume, targetGrindVolume, ref grindDampVel, .5f, 100, Time.deltaTime);
@@ -193,6 +196,11 @@ public class PlayerGhost : MonoBehaviour {
         emiss = this.sparkParticleSystem.emission;
         rate = emiss.rateOverTime;
         rate.constant = Mathf.Lerp(0, this.sparkEmissionRate, lerpAmount);
+        Debug.Log(rate.constant);
+        emiss.rateOverTime = rate;
+        emiss = this.flareParticleSystem.emission;
+        rate = emiss.rateOverTime;
+        rate.constant = Mathf.Lerp(0, this.flareEmissionRate, lerpAmount);
         emiss.rateOverTime = rate;
     }
 }
