@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(CapsuleCollider))]
@@ -17,8 +16,21 @@ public class Rail : MonoBehaviour
 
     public Vector3 asAxis => (this.endNode.transform.position - this.originNode.transform.position).normalized;
 
+	public void setIsSelected(bool isSelected) => this._renderer.material = isSelected ? this.selectedMaterial : this._defaultMaterial;  
+	
 	[Header("References")]
 	public LineRenderer lineRenderer;
+	public Material selectedMaterial;
+
+	/*# Cached References #*/
+	private Material _defaultMaterial;
+	private Renderer _renderer;
+	
+	private void Awake()
+	{
+		this._renderer = this.GetComponent<Renderer>();
+		this._defaultMaterial = this._renderer.material;
+	}
 
 	public void setNodes(Node origin, Node end)
 	{
