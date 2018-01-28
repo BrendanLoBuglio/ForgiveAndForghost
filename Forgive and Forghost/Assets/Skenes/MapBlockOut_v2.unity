@@ -156,6 +156,11 @@ Prefab:
       propertyPath: m_Name
       value: PortalPrefab (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 23086070799560794, guid: 09ac19ce1e5022a489fbe690b84f3b0f,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5dd6868ad00973340bf686194d8eabcf, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09ac19ce1e5022a489fbe690b84f3b0f, type: 2}
   m_IsPrefabParent: 0
@@ -615,6 +620,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 23086070799560794, guid: 09ac19ce1e5022a489fbe690b84f3b0f,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6c40ab42ed259384a856a16071d08370, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09ac19ce1e5022a489fbe690b84f3b0f, type: 2}
   m_IsPrefabParent: 0
@@ -1163,6 +1173,11 @@ Prefab:
       propertyPath: m_Name
       value: PortalPrefab (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 23086070799560794, guid: 09ac19ce1e5022a489fbe690b84f3b0f,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8867209dca6edf54e8d28aed182a8fc9, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09ac19ce1e5022a489fbe690b84f3b0f, type: 2}
   m_IsPrefabParent: 0
@@ -1797,6 +1812,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 23086070799560794, guid: 09ac19ce1e5022a489fbe690b84f3b0f,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 122ae5bab57587b42a792e193930bcc5, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09ac19ce1e5022a489fbe690b84f3b0f, type: 2}
   m_IsPrefabParent: 0
@@ -1848,6 +1868,11 @@ Prefab:
       propertyPath: m_Name
       value: PortalPrefab (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 23086070799560794, guid: 09ac19ce1e5022a489fbe690b84f3b0f,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 906958fda0f9cdc4ab1ac5e1c7738306, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09ac19ce1e5022a489fbe690b84f3b0f, type: 2}
   m_IsPrefabParent: 0
@@ -2196,6 +2221,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 23086070799560794, guid: 09ac19ce1e5022a489fbe690b84f3b0f,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e3132dabdfb4aa3479ec9b82ee739565, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09ac19ce1e5022a489fbe690b84f3b0f, type: 2}
   m_IsPrefabParent: 0
@@ -2251,6 +2281,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 23086070799560794, guid: 09ac19ce1e5022a489fbe690b84f3b0f,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: cd85a2446e62b4d4e97f96d7b5d11e6a, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09ac19ce1e5022a489fbe690b84f3b0f, type: 2}
   m_IsPrefabParent: 0
@@ -3104,6 +3139,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180
       objectReference: {fileID: 0}
+    - target: {fileID: 23086070799560794, guid: 09ac19ce1e5022a489fbe690b84f3b0f,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9c3c0f19517a12e46a9f5fa0a4c5b177, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09ac19ce1e5022a489fbe690b84f3b0f, type: 2}
   m_IsPrefabParent: 0
