@@ -262,7 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingRail: {fileID: 1443456798}
-  maxSpeed_c: 30
+  maxSpeed_c: 0
   acceleration_c: 10
   twistAcceleration_c: 270
   twistMaxVelocity_c: 270
@@ -461,9 +461,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c5cd3ef30d096843a3e9d5075916b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstPersonPosition: {fileID: 0}
-  smoothDampTime: 0
-  firstPersonLerpAmount: 0
+  firstPersonPosition: {fileID: 1348299470}
+  thirdPersonPosition: {fileID: 939023344}
+  playerRenderer: {fileID: 402885392}
+  smoothDampTime: 0.5
+  targetFirstPersonLerpAmount: 1
+  startTransparencyLerpDistance: 2.5
+  endTransparencyLerpDistance: 1.4
 --- !u!1 &402885390
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,7 +492,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 402885390}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -510,7 +514,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f1205f6c3c7f09f47a6409935f976d9c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4081,13 +4085,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 939023343}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0.13059542, y: 0, z: 0, w: 0.99143577}
   m_LocalPosition: {x: -0, y: 2.7400002, z: -4.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 206294960}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 15.008, y: 0, z: 0}
 --- !u!1001 &1225485045
 Prefab:
   m_ObjectHideFlags: 0
