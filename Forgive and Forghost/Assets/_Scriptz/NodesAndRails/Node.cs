@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,14 +20,23 @@ public class Node : MonoBehaviour
 
 	public List<Rail> rails;
 
-    public Rail getNextRailOnArrive(Rail fromRail)
-    {
-        //If there's only one rail, go to the other rail:
-        if (rails.Count == 2)
-            return this.rails.Where(rail => rail != fromRail).ToList()[0];
-        else
-            throw new System.Exception("Haven't handled this case yet");
-    }
+	/// Given a node that the player is coming from, return a list of all the nodes that I might connect them to
+	public Node[] getPossibleNodesForJunction(Node fromNode)
+	{
+		return this.rails.Select(rail => rail.originNode != this ? rail.originNode : rail.endNode)
+			.Where(node => node != fromNode).ToArray();
+	}
+
+	/// Given a node that I connect to, return the rail that connects us. If I'm not connected to that node, you got
+	///  an error on your hands. 
+	public Rail getRailByDestinationNode(Node destination)
+	{
+		var output = this.rails.Where(rail => rail.originNode == destination || rail.endNode == destination).ToList();
+		if (output.Count == 0)
+			throw new Exception($"Error! Tried to get the rail that connects {this.name} to node {destination}, but no such rail exists.");
+		return output[0];
+	}
+
 	protected int _maxRails = 4;
 	protected int _maxNodeDistance = 300;
 
@@ -76,7 +86,7 @@ public class Node : MonoBehaviour
 		for (int i = 0; i < closestNodes.Count; i++)
 		{
 			Rail newRail = RailGenerator.GetNewRail();
-			newRail.SetNodes(this, closestNodes[i].node);
+			newRail.setNodes(this, closestNodes[i].node);
 		}
 	}
 
