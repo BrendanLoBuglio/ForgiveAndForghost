@@ -51,8 +51,9 @@ public class PlayerGhost : MonoBehaviour {
         // Move along rail:
         this.transform.position += this.currentRail.asAxis * this.currentSpeed * Time.deltaTime;
 
-        // Check to see if we've hit the end of the rail:
-        if ((this.transform.position - this.currentRail.endNode.transform.position).sqrMagnitude <= arrivedAtNodeTolerance_c * arrivedAtNodeTolerance_c) {
+        // Check to see if I've passed the end of my current rail:
+        var mPos = this.transform.position;
+        if(Vector3.Dot(this.currentRail.endNode.transform.position - mPos, this.currentRail.endNode.transform.position - this.currentRail.originNode.transform.position) < 0f) {
             // If so, move to the next rail:
             this.changeRail(this.currentRail.endNode.getNextRailOnArrive(this.currentRail));
         }
