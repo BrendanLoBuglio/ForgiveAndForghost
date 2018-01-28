@@ -115,6 +115,7 @@ public class RailGenerator : MonoBehaviour
 				Node newNode = Instantiate(nodePrefab);
 				newNode.transform.position = randomPos;
 				_currentNodes.Add(newNode);
+				newNode.initialize(this.nodeColor);
 			}
 			else
 			{
@@ -125,8 +126,6 @@ public class RailGenerator : MonoBehaviour
 		for (int i = 0; i < _currentNodes.Count; i++)
 		{
 			_currentNodes[i].FindClosestNodes();
-			this._currentNodes[i].setColor(this.nodeColor);
-			Debug.Log($"Set node at {i} to color {this.nodeColor}");
 		}
 
 		Debug.Log("generated nodes!");
