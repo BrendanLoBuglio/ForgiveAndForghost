@@ -26,6 +26,10 @@ public class CameraController : MonoBehaviour {
     private float rotationLerpVal;
     private float rotationDampVel;
 
+    private Quaternion playerStartRotation;
+    private Quaternion thirdPersonStartRotation;
+    private Quaternion firstPersonStartRotation;
+
     private float playerRotationDampVel;
 
 	void Start () {
@@ -33,6 +37,9 @@ public class CameraController : MonoBehaviour {
         playerMaterial = playerRenderer.material;
         playerColor = playerMaterial.GetColor("_Color");
         transform.parent = null;
+        playerStartRotation = playerRenderer.transform.localRotation;
+        thirdPersonStartRotation = thirdPersonPosition.localRotation;
+        firstPersonStartRotation = firstPersonPosition.localRotation;
 	}
 		
 	void Update () {
@@ -75,6 +82,12 @@ public class CameraController : MonoBehaviour {
             rotationLerpVal = Mathf.SmoothDamp(rotationLerpVal, 1, ref rotationDampVel, smoothDampTime, 100, Time.deltaTime);
             transform.rotation = Quaternion.Lerp(transform.rotation, firstPersonPosition.rotation, rotationLerpVal);
        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            firstPersonPosition.localRotation = firstPersonStartRotation;
+            thirdPersonPosition.localRotation = thirdPersonStartRotation;
+            playerRenderer.transform.localRotation = playerStartRotation;
+        }
         float xInput = Input.GetAxis("Mouse X");
         if (Input.GetKey(KeyCode.J))
         {
