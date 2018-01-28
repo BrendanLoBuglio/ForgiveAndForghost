@@ -31,10 +31,16 @@ public class PlayerGhost : MonoBehaviour {
     private Node _fromNode;
     private Node _toNode;
     private Rail _currentlySelectedRail;
-    
+
     /*# Cache #*/
-    private ParticleSystem _speedLineParticleSystem;
+    public ParticleSystem sparkParticleSystem;
+    public ParticleSystem _speedLineParticleSystem;
+    public float maxGrindVolume;
+    private AudioSource grindSource;
     private float _fastSpeedLineEmissionRate;
+    private float sparkEmissionRate;
+    private float grindDampVel;
+
 
     public bool dontInitializeOnAwake;
     private bool _initialized;
@@ -53,6 +59,7 @@ public class PlayerGhost : MonoBehaviour {
         if (!dontInitializeOnAwake) {
             Initialize();
         }
+        grindSource = GetComponent<AudioSource>();
 	}
 
     public void SetStartRail(Rail rail)
@@ -68,9 +75,9 @@ public class PlayerGhost : MonoBehaviour {
         this.transform.position = this._fromNode.transform.position;
 
         // Initialize speed lines:
-        this._speedLineParticleSystem = this.GetComponentInChildren<ParticleSystem>();
         if (this._speedLineParticleSystem != null)
         this._fastSpeedLineEmissionRate = this._speedLineParticleSystem.emission.rateOverTime.constant;
+        this.sparkEmissionRate = sparkParticleSystem.emission.rateOverTime.constant;
     }
 	
 	private void Update () {
@@ -129,6 +136,7 @@ public class PlayerGhost : MonoBehaviour {
             else
                 this.transform.position = this._toNode.transform.position;
         }
+        updateWindParticles();
     }
     
     private Rail calculateWhichRailIsSelected()
@@ -175,9 +183,16 @@ public class PlayerGhost : MonoBehaviour {
     private void updateWindParticles()
     {
         var lerpAmount = Mathf.InverseLerp(0, this._maxSpeed_c, this._currentSpeed);
+        float targetGrindVolume = Mathf.Lerp(0, maxGrindVolume, lerpAmount);
+        lerpAmount *= lerpAmount;
+        grindSource.volume = Mathf.SmoothDamp(grindSource.volume, targetGrindVolume, ref grindDampVel, .5f, 100, Time.deltaTime);
         var emiss = this._speedLineParticleSystem.emission;
         var rate = emiss.rateOverTime;
         rate.constant = Mathf.Lerp(0, this._fastSpeedLineEmissionRate, lerpAmount);
+        emiss.rateOverTime = rate;
+        emiss = this.sparkParticleSystem.emission;
+        rate = emiss.rateOverTime;
+        rate.constant = Mathf.Lerp(0, this.sparkEmissionRate, lerpAmount);
         emiss.rateOverTime = rate;
     }
 }
