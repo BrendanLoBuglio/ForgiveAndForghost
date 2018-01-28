@@ -84,7 +84,7 @@ public class CameraController : MonoBehaviour {
             xInput = 1;
         }
         playerRenderer.transform.Rotate(Vector3.up, xInput * Time.deltaTime * mouseSensitivity);
-        thirdPersonPosition.transform.Rotate(playerRenderer.transform.up, xInput * Time.deltaTime * mouseSensitivity, Space.World);
+        //thirdPersonPosition.transform.Rotate(playerRenderer.transform.up, xInput * Time.deltaTime * mouseSensitivity, Space.World);
 
 
         float yInput = -Input.GetAxis("Mouse Y");
