@@ -914,6 +914,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startingRail_c: {fileID: 0}
   _maxSpeed_c: 6
+  _maxSpeedBoostMultiplier_c: 4
   _acceleration_c: 10
   _twistAcceleration_c: 270
   _twistMaxVelocity_c: 270
@@ -932,7 +933,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minXRot: 40
   maxXRot: 40
-  mouseSensitivity: 50
+  mouseSensitivity: 100
   firstPersonPosition: {fileID: 4310702639132940}
   thirdPersonPosition: {fileID: 4067900425712888}
   playerRenderer: {fileID: 23497332356421620}

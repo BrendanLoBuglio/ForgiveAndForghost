@@ -29,6 +29,7 @@ public class CameraController : MonoBehaviour {
     private float playerRotationDampVel;
 
 	void Start () {
+        Cursor.lockState = CursorLockMode.Locked;
         playerMaterial = playerRenderer.material;
         playerColor = playerMaterial.GetColor("_Color");
         transform.parent = null;
