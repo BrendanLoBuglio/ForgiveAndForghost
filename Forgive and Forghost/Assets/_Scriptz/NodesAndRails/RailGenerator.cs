@@ -11,17 +11,58 @@ public class RailGenerator : MonoBehaviour
 
 	[Header("Settings")]
 	public int numNodesToGenerate;
+	public float nodeDensityInMillionths;
 
 	protected List<Vector3> _testPoints = new List<Vector3>();
 	protected List<Node> _currentNodes = new List<Node>();
 	protected List<Rail> _currentRails = new List<Rail>();
 
+	void Start()
+	{
+		float density = nodeDensityInMillionths / 1000000f;
+		int numNodes = Mathf.RoundToInt(density * GetVolume());
+		Debug.LogFormat("i calculated {0} nodex", numNodes);
+		numNodesToGenerate = numNodes;
+	}
+
 	void Update()
 	{
+		//Debug.Log("dogs: " + numNodesToGenerate);
+		//Debug.LogFormat("dogs: {0}, hi my name is {1} and here's my dog {2}", numNodesToGenerate, spawnBox.transform.position, nodePrefab.name);
+
+		if (Input.GetKeyDown(KeyCode.C))
+		{
+			CheckDensity();
+		}
+
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			GenerateNodes();
 		}
+	}
+
+	protected float GetVolume()
+	{
+		Vector3 localScale = spawnBox.transform.localScale;
+		Vector3 parentLocalScale = spawnBox.transform.parent.localScale;
+		Vector3 center = spawnBox.transform.position;
+
+		float xScaleGlobal = localScale.x * parentLocalScale.x;
+		float yScaleGlobal = localScale.y * parentLocalScale.y;
+		float zScaleGlobal = localScale.z * parentLocalScale.z;
+
+		Debug.LogFormat("x: {0} // y: {1} // z: {2}", xScaleGlobal, yScaleGlobal, zScaleGlobal);
+
+		float volume = xScaleGlobal * yScaleGlobal * zScaleGlobal;
+
+		return volume;
+	}
+
+	protected void CheckDensity()
+	{
+		float volume = GetVolume();
+		float density = numNodesToGenerate / volume * 1000000f;
+		Debug.LogFormat("my density is: {0} 1 millionth nodes/volume unity\nvolume: {1} // num nodes: {2}", density, volume, numNodesToGenerate);
 	}
 
 	void OnDrawGizmos()

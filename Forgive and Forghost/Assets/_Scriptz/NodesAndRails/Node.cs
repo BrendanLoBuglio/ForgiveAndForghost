@@ -27,8 +27,9 @@ public class Node : MonoBehaviour
         else
             throw new System.Exception("Haven't handled this case yet");
     }
-	protected int _maxRails = 6;
-	protected int _maxNodeDistance = 100;
+	protected int _maxRails = 4;
+	protected int _minNodeDistance = 30;
+	protected int _maxNodeDistance = 300;
 
 	public void FindClosestNodes()
 	{
@@ -51,7 +52,7 @@ public class Node : MonoBehaviour
 						//Debug.Log("hi");
 						float distance = Vector3.Distance(transform.position, nodeArray[i].transform.position);
 
-						if (distance < _maxNodeDistance)
+						if (distance < _maxNodeDistance && distance > _minNodeDistance)
 						{
 
 							if (closestNodes.Count < numRailsWeNeed)
