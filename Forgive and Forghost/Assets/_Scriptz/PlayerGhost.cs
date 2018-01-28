@@ -12,6 +12,7 @@ public class PlayerGhost : MonoBehaviour {
 
     /*# Config #*/
     [SerializeField] private float _maxSpeed_c = 30f;
+	[SerializeField] private float _maxSpeedBoostMultiplier_c = 2.5f;
     [SerializeField] private float _acceleration_c = 10f;
     /// In degrees per second the rate of angular change in my _twistAngle along a rail given an input
     [SerializeField] private float _twistAcceleration_c = 270f;
@@ -86,7 +87,7 @@ public class PlayerGhost : MonoBehaviour {
 		var maxSpeedModifier = 1f; 
 		// If I'm locked into my choice, move a little bit faster:
 		if (this._hasLockedIntoCurrentSelection)
-			maxSpeedModifier = 1.5f;
+			maxSpeedModifier = _maxSpeedBoostMultiplier_c;
 	    // Otherwise, as I'm reaching my destination node, clamp my max speed to slow down:
 	    else if ((this.transform.position - toPos).sqrMagnitude <= this._easeIntoNodeDistance_c * this._easeIntoNodeDistance_c)
 	        maxSpeedModifier = Mathf.Clamp01(Vector3.Distance(this.transform.position, toPos) / this._easeIntoNodeDistance_c);
