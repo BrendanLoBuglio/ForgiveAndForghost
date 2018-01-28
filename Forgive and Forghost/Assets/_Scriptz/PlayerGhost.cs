@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class PlayerGhost : MonoBehaviour {
@@ -76,13 +78,19 @@ public class PlayerGhost : MonoBehaviour {
 	    }
 	    
         // Check to see if I've passed the end of my current rail:
-//        var mPos = this.transform.position;
-//        if(Vector3.Dot(toPos - mPos, toPos - fromPos) < 0f) {
-//            // If so, move to the next rail:
-//            this.changeRail(this._currentRail.endNode.getNextRailOnArrive(this._currentRail));
-//        }
+        if(Vector3.Dot(toPos - this.transform.position, toPos - fromPos) < 0f) {
+            // If I have a selected rail, go to it:
+            if (this._currentlySelectedRail != null) {
+                // If so, move to the next rail:
+                this.changeRail(this._currentlySelectedRail.endWhichIsNot(this._toNode));
+            }
+            // Otherwise, dead end! Just stop me in my tracks:
+            else {
+                this.transform.position = this._toNode.transform.position;
+            }
+        }
     }
-
+    
     private Rail calculateWhichRailIsSelected()
     {
         // Get all the nodes that my "to" node connects to, with the exception of the one I'm already coming from
@@ -115,6 +123,12 @@ public class PlayerGhost : MonoBehaviour {
          .ToList()[0].Item1;
 
         return this._toNode.getRailByDestinationNode(selectedNode);
+    }
+
+    private void changeRail(Node newNode)
+    {
+        this._fromNode = this._toNode;
+        this._toNode = newNode;
     }
     
     private void updateWindParticles()

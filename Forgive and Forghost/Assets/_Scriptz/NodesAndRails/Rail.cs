@@ -14,9 +14,10 @@ public class Rail : MonoBehaviour
         this.width = this.GetComponent<CapsuleCollider>().radius;
     }
 
-    public Vector3 asAxis => (this.endNode.transform.position - this.originNode.transform.position).normalized;
-
-	public void setIsSelected(bool isSelected) => this._renderer.material = isSelected ? this.selectedMaterial : this._defaultMaterial;  
+	public void setIsSelected(bool isSelected) => this._renderer.material = isSelected ? this.selectedMaterial : this._defaultMaterial;
+	
+	/// Don't @ me
+	public Node endWhichIsNot(Node n) => this.originNode == n ? this.endNode : this.originNode;
 	
 	[Header("References")]
 	public LineRenderer lineRenderer;
