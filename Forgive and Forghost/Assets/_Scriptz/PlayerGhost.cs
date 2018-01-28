@@ -28,15 +28,26 @@ public class PlayerGhost : MonoBehaviour {
     /// Current angle around rail axis, in degrees
     private float twist;
 
+
+    private ParticleSystem speedLineParticleSystem;
+    private float fastSpeedLineEmissionRate;
+
     void Start () {
         this.currentRail = startingRail;
         this.transform.position = this.startingRail.originNode.transform.position;
+        speedLineParticleSystem = GetComponentInChildren<ParticleSystem>();
+        fastSpeedLineEmissionRate = speedLineParticleSystem.emission.rateOverTime.constant;
 	}
 	
 	void Update () {
         
         // Apply acceleration:
         this.currentSpeed = Mathf.Clamp(this.currentSpeed + Time.deltaTime * this.acceleration_c, 0f, maxSpeed_c);
+        float lerpAmount = Mathf.InverseLerp(0, maxSpeed_c, currentSpeed);
+        var emiss = speedLineParticleSystem.emission;
+        var rate = emiss.rateOverTime;
+        rate.constant = Mathf.Lerp(0, fastSpeedLineEmissionRate, lerpAmount);
+        emiss.rateOverTime = rate;
 
         // Rotate:
         var twistInput = Input.GetAxis("Horizontal");
