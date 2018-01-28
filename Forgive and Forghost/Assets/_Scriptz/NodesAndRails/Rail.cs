@@ -15,24 +15,24 @@ public class Rail : MonoBehaviour
         this.width = this.GetComponent<CapsuleCollider>().radius;
     }
 
-    public Vector3 asAxis => (endNode.transform.position - originNode.transform.position).normalized;
+    public Vector3 asAxis => (this.endNode.transform.position - this.originNode.transform.position).normalized;
 
 	[Header("References")]
 	public LineRenderer lineRenderer;
 
-	public void SetNodes(Node origin, Node end)
+	public void setNodes(Node origin, Node end)
 	{
-		originNode = origin;
-		endNode = end;
-		lineRenderer.positionCount = 2;
-		lineRenderer.SetPosition(0, origin.transform.position);
-		lineRenderer.SetPosition(1, end.transform.position);
+		this.originNode = origin;
+		this.endNode = end;
+		this.lineRenderer.positionCount = 2;
+		this.lineRenderer.SetPosition(0, origin.transform.position);
+		this.lineRenderer.SetPosition(1, end.transform.position);
 		origin.TrackRail(this);
 		end.TrackRail(this);
 	}
 
-	public bool HasNodes()
+	public bool hasNodes()
 	{
-		return (originNode != null && endNode != null);
+		return (this.originNode != null && this.endNode != null);
 	}
 }

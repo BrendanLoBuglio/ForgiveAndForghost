@@ -77,7 +77,7 @@ public class Node : MonoBehaviour
 		for (int i = 0; i < closestNodes.Count; i++)
 		{
 			Rail newRail = RailGenerator.GetNewRail();
-			newRail.SetNodes(this, closestNodes[i].node);
+			newRail.setNodes(this, closestNodes[i].node);
 		}
 	}
 
