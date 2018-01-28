@@ -28,7 +28,6 @@ public class Node : MonoBehaviour
             throw new System.Exception("Haven't handled this case yet");
     }
 	protected int _maxRails = 4;
-	protected int _minNodeDistance = 30;
 	protected int _maxNodeDistance = 300;
 
 	public void FindClosestNodes()
@@ -40,21 +39,16 @@ public class Node : MonoBehaviour
 
 		for (int i = 0; i < nodeArray.Length; i++)
 		{
-			//Debug.Log("b");
 			if (!nodeArray[i].HasFullRails())
 			{
-				//Debug.Log("a");
 				if (nodeArray[i] != this)
 				{
-					//Debug.Log("hey");	
 					if (!IsConnectedTo(nodeArray[i]))
 					{
-						//Debug.Log("hi");
 						float distance = Vector3.Distance(transform.position, nodeArray[i].transform.position);
 
-						if (distance < _maxNodeDistance && distance > _minNodeDistance)
+						if (distance < _maxNodeDistance)
 						{
-
 							if (closestNodes.Count < numRailsWeNeed)
 							{
 								closestNodes.Add(new NodeAndDistance(nodeArray[i], distance));
@@ -79,7 +73,6 @@ public class Node : MonoBehaviour
 			}
 		}
 
-		//Debug.LogFormat("instantiating {0} rails", closestNodes.Count);
 		for (int i = 0; i < closestNodes.Count; i++)
 		{
 			Rail newRail = RailGenerator.GetNewRail();

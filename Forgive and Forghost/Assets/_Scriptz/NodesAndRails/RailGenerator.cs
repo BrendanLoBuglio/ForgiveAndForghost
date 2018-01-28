@@ -27,9 +27,6 @@ public class RailGenerator : MonoBehaviour
 
 	void Update()
 	{
-		//Debug.Log("dogs: " + numNodesToGenerate);
-		//Debug.LogFormat("dogs: {0}, hi my name is {1} and here's my dog {2}", numNodesToGenerate, spawnBox.transform.position, nodePrefab.name);
-
 		if (Input.GetKeyDown(KeyCode.C))
 		{
 			CheckDensity();
@@ -90,6 +87,8 @@ public class RailGenerator : MonoBehaviour
 		_currentRails.Clear();
 	}
 
+	protected int _uhhHowManyTriesShouldIDo = 60;
+
 	protected void GenerateNodes()
 	{
 		_testPoints.Clear();
@@ -97,11 +96,20 @@ public class RailGenerator : MonoBehaviour
 
 		for (int i = 0; i < numNodesToGenerate; i++)
 		{
-			Vector3 randomPos = GetRandomPointWithinBox(spawnBox);
-			_testPoints.Add(randomPos);
-			Node newNode = Instantiate(nodePrefab);
-			newNode.transform.position = randomPos;
-			_currentNodes.Add(newNode);
+			bool randomPointSuccessful = false;
+			Vector3 randomPos = GetRandomPointWithinBox(spawnBox, out randomPointSuccessful);
+
+			if (randomPointSuccessful)
+			{
+				_testPoints.Add(randomPos);
+				Node newNode = Instantiate(nodePrefab);
+				newNode.transform.position = randomPos;
+				_currentNodes.Add(newNode);
+			}
+			else
+			{
+				break;
+			}
 		}
 
 		for (int i = 0; i < _currentNodes.Count; i++)
@@ -112,7 +120,56 @@ public class RailGenerator : MonoBehaviour
 		Debug.Log("generated nodes!");
 	}
 
-	protected Vector3 GetRandomPointWithinBox(BoxCollider box)
+	protected int _minNodeDistance = 40;
+
+	protected Vector3 GetRandomPointWithinBox(BoxCollider box, out bool successfullyPulledRandomPoint)
+	{
+		int triesSoFar = 0;
+		float distance = -1;
+		Vector3 randomPoint = Vector3.zero;
+		successfullyPulledRandomPoint = true;
+
+		while (distance < _minNodeDistance)
+		{
+			randomPoint = TryRandomPointWithinBox(box);
+
+			if (_currentNodes.Count > 0)
+			{
+				for (int i = 0; i < _currentNodes.Count; i++)
+				{
+					distance = Vector3.Distance(randomPoint, _currentNodes[i].transform.position);
+
+					if (distance > _minNodeDistance)
+					{
+						// we're good! next
+						continue;
+					}
+					else
+					{
+						// not good, pull another one
+						break;
+					}
+				}
+
+				triesSoFar++;
+
+				if (triesSoFar >= _uhhHowManyTriesShouldIDo)
+				{
+					successfullyPulledRandomPoint = false;
+					randomPoint = Vector3.zero;
+					break;
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		return randomPoint;
+	}
+
+	protected Vector3 TryRandomPointWithinBox(BoxCollider box)
 	{
 		Vector3 pos = Vector3.zero;
 
