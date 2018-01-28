@@ -12,6 +12,7 @@ public class RailGenerator : MonoBehaviour
 	[Header("Settings")]
 	public int numNodesToGenerate;
 	public float nodeDensityInMillionths;
+    public bool thisOne;
 
 	protected List<Vector3> _testPoints = new List<Vector3>();
 	protected List<Node> _currentNodes = new List<Node>();
@@ -32,9 +33,17 @@ public class RailGenerator : MonoBehaviour
 			CheckDensity();
 		}
 
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.P))
 		{
 			GenerateNodes();
+
+            if (thisOne) {
+                bool hi = PlayerGhost.s == null;
+                Debug.Log($"player ghost is null: {hi}");
+                Debug.LogFormat("node count: {0}", _currentNodes.Count);
+                PlayerGhost.s.SetStartRail(_currentNodes[0].GetFirstRail());
+                PlayerGhost.s.Initialize();
+            }
 		}
 	}
 

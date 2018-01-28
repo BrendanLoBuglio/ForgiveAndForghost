@@ -1,7 +1,6 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-[RequireComponent(typeof(CapsuleCollider))]
 public class Rail : MonoBehaviour
 {
 	public Node originNode;
@@ -11,13 +10,19 @@ public class Rail : MonoBehaviour
 
     private void Start()
     {
-        this.width = this.GetComponent<CapsuleCollider>().radius;
+        if (this.GetComponent<CapsuleCollider>() != null) {
+            this.width = this.GetComponent<CapsuleCollider>().radius;
+        }
     }
 
-	public void setIsSelected(bool isSelected) => this._renderer.material = isSelected ? this.selectedMaterial : this._defaultMaterial;
-	
-	/// Don't @ me
-	public Node endWhichIsNot(Node n) => this.originNode == n ? this.endNode : this.originNode;
+    public void setIsSelected(bool isSelected)
+    {
+        if(this._renderer != null)
+            this._renderer.material = isSelected ? this.selectedMaterial : this._defaultMaterial;
+    }
+
+    /// Don't @ me
+    public Node endWhichIsNot(Node n) => this.originNode == n ? this.endNode : this.originNode;
 	
 	[Header("References")]
 	public LineRenderer lineRenderer;
@@ -30,7 +35,9 @@ public class Rail : MonoBehaviour
 	private void Awake()
 	{
 		this._renderer = this.GetComponent<Renderer>();
-		this._defaultMaterial = this._renderer.material;
+        if (this._renderer != null) {
+            this._defaultMaterial = this._renderer.material;
+        }
 	}
 
 	public void setNodes(Node origin, Node end)

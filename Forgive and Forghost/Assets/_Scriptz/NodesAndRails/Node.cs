@@ -20,6 +20,11 @@ public class Node : MonoBehaviour
 
 	public List<Rail> rails;
 
+    public Rail GetFirstRail()
+    {
+        return rails[0];
+    }
+
 	/// Given a node that the player is coming from, return a list of all the nodes that I might connect them to
 	public Node[] getPossibleNodesForJunction(Node fromNode)
 	{

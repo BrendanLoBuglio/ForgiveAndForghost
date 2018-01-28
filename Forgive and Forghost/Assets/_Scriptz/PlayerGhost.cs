@@ -35,18 +35,49 @@ public class PlayerGhost : MonoBehaviour {
     private ParticleSystem _speedLineParticleSystem;
     private float _fastSpeedLineEmissionRate;
 
+    public bool dontInitializeOnAwake;
+    private bool _initialized;
+
+    private static PlayerGhost _myPrivateSelf;
+    public static PlayerGhost s {
+        get {
+            if (_myPrivateSelf == null) {
+                _myPrivateSelf = Object.FindObjectOfType<PlayerGhost>();
+            }
+            return _myPrivateSelf;
+        }
+    }
     
-    private void Start () {
+    private void Awake () {
+        if (!dontInitializeOnAwake) {
+            Initialize();
+        }
+	}
+
+    public void SetStartRail(Rail rail)
+    {
+        this._startingRail_c = rail;
+    }
+
+    public void Initialize()
+    {
+        _initialized = true;
         this._fromNode = this._startingRail_c.originNode;
-        this._toNode   = this._startingRail_c.endNode;
+        this._toNode = this._startingRail_c.endNode;
         this.transform.position = this._fromNode.transform.position;
-        
+
         // Initialize speed lines:
         this._speedLineParticleSystem = this.GetComponentInChildren<ParticleSystem>();
+        if (this._speedLineParticleSystem != null)
         this._fastSpeedLineEmissionRate = this._speedLineParticleSystem.emission.rateOverTime.constant;
-	}
+    }
 	
 	private void Update () {
+        if (!_initialized) {
+
+            return;
+        }
+
         // Get some values baked out:
 	    var fromPos = this._fromNode.transform.position;
 	    var toPos = this._toNode.transform.position;
