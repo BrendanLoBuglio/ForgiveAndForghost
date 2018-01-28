@@ -5,8 +5,6 @@ using UnityEngine;
 public class RailGenerator : MonoBehaviour
 {
 	[Header("References")]
-	public Node nodePrefab;
-	public Rail railPrefab;
 	public BoxCollider spawnBox;
 
 	[Header("Settings")]
@@ -98,7 +96,7 @@ public class RailGenerator : MonoBehaviour
 			if (randomPointSuccessful)
 			{
 				_testPoints.Add(randomPos);
-				Node newNode = Instantiate(nodePrefab);
+				Node newNode = Instantiate(RailGeneratorManager.s.nodePrefab);
 				newNode.transform.position = randomPos;
 				_currentNodes.Add(newNode);
 				newNode.initialize(this.nodeColor);
@@ -200,20 +198,5 @@ public class RailGenerator : MonoBehaviour
 	public Node GetFirstNode()
 	{
 		return _currentNodes[0];
-	}
-
-	public static Rail GetNewRail()
-	{
-		return Instantiate(RailGenerator.s.railPrefab);
-	}
-
-	private static RailGenerator _myPrivateSelf;
-	public static RailGenerator s
-	{
-		get
-		{
-			if (_myPrivateSelf == null) _myPrivateSelf = Object.FindObjectOfType<RailGenerator>();
-			return _myPrivateSelf;
-		}
 	}
 }

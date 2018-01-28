@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class RailGeneratorManager : MonoBehaviour
 {
+	[Header("References")]
+	public Node nodePrefab;
+	public Rail railPrefab;
+
 	protected List<RailGenerator> _railGenerators = new List<RailGenerator>();
 
 	void Start()
@@ -45,6 +49,11 @@ public class RailGeneratorManager : MonoBehaviour
 	{
 		PlayerGhost.s.SetStartRail(_railGenerators[0].GetFirstNode().GetFirstRail());
 		PlayerGhost.s.Initialize();
+	}
+
+	public static Rail GetNewRail()
+	{
+		return Instantiate(RailGeneratorManager.s.railPrefab);
 	}
 
 	private static RailGeneratorManager _myPrivateSelf;
