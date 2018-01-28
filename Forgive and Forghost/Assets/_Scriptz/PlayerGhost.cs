@@ -89,7 +89,7 @@ public class PlayerGhost : MonoBehaviour {
 			maxSpeedModifier = 1.5f;
 	    // Otherwise, as I'm reaching my destination node, clamp my max speed to slow down:
 	    else if ((this.transform.position - toPos).sqrMagnitude <= this._easeIntoNodeDistance_c * this._easeIntoNodeDistance_c)
-	        maxSpeedModifier = Mathf.Clamp01(Vector3.Distance(this.transform.position, toPos) / this._easeIntoNodeDistance_c);
+	        maxSpeedModifier = Mathf.Clamp01((Vector3.Distance(this.transform.position, toPos) - 0.1f) / this._easeIntoNodeDistance_c) ;
 		
 	    // Apply acceleration:
         this._currentSpeed = Mathf.Clamp(this._currentSpeed + Time.deltaTime * this._acceleration_c, 0f, maxSpeedModifier * this._maxSpeed_c);
