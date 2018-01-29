@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using JetBrains.Annotations;
 using UnityEngine;
+using _Scriptz.TheGamePartOfTheGame;
 
 public class PlayerGhost : MonoBehaviour {
 
@@ -31,11 +32,13 @@ public class PlayerGhost : MonoBehaviour {
     /// Current angle around rail axis, in degrees
     private float _twistAngle;
     private bool _hasLockedIntoCurrentSelection = false;
-
+    private bool _isStoppedForCutscene = false;
+    
     /*# Object Reference State #*/
     private Node _fromNode;
     private Node _toNode;
     private Rail _currentlySelectedRail;
+    private PortalNode _goalPortalNode;
 
     /*# Cache #*/
     public ParticleSystem sparkParticleSystem;
@@ -69,10 +72,11 @@ public class PlayerGhost : MonoBehaviour {
         grindSource = GetComponent<AudioSource>();
 	}
 
-    public void setStartNodes(Node from, Node to)
+    public void setStartNodesAndGoal(Node from, Node to, PortalNode goal)
     {
         this._startFromNode = from;
         this._startToNode = to;
+        this._goalPortalNode = goal;
     }
 
     public void Initialize()
@@ -90,8 +94,7 @@ public class PlayerGhost : MonoBehaviour {
     }
 	
 	private void Update () {
-        if (!_initialized) {
-
+        if (!this._initialized || this._isStoppedForCutscene) {
             return;
         }
 
@@ -103,9 +106,9 @@ public class PlayerGhost : MonoBehaviour {
 		var maxSpeedModifier = 1f; 
 		// If I'm locked into my choice, move a little bit faster:
 		if (this._hasLockedIntoCurrentSelection)
-			maxSpeedModifier = _maxSpeedBoostMultiplier_c;
+			maxSpeedModifier = this._maxSpeedBoostMultiplier_c;
 	    // Otherwise, as I'm reaching my destination node, clamp my max speed to slow down:
-	    else if ((this.transform.position - toPos).sqrMagnitude <= this._easeIntoNodeDistance_c * this._easeIntoNodeDistance_c)
+	    else if (this._toNode != this._goalPortalNode && (this.transform.position - toPos).sqrMagnitude <= this._easeIntoNodeDistance_c * this._easeIntoNodeDistance_c)
 	        maxSpeedModifier = Mathf.Clamp01((Vector3.Distance(this.transform.position, toPos) - 0.5f) / this._easeIntoNodeDistance_c) ;
 		
 	    // Apply acceleration:
@@ -124,7 +127,16 @@ public class PlayerGhost : MonoBehaviour {
         this.transform.rotation = Quaternion.AngleAxis(this._twistAngle, railAxis) * Quaternion.LookRotation(railAxis);
 
 	    // Calculate which rail is our next rail:
-	    var newSelectedRail = this.calculateWhichRailIsSelected();
+	    Rail newSelectedRail;
+	    if (this._toNode == this._goalPortalNode) {
+	        // We're approaching a portal node, so there's no selected rail:
+	        newSelectedRail = null;
+	    }
+	    else {
+	        // We're approaching a regular node, so figure out which one it is: 
+	        newSelectedRail = this.calculateWhichRailIsSelected();
+	    }
+	    
 	    if (this._currentlySelectedRail != newSelectedRail) {
 	        this._currentlySelectedRail?.setIsSelected(false);
 	        newSelectedRail?.setIsSelected(true);
@@ -149,13 +161,28 @@ public class PlayerGhost : MonoBehaviour {
 		
         // Check to see if I've passed the end of my current rail:
         if(Vector3.Dot(toPos - this.transform.position, toPos - fromPos) < 0f) {
-            // If I have a selected rail, go to it:
-            if (this._currentlySelectedRail != null)
-                // If so, move to the next rail:
-                this.changeRail(this._currentlySelectedRail.endWhichIsNot(this._toNode));
-            // Otherwise, dead end! Just stop me in my tracks:
-            else
-                this.transform.position = this._toNode.transform.position;
+
+            // Hit our portal node!!
+            if (this._toNode == this._goalPortalNode) {
+                // Stop and go play the cutscene for our mission finishing:
+                this._isStoppedForCutscene = true;
+                GameplayManager.singleton.finishCurrentMissionPart((newGoal) => {
+                    // After the cutscene finishes, un-stop and go in a direction
+                    this._isStoppedForCutscene = false;
+                    this.changeRail(this._toNode.GetFirstRail().endWhichIsNot(this._toNode));
+                    this._goalPortalNode = newGoal;
+                });
+            }
+            // Just going to a new rail:
+            else {
+                // If I have a selected rail, go to it:
+                if (this._currentlySelectedRail != null)
+                    // If so, move to the next rail:
+                    this.changeRail(this._currentlySelectedRail.endWhichIsNot(this._toNode));
+                // Otherwise, dead end! Just stop me in my tracks:
+                else
+                    this.transform.position = this._toNode.transform.position;
+            }
         }
         updateWindParticles();
     }
@@ -194,7 +221,7 @@ public class PlayerGhost : MonoBehaviour {
         return this._toNode.getRailByDestinationNode(selectedNode);
     }
 
-    private void changeRail(Node newNode)
+    public void changeRail(Node newNode)
     {
         this._fromNode = this._toNode;
         this._toNode = newNode;

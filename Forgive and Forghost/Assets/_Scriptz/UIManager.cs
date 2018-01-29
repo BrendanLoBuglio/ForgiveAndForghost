@@ -20,7 +20,6 @@ public class UIManager : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        railSelectTextMesh.enabled = false;
     }
 
     // Update is called once per frame
@@ -64,12 +63,16 @@ public class UIManager : MonoBehaviour {
 
     public void ShowRailMessage()
     {
-        railSelectTextMesh.enabled = true;
+        Color col = railSelectTextMesh.color;
+        col.a = 1;
+        railSelectTextMesh.color = col;
     }
 
     public void HideRailMessage()
     {
-        railSelectTextMesh.enabled = false;
+        Color col = railSelectTextMesh.color;
+        col.a = 0;
+        railSelectTextMesh.color = col;
     }
 
 
@@ -104,6 +107,7 @@ public class UIManager : MonoBehaviour {
 
         for (int i=0; i<text.Length; i++) {
             textObject.text += text[i];
+            textObject.ForceMeshUpdate();
 
             if (text[i] == ' ') {
                 yield return new WaitForSeconds(spaceInterval);

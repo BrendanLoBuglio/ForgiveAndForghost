@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -56,7 +56,7 @@ public class RailGenerator : MonoBehaviour
 		float yScaleGlobal = localScale.y * parentLocalScale.y;
 		float zScaleGlobal = localScale.z * parentLocalScale.z;
 
-		Debug.LogFormat("x: {0} // y: {1} // z: {2}", xScaleGlobal, yScaleGlobal, zScaleGlobal);
+		//Debug.LogFormat("x: {0} // y: {1} // z: {2}", xScaleGlobal, yScaleGlobal, zScaleGlobal);
 
 		float volume = xScaleGlobal * yScaleGlobal * zScaleGlobal;
 
@@ -67,7 +67,7 @@ public class RailGenerator : MonoBehaviour
 	{
 		float volume = GetVolume();
 		float density = numNodesToGenerate / volume * 1000000f;
-		Debug.LogFormat("my density is: {0} 1 millionth nodes/volume unity\nvolume: {1} // num nodes: {2}", density, volume, numNodesToGenerate);
+		//Debug.LogFormat("my density is: {0} 1 millionth nodes/volume unity\nvolume: {1} // num nodes: {2}", density, volume, numNodesToGenerate);
 	}
 
 	void OnDrawGizmos()
@@ -121,7 +121,7 @@ public class RailGenerator : MonoBehaviour
 			}
 		}
 
-		Debug.Log("generated nodes!");
+		//Debug.Log("generated nodes!");
 	}
 
 	public void GenerateRails()
@@ -131,7 +131,7 @@ public class RailGenerator : MonoBehaviour
 			_currentNodes[i].FindClosestNodes();
 		}
 
-		Debug.Log("generated rails!");
+		//Debug.Log("generated rails!");
 	}
 
 	protected int _minNodeDistance = 40;

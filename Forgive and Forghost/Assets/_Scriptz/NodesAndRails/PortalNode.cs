@@ -13,4 +13,9 @@ public class PortalNode : Node
     {
         this.tower.initialize(this.nodeColor);
     }
+
+    public void setIsGoal(bool isGoal)
+    {
+        this.tower.setIsTargetTower(isGoal);
+    }
 }
