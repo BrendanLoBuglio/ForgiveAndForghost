@@ -15,17 +15,27 @@ public class RailGenerator : MonoBehaviour
 	protected List<Vector3> _testPoints = new List<Vector3>();
 	protected List<Node> _currentNodes = new List<Node>();
 	protected List<Rail> _currentRails = new List<Rail>();
+	protected bool _numNodesCalculated = false;
 
 	void Start()
 	{
-		float density = nodeDensityInMillionths / 1000000f;
-		int numNodes = Mathf.RoundToInt(density * GetVolume());
-		Debug.LogFormat("i calculated {0} nodex", numNodes);
-		numNodesToGenerate = numNodes;
-
 		if (this.spawnBox.GetComponent<Renderer>() != null) {
 			this.spawnBox.GetComponent<Renderer>().enabled = false;
 		}
+	}
+
+	public int GetNumNodesToGenerate()
+	{
+		if (!_numNodesCalculated)
+		{
+			float density = nodeDensityInMillionths / 1000000f;
+			int numNodes = Mathf.RoundToInt(density * GetVolume());
+			Debug.LogFormat("i calculated {0} nodex", numNodes);
+			numNodesToGenerate = numNodes;
+			_numNodesCalculated = true;
+		}
+
+		return numNodesToGenerate;
 	}
 
 	void Update()
@@ -92,7 +102,7 @@ public class RailGenerator : MonoBehaviour
 		_testPoints.Clear();
 		ClearNodesAndRails();
 
-		for (int i = 0; i < numNodesToGenerate; i++)
+		for (int i = 0; i < GetNumNodesToGenerate(); i++)
 		{
 			bool randomPointSuccessful = false;
 			Vector3 randomPos = GetRandomPointWithinBox(spawnBox, out randomPointSuccessful);
