@@ -11,7 +11,7 @@ public class RailGeneratorManager : MonoBehaviour
 
 	protected List<RailGenerator> _railGenerators = new List<RailGenerator>();
 
-	void Awake()
+	void Start()
 	{
 		RailGenerator[] railGeneratorArray = Object.FindObjectsOfType<RailGenerator>();
 

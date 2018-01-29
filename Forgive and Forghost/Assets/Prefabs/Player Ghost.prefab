@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 124380274604339812}
   - component: {fileID: 81122141746052130}
   - component: {fileID: 114884856275404642}
+  - component: {fileID: 114902507112739894}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -590,7 +591,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 100000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -717,7 +718,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1500767260005616}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1086,7 +1087,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33633cd81d8f2d440bd970908a2df48d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startingRail_c: {fileID: 0}
+  _startFromNode: {fileID: 0}
+  _startToNode: {fileID: 0}
   _maxSpeed_c: 6
   _maxSpeedBoostMultiplier_c: 10
   _acceleration_c: 16
@@ -1122,6 +1124,18 @@ MonoBehaviour:
   targetFirstPersonLerpAmount: 0
   startTransparencyLerpDistance: 2.2
   endTransparencyLerpDistance: 1.4
+--- !u!114 &114902507112739894
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1297117242499526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: 0f9a379501cd3e844a4fa97f74ff430b, type: 2}
 --- !u!124 &124380274604339812
 Behaviour:
   m_ObjectHideFlags: 1
