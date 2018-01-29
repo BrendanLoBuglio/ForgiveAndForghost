@@ -38,6 +38,7 @@ public class PlayerGhost : MonoBehaviour {
     private Node _fromNode;
     private Node _toNode;
     private Rail _currentlySelectedRail;
+    private Rail _currentlyOnRail;
     private PortalNode _goalPortalNode;
 
     /*# Cache #*/
@@ -85,6 +86,7 @@ public class PlayerGhost : MonoBehaviour {
         this._fromNode = this._startFromNode;
         this._toNode = this._startToNode;
         this.transform.position = this._fromNode.transform.position;
+        this._fromNode.getRailByDestinationNode(this._toNode).setSelectionState(Rail.RailSelectionState.currentlyOn);
 
         // Initialize speed lines:
         if (this._speedLineParticleSystem != null)
@@ -147,8 +149,8 @@ public class PlayerGhost : MonoBehaviour {
 	    }
 	    
 	    if (this._currentlySelectedRail != newSelectedRail) {
-	        this._currentlySelectedRail?.setIsSelected(false);
-	        newSelectedRail?.setIsSelected(true);
+	        this._currentlySelectedRail?.setSelectionState(this._currentlySelectedRail.selectionState != Rail.RailSelectionState.currentlyOn ? Rail.RailSelectionState.notSelected : Rail.RailSelectionState.currentlyOn);
+	        newSelectedRail?.setSelectionState(Rail.RailSelectionState.isSelected);
 	        this._currentlySelectedRail = newSelectedRail;
 	    }
 
@@ -193,7 +195,7 @@ public class PlayerGhost : MonoBehaviour {
                     this.transform.position = this._toNode.transform.position;
             }
         }
-        updateWindParticles();
+        this.updateWindParticles();
     }
     
     private Rail calculateWhichRailIsSelected()
@@ -235,6 +237,10 @@ public class PlayerGhost : MonoBehaviour {
         this._fromNode = this._toNode;
         this._toNode = newNode;
 	    this._hasLockedIntoCurrentSelection = false;
+        
+        this._currentlyOnRail?.setSelectionState(Rail.RailSelectionState.notSelected);
+        this._currentlyOnRail = this._fromNode.getRailByDestinationNode(this._toNode);
+        this._currentlyOnRail?.setSelectionState(Rail.RailSelectionState.currentlyOn);
     }
     
     private void updateWindParticles()
