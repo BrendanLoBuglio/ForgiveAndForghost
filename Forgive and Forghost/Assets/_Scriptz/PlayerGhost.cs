@@ -12,6 +12,7 @@ public class PlayerGhost : MonoBehaviour {
 
     /*# Config #*/
     [SerializeField] private float _maxSpeed_c = 30f;
+	[SerializeField] private float _maxSpeedBoostMultiplier_c = 2.5f;
     [SerializeField] private float _acceleration_c = 10f;
     /// In degrees per second the rate of angular change in my _twistAngle along a rail given an input
     [SerializeField] private float _twistAcceleration_c = 270f;
@@ -30,10 +31,18 @@ public class PlayerGhost : MonoBehaviour {
     private Node _fromNode;
     private Node _toNode;
     private Rail _currentlySelectedRail;
-    
+
     /*# Cache #*/
-    private ParticleSystem _speedLineParticleSystem;
+    public ParticleSystem sparkParticleSystem;
+    public ParticleSystem flareParticleSystem;
+    public ParticleSystem _speedLineParticleSystem;
+    public float maxGrindVolume;
+    private AudioSource grindSource;
     private float _fastSpeedLineEmissionRate;
+    private float sparkEmissionRate;
+    private float flareEmissionRate;
+    private float grindDampVel;
+
 
     public bool dontInitializeOnAwake;
     private bool _initialized;
@@ -52,6 +61,7 @@ public class PlayerGhost : MonoBehaviour {
         if (!dontInitializeOnAwake) {
             Initialize();
         }
+        grindSource = GetComponent<AudioSource>();
 	}
 
     public void SetStartRail(Rail rail)
@@ -67,9 +77,10 @@ public class PlayerGhost : MonoBehaviour {
         this.transform.position = this._fromNode.transform.position;
 
         // Initialize speed lines:
-        this._speedLineParticleSystem = this.GetComponentInChildren<ParticleSystem>();
         if (this._speedLineParticleSystem != null)
         this._fastSpeedLineEmissionRate = this._speedLineParticleSystem.emission.rateOverTime.constant;
+        this.sparkEmissionRate = sparkParticleSystem.emission.rateOverTime.constant;
+        this.flareEmissionRate = flareParticleSystem.emission.rateOverTime.constant;
     }
 	
 	private void Update () {
@@ -86,10 +97,10 @@ public class PlayerGhost : MonoBehaviour {
 		var maxSpeedModifier = 1f; 
 		// If I'm locked into my choice, move a little bit faster:
 		if (this._hasLockedIntoCurrentSelection)
-			maxSpeedModifier = 1.5f;
+			maxSpeedModifier = _maxSpeedBoostMultiplier_c;
 	    // Otherwise, as I'm reaching my destination node, clamp my max speed to slow down:
 	    else if ((this.transform.position - toPos).sqrMagnitude <= this._easeIntoNodeDistance_c * this._easeIntoNodeDistance_c)
-	        maxSpeedModifier = Mathf.Clamp01(Vector3.Distance(this.transform.position, toPos) / this._easeIntoNodeDistance_c);
+	        maxSpeedModifier = Mathf.Clamp01((Vector3.Distance(this.transform.position, toPos) - 0.5f) / this._easeIntoNodeDistance_c) ;
 		
 	    // Apply acceleration:
         this._currentSpeed = Mathf.Clamp(this._currentSpeed + Time.deltaTime * this._acceleration_c, 0f, maxSpeedModifier * this._maxSpeed_c);
@@ -128,6 +139,7 @@ public class PlayerGhost : MonoBehaviour {
             else
                 this.transform.position = this._toNode.transform.position;
         }
+        updateWindParticles();
     }
     
     private Rail calculateWhichRailIsSelected()
@@ -173,10 +185,22 @@ public class PlayerGhost : MonoBehaviour {
     
     private void updateWindParticles()
     {
-        var lerpAmount = Mathf.InverseLerp(0, this._maxSpeed_c, this._currentSpeed);
+        var lerpAmount = Mathf.InverseLerp(0, this._maxSpeed_c * this._maxSpeedBoostMultiplier_c, this._currentSpeed);
+        float targetGrindVolume = Mathf.Lerp(0, maxGrindVolume, lerpAmount);
+        lerpAmount *= lerpAmount;
+        grindSource.volume = Mathf.SmoothDamp(grindSource.volume, targetGrindVolume, ref grindDampVel, .5f, 100, Time.deltaTime);
         var emiss = this._speedLineParticleSystem.emission;
         var rate = emiss.rateOverTime;
         rate.constant = Mathf.Lerp(0, this._fastSpeedLineEmissionRate, lerpAmount);
+        emiss.rateOverTime = rate;
+        emiss = this.sparkParticleSystem.emission;
+        rate = emiss.rateOverTime;
+        rate.constant = Mathf.Lerp(0, this.sparkEmissionRate, lerpAmount);
+        Debug.Log(rate.constant);
+        emiss.rateOverTime = rate;
+        emiss = this.flareParticleSystem.emission;
+        rate = emiss.rateOverTime;
+        rate.constant = Mathf.Lerp(0, this.flareEmissionRate, lerpAmount);
         emiss.rateOverTime = rate;
     }
 }
