@@ -38,6 +38,7 @@ public class PlayerGhost : MonoBehaviour {
     private Node _fromNode;
     private Node _toNode;
     private Rail _currentlySelectedRail;
+    private Rail _currentlyOnRail;
     private PortalNode _goalPortalNode;
 
     /*# Cache #*/
@@ -85,6 +86,7 @@ public class PlayerGhost : MonoBehaviour {
         this._fromNode = this._startFromNode;
         this._toNode = this._startToNode;
         this.transform.position = this._fromNode.transform.position;
+        this._fromNode.getRailByDestinationNode(this._toNode).setSelectionState(Rail.RailSelectionState.currentlyOn);
 
         // Initialize speed lines:
         if (this._speedLineParticleSystem != null)
@@ -103,14 +105,23 @@ public class PlayerGhost : MonoBehaviour {
 	    var toPos = this._toNode.transform.position;
 	    var railAxis = (toPos - fromPos).normalized;
 		
-		var maxSpeedModifier = 1f; 
+		var maxSpeedModifier = 1f;
+	    var inSlowOnApproachMode = (!this._hasLockedIntoCurrentSelection && this._toNode != this._goalPortalNode &&
+	                                (this.transform.position - toPos).sqrMagnitude <=
+	                                this._easeIntoNodeDistance_c * this._easeIntoNodeDistance_c);
+	    
 		// If I'm locked into my choice, move a little bit faster:
 		if (this._hasLockedIntoCurrentSelection)
 			maxSpeedModifier = this._maxSpeedBoostMultiplier_c;
 	    // Otherwise, as I'm reaching my destination node, clamp my max speed to slow down:
-	    else if (this._toNode != this._goalPortalNode && (this.transform.position - toPos).sqrMagnitude <= this._easeIntoNodeDistance_c * this._easeIntoNodeDistance_c)
+	    else if (inSlowOnApproachMode)
 	        maxSpeedModifier = Mathf.Clamp01((Vector3.Distance(this.transform.position, toPos) - 0.5f) / this._easeIntoNodeDistance_c) ;
 		
+	    if(inSlowOnApproachMode)
+	        UIManager.singleton.ShowRailMessage();
+	    else
+	        UIManager.singleton.HideRailMessage();
+	    
 	    // Apply acceleration:
         this._currentSpeed = Mathf.Clamp(this._currentSpeed + Time.deltaTime * this._acceleration_c, 0f, maxSpeedModifier * this._maxSpeed_c);
         // Move along rail:
@@ -138,8 +149,8 @@ public class PlayerGhost : MonoBehaviour {
 	    }
 	    
 	    if (this._currentlySelectedRail != newSelectedRail) {
-	        this._currentlySelectedRail?.setIsSelected(false);
-	        newSelectedRail?.setIsSelected(true);
+	        this._currentlySelectedRail?.setSelectionState(this._currentlySelectedRail.selectionState != Rail.RailSelectionState.currentlyOn ? Rail.RailSelectionState.notSelected : Rail.RailSelectionState.currentlyOn);
+	        newSelectedRail?.setSelectionState(Rail.RailSelectionState.isSelected);
 	        this._currentlySelectedRail = newSelectedRail;
 	    }
 
@@ -184,7 +195,7 @@ public class PlayerGhost : MonoBehaviour {
                     this.transform.position = this._toNode.transform.position;
             }
         }
-        updateWindParticles();
+        this.updateWindParticles();
     }
     
     private Rail calculateWhichRailIsSelected()
@@ -226,6 +237,10 @@ public class PlayerGhost : MonoBehaviour {
         this._fromNode = this._toNode;
         this._toNode = newNode;
 	    this._hasLockedIntoCurrentSelection = false;
+        
+        this._currentlyOnRail?.setSelectionState(Rail.RailSelectionState.notSelected);
+        this._currentlyOnRail = this._fromNode.getRailByDestinationNode(this._toNode);
+        this._currentlyOnRail?.setSelectionState(Rail.RailSelectionState.currentlyOn);
     }
     
     private void updateWindParticles()

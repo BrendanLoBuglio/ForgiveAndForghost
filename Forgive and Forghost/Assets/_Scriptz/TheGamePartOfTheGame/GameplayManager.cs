@@ -22,15 +22,21 @@ namespace _Scriptz.TheGamePartOfTheGame
         public int missionIndex { get; private set; }
         public UniverseType_E currentMissionHalf { get; private set; }
         private List<PortalNode> _usedNodes = new List<PortalNode>();
+        private bool _isInCutscene = false;
 
         private string _currentMessage;
         private float _messageDegradeTimer;
         private PortalNode _currentGoalPortal;
-        
 
         public static GameplayManager singleton => _singleton ?? (_singleton = FindObjectOfType<GameplayManager>());
         private static GameplayManager _singleton;
-        
+
+        private void Awake()
+        {
+            this.currentMissionHalf = UniverseType_E.WOTL;
+            this._messageDegradeTimer = this.messageDegredationDuration_c;
+        }
+
         public void initializeGame()
         {
             // Get starting portals:
@@ -46,6 +52,12 @@ namespace _Scriptz.TheGamePartOfTheGame
                 ? this.missions[this.missionIndex].wotlQuestion
                 : this.missions[this.missionIndex].hellAnswer;
             
+            UIManager.singleton.ShowWotlRecieved();
+            
+            Debug.Log($"The message is {this._currentMessage}");
+            UIManager.singleton.SetNewMessage(this._currentMessage, true);
+            
+            
             PlayerGhost.s.setStartNodesAndGoal(startingPortal, startingPortal.GetFirstRail().endWhichIsNot(startingPortal), this._currentGoalPortal);
             PlayerGhost.s.Initialize();
         }
@@ -53,6 +65,9 @@ namespace _Scriptz.TheGamePartOfTheGame
         public void finishCurrentMissionPart(Action<PortalNode> onCutsceneFinishedCallback)
         {
             Debug.Log($"Finished the {this.currentMissionHalf} half of mission {this.missionIndex} with remaining message {this._currentMessage}");
+            
+            //Show our decoded message: 
+            UIManager.singleton.SetNewMessage(this._currentMessage, false);
             
             // Use up our last goal:
             this._currentGoalPortal.setIsGoal(false);
@@ -64,6 +79,7 @@ namespace _Scriptz.TheGamePartOfTheGame
             }
             else {
                 this.currentMissionHalf = UniverseType_E.WOTL;
+                
                 this.missionIndex++;
             }
             
@@ -71,6 +87,7 @@ namespace _Scriptz.TheGamePartOfTheGame
             this._currentMessage = this.currentMissionHalf == UniverseType_E.WOTL
                 ? this.missions[this.missionIndex].wotlQuestion
                 : this.missions[this.missionIndex].hellAnswer;
+            
             Debug.Log($"Now we're on the {this.currentMissionHalf} half of mission {this.missionIndex} with the new message {this._currentMessage}");
             
             //Reset timer:
@@ -86,21 +103,31 @@ namespace _Scriptz.TheGamePartOfTheGame
 
         private IEnumerator finishedMissionCutscene(Action<PortalNode> onCutsceneFinishedCallback, PortalNode nextGoal)
         {
-            yield return new WaitForSeconds(4f);
+            this._isInCutscene = true;
+            yield return new WaitForSeconds(8f);
+            this._isInCutscene = false;
+            
             nextGoal.setIsGoal(true);
+            if(this.currentMissionHalf == UniverseType_E.HELL)
+                UIManager.singleton.ShowGhostRecieved();
+            else
+                UIManager.singleton.ShowWotlRecieved();
+            
+            UIManager.singleton.SetNewMessage(this._currentMessage, true);
             onCutsceneFinishedCallback(nextGoal);
         }
 
         private void Update()
         {
             // Lose letters over time:
-            if (this._currentMessage.Length > 1) {
+            if (!this._isInCutscene && this._currentMessage.Length > 1) {
                 this._messageDegradeTimer -= Time.deltaTime;
                 while (this._messageDegradeTimer <= 0f) {
                     var removeLetterIndex = Random.Range(0, this._currentMessage.Length);
-                    this._currentMessage = this._currentMessage.Remove(removeLetterIndex);
+                    this._currentMessage = this._currentMessage.Remove(removeLetterIndex, 1);
                     this._messageDegradeTimer += this.messageDegredationDuration_c;
                     Debug.Log($"Lost a letter! Message is now {this._currentMessage}");
+                    UIManager.singleton.SetNewMessage(this._currentMessage, true);
                 }
             }
         }

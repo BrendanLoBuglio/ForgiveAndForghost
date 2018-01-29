@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -18,6 +19,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI wotlRecieved;
     [SerializeField] private TextMeshProUGUI ghostRecieved;
 
+    public static UIManager singleton => _singleton ?? (_singleton = FindObjectOfType<UIManager>());
+    private static UIManager _singleton;
+    
     // Use this for initialization
     void Start() {
     }
@@ -26,7 +30,7 @@ public class UIManager : MonoBehaviour {
     void Update() {
 
         if(Input.GetKeyDown(KeyCode.K)) {
-            SetNewMessage("hey whats up im ghosty. check out my sick grinds");
+            SetNewMessage("hey whats up im ghosty. check out my sick grinds", false);
         }
 
         if(Input.GetKeyDown(KeyCode.J)) {
@@ -43,9 +47,10 @@ public class UIManager : MonoBehaviour {
 
     }
 
-    public void SetNewMessage(string newMessage)
+    public void SetNewMessage(string newMessage, bool allXs)
     {
         currentMessageEnglish = newMessage;
+        
         string temp = "";
         foreach(char c in currentMessageEnglish) 
         {
@@ -58,9 +63,9 @@ public class UIManager : MonoBehaviour {
         }
 
         currentMessageX = temp;
-        messageTextMesh.text = currentMessageX;
+        messageTextMesh.text = allXs ? currentMessageX : newMessage;
     }
-
+    
     public void ShowRailMessage()
     {
         Color col = railSelectTextMesh.color;
@@ -74,7 +79,6 @@ public class UIManager : MonoBehaviour {
         col.a = 0;
         railSelectTextMesh.color = col;
     }
-
 
     public void ShowMessageTextAtPortal()
     {
