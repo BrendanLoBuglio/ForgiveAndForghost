@@ -1094,8 +1094,8 @@ MonoBehaviour:
   _twistMaxVelocity_c: 270
   _easeIntoNodeDistance_c: 3
   speedUpClip: {fileID: 8300000, guid: 87acb296966a4d246a2b07ccadf17ffd, type: 3}
-  minSpeedUpClipVolume: 0.1
-  maxSpeedUpClipVolume: 0.3
+  minSpeedUpClipVolume: 0.05
+  maxSpeedUpClipVolume: 0.1
   sparkParticleSystem: {fileID: 198917259529673744}
   flareParticleSystem: {fileID: 198591275290887266}
   _speedLineParticleSystem: {fileID: 198587777801715842}

@@ -8,7 +8,8 @@ using UnityEngine;
 public class PlayerGhost : MonoBehaviour {
 
     /*# Scene References #*/
-    [SerializeField] private Rail _startingRail_c;
+    [SerializeField] private Node _startFromNode;
+    [SerializeField] private Node _startToNode;
 
     /*# Config #*/
     [SerializeField] private float _maxSpeed_c = 30f;
@@ -68,16 +69,17 @@ public class PlayerGhost : MonoBehaviour {
         grindSource = GetComponent<AudioSource>();
 	}
 
-    public void SetStartRail(Rail rail)
+    public void setStartNodes(Node from, Node to)
     {
-        this._startingRail_c = rail;
+        this._startFromNode = from;
+        this._startToNode = to;
     }
 
     public void Initialize()
     {
-        _initialized = true;
-        this._fromNode = this._startingRail_c.originNode;
-        this._toNode = this._startingRail_c.endNode;
+        this._initialized = true;
+        this._fromNode = this._startFromNode;
+        this._toNode = this._startToNode;
         this.transform.position = this._fromNode.transform.position;
 
         // Initialize speed lines:
@@ -212,7 +214,7 @@ public class PlayerGhost : MonoBehaviour {
         emiss = this.sparkParticleSystem.emission;
         rate = emiss.rateOverTime;
         rate.constant = Mathf.Lerp(0, this.sparkEmissionRate, lerpAmount);
-        Debug.Log(rate.constant);
+        //Debug.Log(rate.constant);
         emiss.rateOverTime = rate;
         emiss = this.flareParticleSystem.emission;
         rate = emiss.rateOverTime;

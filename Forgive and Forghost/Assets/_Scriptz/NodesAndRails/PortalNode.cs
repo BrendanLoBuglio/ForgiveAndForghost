@@ -9,5 +9,8 @@ public class PortalNode : Node
     public PortalTower tower;
     public UniverseType_E universeType;
 
-
+    private void Awake()
+    {
+        this.tower.initialize(this.nodeColor);
+    }
 }
