@@ -104,6 +104,7 @@ public class UIManager : MonoBehaviour {
 
         for (int i=0; i<text.Length; i++) {
             textObject.text += text[i];
+            textObject.ForceMeshUpdate();
 
             if (text[i] == ' ') {
                 yield return new WaitForSeconds(spaceInterval);

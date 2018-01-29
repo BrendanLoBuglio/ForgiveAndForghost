@@ -1537,9 +1537,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4769cb37968ea948a763a9a89f9e583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AngleMultiplier: 1
-  SpeedMultiplier: 1
-  CurveScale: 1
+  AngleMultiplier: 3
+  SpeedMultiplier: 3
+  CurveScale: 3
 --- !u!222 &788973608
 CanvasRenderer:
   m_ObjectHideFlags: 0
