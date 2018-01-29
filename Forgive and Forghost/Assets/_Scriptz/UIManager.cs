@@ -18,6 +18,9 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI wotlRecieved;
     [SerializeField] private TextMeshProUGUI ghostRecieved;
 
+    public static UIManager singleton => _singleton ?? (_singleton = FindObjectOfType<UIManager>());
+    private static UIManager _singleton;
+    
     // Use this for initialization
     void Start() {
         railSelectTextMesh.enabled = false;
