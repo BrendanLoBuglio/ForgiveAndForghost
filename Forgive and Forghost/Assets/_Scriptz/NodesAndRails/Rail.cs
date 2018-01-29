@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
@@ -15,11 +16,27 @@ public class Rail : MonoBehaviour
         }
     }
 
-    public void setIsSelected(bool isSelected)
+	public enum RailSelectionState{notSelected, isSelected, currentlyOn}
+
+	public RailSelectionState selectionState { get; private set; }
+    public void setSelectionState(RailSelectionState selectionState)
     {
-	    this.lineRenderer.material.SetColor("_Color", isSelected ? this.originNode.regionColor : this._defaultColor);
-	    //this.lineRenderer.startColor = isSelected ? this.originNode.regionColor : this._defaultColor;
-	    //this.lineRenderer.endColor   = isSelected ? this.endNode.regionColor    : this._defaultColor;
+	    this.selectionState = selectionState;
+	    switch (selectionState) {
+		    case RailSelectionState.notSelected:
+			    this.lineRenderer.material.SetColor("_Color", this._defaultColor);
+			    break;
+		    case RailSelectionState.isSelected:
+			    this.lineRenderer.material.SetColor("_Color", this.originNode.regionColor);
+			    break;
+		    case RailSelectionState.currentlyOn:
+			    this.lineRenderer.material.SetColor("_Color", Color.Lerp(this._defaultColor, this.originNode.regionColor, 0.4f));
+			    break;
+	    }
+	    
+	    
+	    //this.lineRenderer.startColor = selectionState ? this.originNode.regionColor : this._defaultColor;
+	    //this.lineRenderer.endColor   = selectionState ? this.endNode.regionColor    : this._defaultColor;
     }
 
     /// Don't @ me
