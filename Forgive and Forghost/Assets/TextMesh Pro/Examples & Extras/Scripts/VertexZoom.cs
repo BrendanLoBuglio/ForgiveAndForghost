@@ -24,14 +24,19 @@ namespace TMPro.Examples
 
         void OnEnable()
         {
+            Debug.Log("on enable");
             // Subscribe to event fired when text object has been regenerated.
             TMPro_EventManager.TEXT_CHANGED_EVENT.Add(ON_TEXT_CHANGED);
+            hasTextChanged = true;
+            //StartCoroutine(AnimateVertexColors());
+
         }
 
         void OnDisable()
         {
             // UnSubscribe to event fired when text object has been regenerated.
             TMPro_EventManager.TEXT_CHANGED_EVENT.Remove(ON_TEXT_CHANGED);
+            //StopAllCoroutines();
         }
 
 
