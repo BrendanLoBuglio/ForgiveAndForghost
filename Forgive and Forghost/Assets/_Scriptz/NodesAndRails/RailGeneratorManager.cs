@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using _Scriptz.TheGamePartOfTheGame;
 
 public class RailGeneratorManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class RailGeneratorManager : MonoBehaviour
 
 	protected List<RailGenerator> _railGenerators = new List<RailGenerator>();
 
-	void Start()
+	void Awake()
 	{
 		RailGenerator[] railGeneratorArray = Object.FindObjectsOfType<RailGenerator>();
 
@@ -21,15 +22,9 @@ public class RailGeneratorManager : MonoBehaviour
 				_railGenerators.Add(railGeneratorArray[i]);
 			}
 		}
-	}
-
-	void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.P))
-		{
-			RunAllRailGeneration();
-			PutPlayerOnRail();
-		}
+		
+		RunAllRailGeneration();
+		this.StartGame();
 	}
 
 	protected void RunAllRailGeneration()
@@ -45,10 +40,9 @@ public class RailGeneratorManager : MonoBehaviour
 		}
 	}
 
-	protected void PutPlayerOnRail()
+	protected void StartGame()
 	{
-		PlayerGhost.s.SetStartRail(_railGenerators[0].GetFirstNode().GetFirstRail());
-		PlayerGhost.s.Initialize();
+		GameplayManager.singleton.initializeGame();
 	}
 
 	public static Rail GetNewRail()
