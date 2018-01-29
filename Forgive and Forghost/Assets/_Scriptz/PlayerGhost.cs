@@ -103,14 +103,23 @@ public class PlayerGhost : MonoBehaviour {
 	    var toPos = this._toNode.transform.position;
 	    var railAxis = (toPos - fromPos).normalized;
 		
-		var maxSpeedModifier = 1f; 
+		var maxSpeedModifier = 1f;
+	    var inSlowOnApproachMode = (!this._hasLockedIntoCurrentSelection && this._toNode != this._goalPortalNode &&
+	                                (this.transform.position - toPos).sqrMagnitude <=
+	                                this._easeIntoNodeDistance_c * this._easeIntoNodeDistance_c);
+	    
 		// If I'm locked into my choice, move a little bit faster:
 		if (this._hasLockedIntoCurrentSelection)
 			maxSpeedModifier = this._maxSpeedBoostMultiplier_c;
 	    // Otherwise, as I'm reaching my destination node, clamp my max speed to slow down:
-	    else if (this._toNode != this._goalPortalNode && (this.transform.position - toPos).sqrMagnitude <= this._easeIntoNodeDistance_c * this._easeIntoNodeDistance_c)
+	    else if (inSlowOnApproachMode)
 	        maxSpeedModifier = Mathf.Clamp01((Vector3.Distance(this.transform.position, toPos) - 0.5f) / this._easeIntoNodeDistance_c) ;
 		
+	    if(inSlowOnApproachMode)
+	        UIManager.singleton.ShowRailMessage();
+	    else
+	        UIManager.singleton.HideRailMessage();
+	    
 	    // Apply acceleration:
         this._currentSpeed = Mathf.Clamp(this._currentSpeed + Time.deltaTime * this._acceleration_c, 0f, maxSpeedModifier * this._maxSpeed_c);
         // Move along rail:
