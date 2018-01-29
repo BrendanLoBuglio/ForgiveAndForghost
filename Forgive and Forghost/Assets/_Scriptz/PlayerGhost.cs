@@ -19,7 +19,11 @@ public class PlayerGhost : MonoBehaviour {
     [SerializeField] private float _twistMaxVelocity_c = 270f;
 
     [SerializeField] private float _easeIntoNodeDistance_c = 1f;
-    
+
+    public AudioClip speedUpClip;
+    public float minSpeedUpClipVolume = .5f;
+    public float maxSpeedUpClipVolume = .7f;
+
     /*# Physical State #*/
     private float _currentSpeed = 0f;
     private float _angularVelocity = 0f;
@@ -125,9 +129,21 @@ public class PlayerGhost : MonoBehaviour {
 	        this._currentlySelectedRail = newSelectedRail;
 	    }
 
-		// Check for input to lock the player into their current rail:
-		if (Input.GetKeyDown(KeyCode.Space) && this._currentlySelectedRail != null)
-			this._hasLockedIntoCurrentSelection = true;
+        // Check for input to lock the player into their current rail:
+        if (Input.GetKeyDown(KeyCode.Space) && this._currentlySelectedRail != null) {
+            if (!this._hasLockedIntoCurrentSelection)
+            {
+                GameObject audioSourceObject = new GameObject("Audio Clip");
+                audioSourceObject.transform.position = transform.position;
+                AudioSource newSource = audioSourceObject.AddComponent<AudioSource>();
+                newSource.clip = speedUpClip;
+                newSource.volume = Random.Range(minSpeedUpClipVolume, maxSpeedUpClipVolume);
+                newSource.pitch = Random.Range(.7f, 1.1f);
+                newSource.Play();
+                Destroy(audioSourceObject, speedUpClip.length);
+            }
+            this._hasLockedIntoCurrentSelection = true;
+        }
 		
         // Check to see if I've passed the end of my current rail:
         if(Vector3.Dot(toPos - this.transform.position, toPos - fromPos) < 0f) {
