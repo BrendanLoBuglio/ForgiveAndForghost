@@ -107,6 +107,15 @@ public class Node : MonoBehaviour
 		}
 	}
 
+	public void MakeSureIHaveAtLeastTwoRails()
+	{
+		if (rails.Count < 2)
+		{
+			name = ("Broken Node " + UnityEngine.Random.Range(0, 999));
+			Debug.LogErrorFormat("node {0} only has {1} rails :(", name, rails.Count);
+		}
+	}
+
 
 	public void initialize(Color regionColorIn)
 	{

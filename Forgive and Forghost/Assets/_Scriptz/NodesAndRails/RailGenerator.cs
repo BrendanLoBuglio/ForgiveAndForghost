@@ -134,6 +134,14 @@ public class RailGenerator : MonoBehaviour
 		//Debug.Log("generated rails!");
 	}
 
+	public void CheckAllMyNodes()
+	{
+		for (int i = 0; i < _currentNodes.Count; i++)
+		{
+			_currentNodes[i].MakeSureIHaveAtLeastTwoRails();
+		}
+	}
+
 	protected int _minNodeDistance = 40;
 
 	protected Vector3 GetRandomPointWithinBox(BoxCollider box, out bool successfullyPulledRandomPoint)

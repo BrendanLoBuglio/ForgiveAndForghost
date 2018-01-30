@@ -11,7 +11,7 @@ public class RailGeneratorManager : MonoBehaviour
 
 	protected List<RailGenerator> _railGenerators = new List<RailGenerator>();
 
-	void Awake()
+	void Start()
 	{
 		RailGenerator[] railGeneratorArray = Object.FindObjectsOfType<RailGenerator>();
 
@@ -38,6 +38,42 @@ public class RailGeneratorManager : MonoBehaviour
 		{
 			_railGenerators[i].GenerateRails();
 		}
+
+		PortalNode[] portalNodeArray = Object.FindObjectsOfType<PortalNode>();
+
+		for (int i = 0; i < portalNodeArray.Length; i++)
+		{
+			portalNodeArray[i].FindClosestNodes();
+		}
+
+		MakeSureAllPortalNodesHaveAtLeastTwoRails();
+		MakeSureAllIntersectingZonesHaveConnection();
+		MakeSureAllNodesHaveAtLeastTwoRails();
+	}
+
+	protected void MakeSureAllPortalNodesHaveAtLeastTwoRails()
+	{
+		for (int i = 0; i < _railGenerators.Count; i++)
+		{
+			_railGenerators[i].CheckAllMyNodes();
+		}
+
+		PortalNode[] portalNodeArray = Object.FindObjectsOfType<PortalNode>();
+
+		for (int i = 0; i < portalNodeArray.Length; i++)
+		{
+			portalNodeArray[i].MakeSureIHaveAtLeastTwoRails();
+		}
+	}
+
+	protected void MakeSureAllIntersectingZonesHaveConnection()
+	{
+
+	}
+
+	protected void MakeSureAllNodesHaveAtLeastTwoRails()
+	{
+
 	}
 
 	protected void StartGame()
