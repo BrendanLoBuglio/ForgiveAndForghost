@@ -97,6 +97,8 @@ namespace _Scriptz.TheGamePartOfTheGame
             var nextPortal = (this.currentMissionHalf == UniverseType_E.WOTL ? this.wotlPortals : this.hellPortals)
                 .Where(portal => !this._usedNodes.Contains(portal))
                 .OrderBy(portal => Random.Range(0f, 1f)).ToList()[0]; //Random index
+
+			this._currentGoalPortal = nextPortal;
             
             this.StartCoroutine(this.finishedMissionCutscene(onCutsceneFinishedCallback, nextPortal));
         }
