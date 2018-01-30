@@ -19,6 +19,8 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI wotlRecieved;
     [SerializeField] private TextMeshProUGUI ghostRecieved;
 
+	[SerializeField] private TextMeshProUGUI messagesDeliveredText;
+
     public static UIManager singleton => _singleton ?? (_singleton = FindObjectOfType<UIManager>());
     private static UIManager _singleton;
     
@@ -139,5 +141,8 @@ public class UIManager : MonoBehaviour {
         yield return StartCoroutine(WaitAndHideMessage(time, textObject));
     }
 
-    
+	public void SetMessagesDelieveredText(int messagesDelivered, int totalMessages)
+	{
+		messagesDeliveredText.text = string.Format("{0}/{1}", messagesDelivered, totalMessages);
+	}
 }

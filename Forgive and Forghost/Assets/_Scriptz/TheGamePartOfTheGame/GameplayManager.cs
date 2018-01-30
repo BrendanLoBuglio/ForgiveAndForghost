@@ -27,6 +27,7 @@ namespace _Scriptz.TheGamePartOfTheGame
         private string _currentMessage;
         private float _messageDegradeTimer;
         private PortalNode _currentGoalPortal;
+		private int _messagesDelivered;
 
         public static GameplayManager singleton => _singleton ?? (_singleton = FindObjectOfType<GameplayManager>());
         private static GameplayManager _singleton;
@@ -51,6 +52,8 @@ namespace _Scriptz.TheGamePartOfTheGame
             this._currentMessage = this.currentMissionHalf == UniverseType_E.WOTL
                 ? this.missions[this.missionIndex].wotlQuestion
                 : this.missions[this.missionIndex].hellAnswer;
+
+			SetMessagesDelivered(0);
             
             UIManager.singleton.ShowWotlRecieved();
             
@@ -99,9 +102,17 @@ namespace _Scriptz.TheGamePartOfTheGame
                 .OrderBy(portal => Random.Range(0f, 1f)).ToList()[0]; //Random index
 
 			this._currentGoalPortal = nextPortal;
+
+			SetMessagesDelivered(_messagesDelivered + 1);
             
             this.StartCoroutine(this.finishedMissionCutscene(onCutsceneFinishedCallback, nextPortal));
         }
+
+		protected void SetMessagesDelivered(int messagesDelivered)
+		{
+			_messagesDelivered = messagesDelivered;
+			UIManager.singleton.SetMessagesDelieveredText(_messagesDelivered, missions.Length * 2);
+		}
 
         private IEnumerator finishedMissionCutscene(Action<PortalNode> onCutsceneFinishedCallback, PortalNode nextGoal)
         {
