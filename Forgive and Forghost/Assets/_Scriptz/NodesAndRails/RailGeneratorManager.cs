@@ -40,7 +40,6 @@ public class RailGeneratorManager : MonoBehaviour
 		}
 
 		GeneratePortalNodeRails();
-		MakeSureAllPortalNodesHaveAtLeastTwoRails();
 		MakeSureAllIntersectingZonesHaveConnection();
 		MakeSureAllNodesHaveAtLeastTwoRails();
 	}
@@ -55,7 +54,12 @@ public class RailGeneratorManager : MonoBehaviour
 		}
 	}
 
-	protected void MakeSureAllPortalNodesHaveAtLeastTwoRails()
+	protected void MakeSureAllIntersectingZonesHaveConnection()
+	{
+
+	}
+
+	protected void MakeSureAllNodesHaveAtLeastTwoRails()
 	{
 		for (int i = 0; i < _railGenerators.Count; i++)
 		{
@@ -68,16 +72,6 @@ public class RailGeneratorManager : MonoBehaviour
 		{
 			portalNodeArray[i].MakeSureIHaveAtLeastTwoRails();
 		}
-	}
-
-	protected void MakeSureAllIntersectingZonesHaveConnection()
-	{
-
-	}
-
-	protected void MakeSureAllNodesHaveAtLeastTwoRails()
-	{
-
 	}
 
 	protected void StartGame()
