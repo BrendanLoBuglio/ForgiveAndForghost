@@ -143,27 +143,28 @@ public class Node : MonoBehaviour
 		Node[] nodeArray = FindObjectsOfType<Node>();
 		int numRailsWeNeed = _maxRails - rails.Count;
 		List<NodeAndDistance> closestNodes = GetListOfClosestNodes(nodeArray, numRailsWeNeed, searchSettings);
-
-		for (int i = 0; i < closestNodes.Count; i++)
-		{
-			Rail newRail = RailGeneratorManager.GetNewRail();
-			newRail.initialize(this, closestNodes[i].node);
-		}
+		ConnectMeToListOfNodes(closestNodes);
 	}
 
 	public void MakeSureIHaveAtLeastTwoRails()
 	{
-		// [x] check if i have less than 2 rails
-		if (rails.Count < 2)
+		if (rails.Count < 2) // [x] check if i have less than 2 rails
 		{
-			name = ("Broken Node " + UnityEngine.Random.Range(0, 999));
-			Debug.LogErrorFormat("node {0} only has {1} rails :(\ngonna make it so it has at least 2 rails", name, rails.Count);
+			name = ("Rehabilitated Node " + UnityEngine.Random.Range(0, 999));
+			Debug.LogFormat("node {0} only has {1} rails :(\ngonna make it so it has at least 2 rails :)", name, rails.Count);
+			int numNodesINeed = 2 - rails.Count; // [x] x is the number of nodes i need to connect to (will either be 1 or 2)
+			Node[] nodeArray = FindObjectsOfType<Node>();
+			List<NodeAndDistance> closestNodes = GetListOfClosestNodes(nodeArray, numNodesINeed, new NodeSearchSettings(true)); // [x] find the x closest nodes to myself that are not me and that i'm not connected to, but ignore if they have max rails or not
+			ConnectMeToListOfNodes(closestNodes); // [x] foreach of those nodes, create a new rail and set it up with us (regardless of other node's max rails)
+		}
+	}
 
-			// [] x is the number of nodes i need to connect to (will either be 1 or 2)
-			int numNodesINeed = 2 - rails.Count;
-
-			// [] find the x closest nodes to myself that are not me and that i'm not connected to, but ignore if they have max rails or not
-			// [] foreach of those nodes, create a new rail and set it up with us (regardless of other node's max rails)
+	private void ConnectMeToListOfNodes(List<NodeAndDistance> closestNodes)
+	{
+		for (int i = 0; i < closestNodes.Count; i++)
+		{
+			Rail newRail = RailGeneratorManager.GetNewRail();
+			newRail.initialize(this, closestNodes[i].node);
 		}
 	}
 
@@ -199,7 +200,7 @@ public class Node : MonoBehaviour
 
 	public bool HasFullRails()
 	{
-		return rails.Count == _maxRails;
+		return rails.Count >= _maxRails;
 	}
 
 	public bool IsConnectedTo(Node node)
