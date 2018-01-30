@@ -57,6 +57,22 @@ public class Node : MonoBehaviour
 	protected int _maxRails = 4;
 	protected int _maxNodeDistance = 300;
 
+	protected bool IsNodeOkayToConnectTo(Node n)
+	{
+		if (!n.HasFullRails())
+		{
+			if (n != this)
+			{
+				if (!IsConnectedTo(n))
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	public void FindClosestNodes()
 	{
 		Node[] nodeArray = FindObjectsOfType<Node>();
@@ -66,35 +82,29 @@ public class Node : MonoBehaviour
 
 		for (int i = 0; i < nodeArray.Length; i++)
 		{
-			if (!nodeArray[i].HasFullRails())
+			if (IsNodeOkayToConnectTo(nodeArray[i]))
 			{
-				if (nodeArray[i] != this)
+				float distance = Vector3.Distance(transform.position, nodeArray[i].transform.position);
+
+				if (distance < _maxNodeDistance)
 				{
-					if (!IsConnectedTo(nodeArray[i]))
+					if (closestNodes.Count < numRailsWeNeed)
 					{
-						float distance = Vector3.Distance(transform.position, nodeArray[i].transform.position);
-
-						if (distance < _maxNodeDistance)
+						closestNodes.Add(new NodeAndDistance(nodeArray[i], distance));
+						continue;
+					}
+					else
+					{
+						for (int j = 0; j < closestNodes.Count; j++)
 						{
-							if (closestNodes.Count < numRailsWeNeed)
+							if (distance < closestNodes[j].distance)
 							{
-								closestNodes.Add(new NodeAndDistance(nodeArray[i], distance));
-								continue;
-							}
-							else
-							{
-								for (int j = 0; j < closestNodes.Count; j++)
-								{
-									if (distance < closestNodes[j].distance)
-									{
-										closestNodes[j] = new NodeAndDistance(nodeArray[i], distance);
-										break;
-									}
-								}
-
-								continue;
+								closestNodes[j] = new NodeAndDistance(nodeArray[i], distance);
+								break;
 							}
 						}
+
+						continue;
 					}
 				}
 			}
@@ -112,7 +122,7 @@ public class Node : MonoBehaviour
 		if (rails.Count < 2)
 		{
 			name = ("Broken Node " + UnityEngine.Random.Range(0, 999));
-			Debug.LogErrorFormat("node {0} only has {1} rails :(", name, rails.Count);
+			Debug.LogErrorFormat("node {0} only has {1} rails :(\ngonna make it so it has at least 2 rails", name, rails.Count);
 		}
 	}
 
