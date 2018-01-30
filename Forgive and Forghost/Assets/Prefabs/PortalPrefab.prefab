@@ -368,7 +368,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1163065488209556}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 41, z: 0}
+  m_LocalPosition: {x: 18.1, y: 41, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4970598052573832}
@@ -529,8 +529,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1670285304815748}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -31.059952, y: 35.53937, z: -23.12559}
-  m_LocalScale: {x: 69.37731, y: 5958.429, z: 69.37731}
+  m_LocalPosition: {x: -31.059952, y: 35.53937, z: -20.3}
+  m_LocalScale: {x: 24, y: 5958.429, z: 24}
   m_Children: []
   m_Father: {fileID: 4019939152052648}
   m_RootOrder: 1
@@ -2184,7 +2184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rails: []
-  nodeColor: {r: 0, g: 0.95862055, b: 1, a: 1}
+  nodeColor: {r: 1, g: 0, b: 0.6827588, a: 1}
   tower: {fileID: 114939634644862754}
   universeType: 0
 --- !u!114 &114939634644862754
