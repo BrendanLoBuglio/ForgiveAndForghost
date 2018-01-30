@@ -128,7 +128,7 @@ public class RailGenerator : MonoBehaviour
 	{
 		for (int i = 0; i < _currentNodes.Count; i++)
 		{
-			_currentNodes[i].FindClosestNodes();
+			_currentNodes[i].FindClosestNodes(new NodeSearchSettings(false));
 		}
 
 		//Debug.Log("generated rails!");

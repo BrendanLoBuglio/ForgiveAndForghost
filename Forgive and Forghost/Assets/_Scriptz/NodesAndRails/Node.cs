@@ -5,6 +5,21 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
+public class NodeSearchSettings
+{
+	public bool includeRegardlessOfMaxRails;
+
+	public NodeSearchSettings()
+	{
+		includeRegardlessOfMaxRails = false;
+	}
+
+	public NodeSearchSettings(bool _includeRegardlessOfMaxRails)
+	{
+		includeRegardlessOfMaxRails = _includeRegardlessOfMaxRails;
+	}
+}
+
 public class Node : MonoBehaviour
 {
     private class NodeAndDistance
@@ -57,9 +72,9 @@ public class Node : MonoBehaviour
 	protected int _maxRails = 4;
 	protected int _maxNodeDistance = 300;
 
-	protected bool IsNodeOkayToConnectTo(Node n)
+	protected bool IsNodeOkayToConnectTo(Node n, NodeSearchSettings searchSettings)
 	{
-		if (!n.HasFullRails())
+		if (PassesRailLimitCheck(n, searchSettings))
 		{
 			if (n != this)
 			{
@@ -73,7 +88,19 @@ public class Node : MonoBehaviour
 		return false;
 	}
 
-	public void FindClosestNodes()
+	protected bool PassesRailLimitCheck(Node n, NodeSearchSettings searchSettings)
+	{
+		if (searchSettings.includeRegardlessOfMaxRails)
+		{
+			return true;
+		}
+		else
+		{
+			return (!n.HasFullRails());
+		}
+	}
+
+	public void FindClosestNodes(NodeSearchSettings searchSettings)
 	{
 		Node[] nodeArray = FindObjectsOfType<Node>();
 
@@ -82,7 +109,7 @@ public class Node : MonoBehaviour
 
 		for (int i = 0; i < nodeArray.Length; i++)
 		{
-			if (IsNodeOkayToConnectTo(nodeArray[i]))
+			if (IsNodeOkayToConnectTo(nodeArray[i], searchSettings))
 			{
 				float distance = Vector3.Distance(transform.position, nodeArray[i].transform.position);
 
@@ -119,10 +146,17 @@ public class Node : MonoBehaviour
 
 	public void MakeSureIHaveAtLeastTwoRails()
 	{
+		// [x] check if i have less than 2 rails
 		if (rails.Count < 2)
 		{
 			name = ("Broken Node " + UnityEngine.Random.Range(0, 999));
 			Debug.LogErrorFormat("node {0} only has {1} rails :(\ngonna make it so it has at least 2 rails", name, rails.Count);
+
+			// [] x is the number of nodes i need to connect to (will either be 1 or 2)
+			int numNodesINeed = 2 - rails.Count;
+
+			// [] find the x closest nodes to myself that are not me and that i'm not connected to, but ignore if they have max rails or not
+			// [] foreach of those nodes, create a new rail and set it up with us (regardless of other node's max rails)
 		}
 	}
 
