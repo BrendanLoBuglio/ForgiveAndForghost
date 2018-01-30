@@ -100,12 +100,9 @@ public class Node : MonoBehaviour
 		}
 	}
 
-	public void FindClosestNodes(NodeSearchSettings searchSettings)
+	private List<NodeAndDistance> GetListOfClosestNodes(Node[] nodeArray, int numRailsWeNeed, NodeSearchSettings searchSettings)
 	{
-		Node[] nodeArray = FindObjectsOfType<Node>();
-
 		List<NodeAndDistance> closestNodes = new List<NodeAndDistance>();
-		int numRailsWeNeed = _maxRails - rails.Count;
 
 		for (int i = 0; i < nodeArray.Length; i++)
 		{
@@ -124,6 +121,7 @@ public class Node : MonoBehaviour
 					{
 						for (int j = 0; j < closestNodes.Count; j++)
 						{
+							// hmmm we can make this part better eventually by replacing the one that's furthest away instead of the first one we happen to find...
 							if (distance < closestNodes[j].distance)
 							{
 								closestNodes[j] = new NodeAndDistance(nodeArray[i], distance);
@@ -136,6 +134,15 @@ public class Node : MonoBehaviour
 				}
 			}
 		}
+
+		return closestNodes;
+	}
+
+	public void FindClosestNodes(NodeSearchSettings searchSettings)
+	{
+		Node[] nodeArray = FindObjectsOfType<Node>();
+		int numRailsWeNeed = _maxRails - rails.Count;
+		List<NodeAndDistance> closestNodes = GetListOfClosestNodes(nodeArray, numRailsWeNeed, searchSettings);
 
 		for (int i = 0; i < closestNodes.Count; i++)
 		{
