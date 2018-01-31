@@ -29,8 +29,18 @@ namespace _Scriptz.TheGamePartOfTheGame
         private PortalNode _currentGoalPortal;
 		private int _messagesDelivered;
 
-        public static GameplayManager singleton => _singleton ?? (_singleton = FindObjectOfType<GameplayManager>());
-        private static GameplayManager _singleton;
+        /*public static GameplayManager singleton => _singleton ?? (_singleton = FindObjectOfType<GameplayManager>());
+        private static GameplayManager _singleton;*/ // commenting this out and doing it the other way cuz i was gettinga null ref but i think it was actually related to something else but idk how to fix the other thing
+
+		private static GameplayManager _singleton;
+		public static GameplayManager singleton
+		{
+			get
+			{
+				if (_singleton == null) _singleton = UnityEngine.Object.FindObjectOfType<GameplayManager>();
+				return _singleton;
+			}
+		}
 
         private void Awake()
         {
@@ -136,7 +146,7 @@ namespace _Scriptz.TheGamePartOfTheGame
 
 		protected IEnumerator DoFinishFinalMission()
 		{
-			yield return new WaitForSeconds(4);
+			yield return new WaitForSeconds(8f);
 			UnityEngine.SceneManagement.SceneManager.LoadScene(OverallEverythingManager.s.victorySceneIndex);
 		}
 
