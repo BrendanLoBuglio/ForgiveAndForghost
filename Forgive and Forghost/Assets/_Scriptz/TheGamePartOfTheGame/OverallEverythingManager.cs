@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class OverallEverythingManager : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class OverallEverythingManager : MonoBehaviour
 
 	[Header("Other Settings")]
 	public float holdEscapeForHowLong;
+
+	[Header("Escape Screen References")]
+	public GameObject escapeScreenObject;
+	public Image escapeScreenCircleFill;
 
 	protected float _holdEscapeCounter;
 	protected bool _countingEscape;
@@ -29,6 +34,8 @@ public class OverallEverythingManager : MonoBehaviour
 			_myPrivateSelf = this;
 			DontDestroyOnLoad(gameObject);
 		}
+
+		escapeScreenObject.SetActive(false);
 	}
 
 	void Update()
@@ -37,6 +44,12 @@ public class OverallEverythingManager : MonoBehaviour
 		{
 			_countingEscape = true;
 			_holdEscapeCounter = 0;
+			escapeScreenCircleFill.fillAmount = 0f;
+			escapeScreenObject.SetActive(true);
+		}
+		else if (Input.GetKeyUp(KeyCode.Escape))
+		{
+			escapeScreenObject.SetActive(false);
 		}
 
 		if (_countingEscape)
@@ -44,6 +57,8 @@ public class OverallEverythingManager : MonoBehaviour
 			if (Input.GetKey(KeyCode.Escape))
 			{
 				_holdEscapeCounter += Time.unscaledDeltaTime;
+
+				escapeScreenCircleFill.fillAmount = Mathf.Clamp01(_holdEscapeCounter / holdEscapeForHowLong);
 
 				if (_holdEscapeCounter >= holdEscapeForHowLong)
 				{
