@@ -1185,16 +1185,7 @@ MonoBehaviour:
   - {fileID: 1542928712}
   - {fileID: 1380991152}
   - {fileID: 388873309}
-  missions:
-  - wotlQuestion: What's it like out there in hell
-    hellAnswer: 'It''s too hot. The thing that nobody tells you about hell is this:
-      it''s too damn hot.'
-  - wotlQuestion: What's it like out there in hell
-    hellAnswer: 'It''s too hot. The thing that nobody tells you about hell is this:
-      it''s too damn hot.'
-  - wotlQuestion: What's it like out there in hell
-    hellAnswer: 'It''s too hot. The thing that nobody tells you about hell is this:
-      it''s too damn hot.'
+  levelData: {fileID: 11400000, guid: e49bf0bdabd474e7fab2799eee552e42, type: 2}
   messageDegredationDuration_c: 15
 --- !u!4 &800898057
 Transform:

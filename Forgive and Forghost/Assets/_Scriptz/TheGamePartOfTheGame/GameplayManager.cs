@@ -15,7 +15,7 @@ namespace _Scriptz.TheGamePartOfTheGame
         public List<PortalNode> wotlPortals = new List<PortalNode>();
         
         /*# Config #*/
-        public Mission[] missions;
+		public LevelData levelData;
         public float messageDegredationDuration_c = 15f;
         
         /*# State #*/
@@ -38,8 +38,21 @@ namespace _Scriptz.TheGamePartOfTheGame
             this._messageDegradeTimer = this.messageDegredationDuration_c;
         }
 
+		protected void SetNewMessage()
+		{
+			this._currentMessage = this.currentMissionHalf == UniverseType_E.WOTL
+				? this.levelData.missions[this.missionIndex].wotlQuestion
+				: this.levelData.missions[this.missionIndex].hellAnswer;
+		}
+
         public void initializeGame()
         {
+			// Make sure we're referencing some level data
+			if (levelData == null)
+			{
+				Debug.LogError("There is no LevelData asset assigned in the inspector! Please create and assign one! Ty");
+			}
+
             // Get starting portals:
             var startingPortal = this.wotlPortals[Random.Range(0, this.wotlPortals.Count)];
             this._currentGoalPortal = this.hellPortals[Random.Range(0, this.hellPortals.Count)];
@@ -49,9 +62,7 @@ namespace _Scriptz.TheGamePartOfTheGame
             // Initialize first mission:
             this._currentGoalPortal.setIsGoal(true);
             // Get new message:
-            this._currentMessage = this.currentMissionHalf == UniverseType_E.WOTL
-                ? this.missions[this.missionIndex].wotlQuestion
-                : this.missions[this.missionIndex].hellAnswer;
+			SetNewMessage();
 
 			SetMessagesDelivered(0);
             
@@ -87,9 +98,7 @@ namespace _Scriptz.TheGamePartOfTheGame
             }
             
             // Get new message:
-            this._currentMessage = this.currentMissionHalf == UniverseType_E.WOTL
-                ? this.missions[this.missionIndex].wotlQuestion
-                : this.missions[this.missionIndex].hellAnswer;
+			SetNewMessage();
             
             Debug.Log($"Now we're on the {this.currentMissionHalf} half of mission {this.missionIndex} with the new message {this._currentMessage}");
             
@@ -111,7 +120,7 @@ namespace _Scriptz.TheGamePartOfTheGame
 		protected void SetMessagesDelivered(int messagesDelivered)
 		{
 			_messagesDelivered = messagesDelivered;
-			UIManager.singleton.SetMessagesDelieveredText(_messagesDelivered, missions.Length * 2);
+			UIManager.singleton.SetMessagesDelieveredText(_messagesDelivered, levelData.missions.Length * 2);
 		}
 
         private IEnumerator finishedMissionCutscene(Action<PortalNode> onCutsceneFinishedCallback, PortalNode nextGoal)
