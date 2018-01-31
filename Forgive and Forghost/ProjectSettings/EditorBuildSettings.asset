@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Skenes/MapBlockOut_v2.unity
     guid: 9bfb1aaa5fefd4f4abd51284d8f52a06
+  - enabled: 1
+    path: Assets/Skenes/VictoryScreen.unity
+    guid: 1388191c4dced4e30b916058c1c2434c
