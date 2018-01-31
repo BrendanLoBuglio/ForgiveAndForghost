@@ -19,6 +19,7 @@ public class OverallEverythingManager : MonoBehaviour
 
 	protected float _holdEscapeCounter;
 	protected bool _countingEscape;
+	protected bool _allowedToHoldEscape = true;
 
 	void Awake()
 	{
@@ -40,41 +41,57 @@ public class OverallEverythingManager : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Escape))
+		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
-			_countingEscape = true;
-			_holdEscapeCounter = 0;
-			escapeScreenCircleFill.fillAmount = 0f;
-			escapeScreenObject.SetActive(true);
-		}
-		else if (Input.GetKeyUp(KeyCode.Escape))
-		{
-			escapeScreenObject.SetActive(false);
+			Time.timeScale = (Time.timeScale == 1 ? 2 : 1);
 		}
 
-		if (_countingEscape)
+		if (_allowedToHoldEscape)
 		{
-			if (Input.GetKey(KeyCode.Escape))
+			if (Input.GetKeyDown(KeyCode.Escape))
 			{
-				_holdEscapeCounter += Time.unscaledDeltaTime;
+				_countingEscape = true;
+				_holdEscapeCounter = 0;
+				escapeScreenCircleFill.fillAmount = 0f;
+				escapeScreenObject.SetActive(true);
+			}
+			else if (Input.GetKeyUp(KeyCode.Escape))
+			{
+				escapeScreenObject.SetActive(false);
+			}
 
-				escapeScreenCircleFill.fillAmount = Mathf.Clamp01(_holdEscapeCounter / holdEscapeForHowLong);
-
-				if (_holdEscapeCounter >= holdEscapeForHowLong)
+			if (_countingEscape)
+			{
+				if (Input.GetKey(KeyCode.Escape))
 				{
-					_countingEscape = false;
+					_holdEscapeCounter += Time.unscaledDeltaTime;
 
-					if (SceneManager.GetActiveScene().buildIndex == mainMenuSceneIndex)
+					escapeScreenCircleFill.fillAmount = Mathf.Clamp01(_holdEscapeCounter / holdEscapeForHowLong);
+
+					if (_holdEscapeCounter >= holdEscapeForHowLong)
 					{
-						Application.Quit();
-					}
-					else
-					{
-						SceneManager.LoadScene(mainMenuSceneIndex);
+						_countingEscape = false;
+						_allowedToHoldEscape = false;
+						escapeScreenObject.SetActive(false);
+						Invoke("AllowMeToHoldEscapeAgain", 0.2f);
+
+						if (SceneManager.GetActiveScene().buildIndex == mainMenuSceneIndex)
+						{
+							Application.Quit();
+						}
+						else
+						{
+							SceneManager.LoadScene(mainMenuSceneIndex);
+						}
 					}
 				}
 			}
 		}
+	}
+
+	protected void AllowMeToHoldEscapeAgain()
+	{
+		_allowedToHoldEscape = true;
 	}
 
 	private static OverallEverythingManager _myPrivateSelf;
