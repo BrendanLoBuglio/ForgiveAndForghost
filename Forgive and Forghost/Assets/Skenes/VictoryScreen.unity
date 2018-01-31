@@ -308,7 +308,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 17189152}
   m_LocalRotation: {x: -0.003792162, y: 0.000532992, z: -0.024856457, w: 0.9996837}
-  m_LocalPosition: {x: 0, y: 0, z: -0.99998486}
+  m_LocalPosition: {x: 0, y: 0, z: -125}
   m_LocalScale: {x: 0.6049714, y: 0.60497147, z: 0.60497135}
   m_Children: []
   m_Father: {fileID: 1167056647}
@@ -316,7 +316,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: -0.43300003, y: 0.072000004, z: -2.8490002}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 9.930414, y: 39.81604}
+  m_AnchoredPosition: {x: 254.64655, y: 116.48828}
   m_SizeDelta: {x: 623.97, y: 155.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &17189154
@@ -1323,7 +1323,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 481738066}
   m_LocalRotation: {x: 0.013016713, y: -0.0018292959, z: 0.0853194, w: 0.996267}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -125.000015}
   m_LocalScale: {x: 0.9999998, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1167056647}
@@ -1331,7 +1331,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 1.5040001, y: -0.082, z: 9.7890005}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 9.930424, y: 39.816032}
+  m_AnchoredPosition: {x: 254.64655, y: 116.48827}
   m_SizeDelta: {x: 623.97, y: 155.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &481738068
@@ -2197,7 +2197,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 10
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -17950,7 +17950,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -15.453001}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 207.48248, y: 142.55063}
+  m_AnchoredPosition: {x: -198.53757, y: 91.0679}
   m_SizeDelta: {x: 623.97, y: 155.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1987475229
@@ -18027,8 +18027,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 10.8
-  m_fontSizeBase: 10.8
+  m_fontSize: 7.71
+  m_fontSizeBase: 7.71
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
