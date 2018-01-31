@@ -188,8 +188,10 @@ public class PlayerGhost : MonoBehaviour {
             else {
                 // If I have a selected rail, go to it:
                 if (this._currentlySelectedRail != null)
-                    // If so, move to the next rail:
-                    this.changeRail(this._currentlySelectedRail.endWhichIsNot(this._toNode));
+					// If I have selected it officially:
+					if (this._hasLockedIntoCurrentSelection)
+                    	// If so, move to the next rail:
+                    	this.changeRail(this._currentlySelectedRail.endWhichIsNot(this._toNode));
                 // Otherwise, dead end! Just stop me in my tracks:
                 else
                     this.transform.position = this._toNode.transform.position;
