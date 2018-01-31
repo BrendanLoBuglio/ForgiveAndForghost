@@ -16,6 +16,10 @@ public class CameraController : MonoBehaviour {
     public float startTransparencyLerpDistance;
     public float endTransparencyLerpDistance;
 
+	[Header("New Settings")]
+	public bool rotateYAroundGhosty;
+	public Transform verticalAxisParent;
+
     private float lerpAmount = 0;
 
     private Vector3 targetPosition;
@@ -109,8 +113,16 @@ public class CameraController : MonoBehaviour {
         {
             yInput = -1;
         }
-        thirdPersonPosition.transform.Rotate(Vector3.right, yInput * Time.deltaTime * mouseSensitivity);
-        firstPersonPosition.transform.Rotate(Vector3.right, yInput * Time.deltaTime * mouseSensitivity);       
+
+		if (rotateYAroundGhosty)
+		{
+			verticalAxisParent.transform.Rotate(Vector3.right, yInput * Time.deltaTime * mouseSensitivity);
+		}
+		else
+		{
+			thirdPersonPosition.transform.Rotate(Vector3.right, yInput * Time.deltaTime * mouseSensitivity);
+			firstPersonPosition.transform.Rotate(Vector3.right, yInput * Time.deltaTime * mouseSensitivity);
+		}
     
     }
 }
