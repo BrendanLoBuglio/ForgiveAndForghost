@@ -86,36 +86,59 @@ namespace _Scriptz.TheGamePartOfTheGame
             // Use up our last goal:
             this._currentGoalPortal.setIsGoal(false);
             this._usedNodes.Add(this._currentGoalPortal);
-            
-            // Swap the message half, and if necessary increment the index
-            if (this.currentMissionHalf == UniverseType_E.WOTL) {
-                this.currentMissionHalf = UniverseType_E.HELL;
-            }
-            else {
-                this.currentMissionHalf = UniverseType_E.WOTL;
+
+			SetMessagesDelivered(_messagesDelivered + 1);
+
+			if (_messagesDelivered < (levelData.missions.Length * 2))
+			{
+				// Swap the message half, and if necessary increment the index
+				if (this.currentMissionHalf == UniverseType_E.WOTL)
+				{
+					this.currentMissionHalf = UniverseType_E.HELL;
+				}
+				else
+				{
+					this.currentMissionHalf = UniverseType_E.WOTL;
                 
-                this.missionIndex++;
-            }
+					this.missionIndex++;
+				}
+
+
             
-            // Get new message:
-			SetNewMessage();
+				// Get new message:
+				SetNewMessage();
             
-            Debug.Log($"Now we're on the {this.currentMissionHalf} half of mission {this.missionIndex} with the new message {this._currentMessage}");
+				Debug.Log($"Now we're on the {this.currentMissionHalf} half of mission {this.missionIndex} with the new message {this._currentMessage}");
             
-            //Reset timer:
-            this._messageDegradeTimer = this.messageDegredationDuration_c;
+				//Reset timer:
+				this._messageDegradeTimer = this.messageDegredationDuration_c;
             
-            // Get a random new portal which has not been used
-            var nextPortal = (this.currentMissionHalf == UniverseType_E.WOTL ? this.wotlPortals : this.hellPortals)
+				// Get a random new portal which has not been used
+				var nextPortal = (this.currentMissionHalf == UniverseType_E.WOTL ? this.wotlPortals : this.hellPortals)
                 .Where(portal => !this._usedNodes.Contains(portal))
                 .OrderBy(portal => Random.Range(0f, 1f)).ToList()[0]; //Random index
 
-			this._currentGoalPortal = nextPortal;
+				this._currentGoalPortal = nextPortal;
 
-			SetMessagesDelivered(_messagesDelivered + 1);
-            
-            this.StartCoroutine(this.finishedMissionCutscene(onCutsceneFinishedCallback, nextPortal));
+				this.StartCoroutine(this.finishedMissionCutscene(onCutsceneFinishedCallback, nextPortal));
+			}
+			else
+			{
+				FinishFinalMission();
+			}
         }
+
+		public void FinishFinalMission()
+		{
+			Debug.Log("you've done it!");
+			StartCoroutine(DoFinishFinalMission());
+		}
+
+		protected IEnumerator DoFinishFinalMission()
+		{
+			yield return new WaitForSeconds(4);
+			UnityEngine.SceneManagement.SceneManager.LoadScene(OverallEverythingManager.s.victorySceneIndex);
+		}
 
 		protected void SetMessagesDelivered(int messagesDelivered)
 		{
