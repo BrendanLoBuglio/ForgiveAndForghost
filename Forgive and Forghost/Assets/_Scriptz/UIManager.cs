@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-        if(Input.GetKeyDown(KeyCode.K)) {
+        /*if(Input.GetKeyDown(KeyCode.K)) {
             SetNewMessage("hey whats up im ghosty. check out my sick grinds", false);
         }
 
@@ -45,7 +45,7 @@ public class UIManager : MonoBehaviour {
 
         if(Input.GetKeyDown(KeyCode.Alpha2)) {
             ShowGhostRecieved();
-        }
+        }*/
 
     }
 

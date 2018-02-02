@@ -9,11 +9,11 @@ public class FollowMyParentKindOf : MonoBehaviour
 
 	void Awake()
 	{
-		//transform.SetParent(null);
+		transform.SetParent(null);
 	}
 
 	void Update()
 	{
-		//transform.position = positionParent.position;
+		transform.position = positionParent.position;
 	}
 }

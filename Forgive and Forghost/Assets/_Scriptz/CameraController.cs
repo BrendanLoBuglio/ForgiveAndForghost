@@ -19,6 +19,8 @@ public class CameraController : MonoBehaviour {
 	[Header("New Settings")]
 	public bool rotateYAroundGhosty;
 	public Transform verticalAxisParent;
+	public float verticalClampAngle;
+	public Camera camera;
 
     private float lerpAmount = 0;
 
@@ -36,6 +38,8 @@ public class CameraController : MonoBehaviour {
 
     private float playerRotationDampVel;
 
+	private float _currentVerticalAngle = 0;
+
 	void Start () {
         Cursor.lockState = CursorLockMode.Locked;
         playerMaterial = playerRenderer.material;
@@ -47,6 +51,43 @@ public class CameraController : MonoBehaviour {
 	}
 		
 	void Update () {
+		if (Input.GetKey(KeyCode.N))
+		{
+			camera.fieldOfView -= Time.deltaTime * 12f;
+		}
+		else if (Input.GetKey(KeyCode.M))
+		{
+			camera.fieldOfView += Time.deltaTime * 12f;
+		}
+
+		if (Input.GetKey(KeyCode.Comma))
+		{
+			thirdPersonPosition.position -= thirdPersonPosition.forward * Time.deltaTime * 12f;
+		}
+		else if (Input.GetKey(KeyCode.Period))
+		{
+			thirdPersonPosition.position += thirdPersonPosition.forward * Time.deltaTime * 12f;
+		}
+
+		if (Input.GetKey(KeyCode.H))
+		{
+			mouseSensitivity -= Time.deltaTime * 20f;
+		}
+		else if (Input.GetKey(KeyCode.J))
+		{
+			mouseSensitivity += Time.deltaTime * 20f;
+		}
+
+		if (Input.GetKey(KeyCode.K))
+		{
+			smoothDampTime -= Time.deltaTime;
+		}
+		else if (Input.GetKey(KeyCode.L))
+		{
+			smoothDampTime += Time.deltaTime;
+		}
+
+
         if (Input.GetKeyDown(KeyCode.LeftBracket))
         {
             targetFirstPersonLerpAmount -= .1f;
@@ -93,11 +134,11 @@ public class CameraController : MonoBehaviour {
             playerRenderer.transform.localRotation = playerStartRotation;
         }
         float xInput = Input.GetAxis("Mouse X");
-        if (Input.GetKey(KeyCode.J))
+		if (Input.GetKey(KeyCode.LeftArrow))
         {
             xInput = -1;
         }
-        if (Input.GetKey(KeyCode.L))
+		if (Input.GetKey(KeyCode.RightArrow))
         {
             xInput = 1;
         }
@@ -106,23 +147,53 @@ public class CameraController : MonoBehaviour {
 
 
         float yInput = -Input.GetAxis("Mouse Y");
-        if (Input.GetKey(KeyCode.I)){
+		if (Input.GetKey(KeyCode.DownArrow)){
             yInput = 1;
         }
-        if (Input.GetKey(KeyCode.K))
+		if (Input.GetKey(KeyCode.UpArrow))
         {
             yInput = -1;
         }
 
 		if (rotateYAroundGhosty)
 		{
-			verticalAxisParent.transform.Rotate(Vector3.right, yInput * Time.deltaTime * mouseSensitivity);
+			float verticalDelta = yInput * Time.deltaTime * mouseSensitivity;
+			_currentVerticalAngle += verticalDelta;
+
+			if (_currentVerticalAngle >= verticalClampAngle)
+			{
+				verticalDelta = verticalClampAngle - _currentVerticalAngle;
+				_currentVerticalAngle = verticalClampAngle;
+			}
+			else if (_currentVerticalAngle <= -verticalClampAngle)
+			{
+				verticalDelta = -verticalClampAngle - _currentVerticalAngle;
+				_currentVerticalAngle = -verticalClampAngle;
+			}
+
+			verticalAxisParent.localRotation = Quaternion.AngleAxis(_currentVerticalAngle, Vector3.right);
 		}
 		else
 		{
 			thirdPersonPosition.transform.Rotate(Vector3.right, yInput * Time.deltaTime * mouseSensitivity);
 			firstPersonPosition.transform.Rotate(Vector3.right, yInput * Time.deltaTime * mouseSensitivity);
 		}
-    
     }
+
+	public void WaitAFrame()
+	{
+		//StartCoroutine(DoWaitAFrame());
+	}
+
+	protected IEnumerator DoWaitAFrame()
+	{
+		//Transform originalParent = thirdPersonPosition.parent;
+		//thirdPersonPosition.SetParent(null);
+		//Quaternion originalHorizontalRot = playerRenderer.transform.rotation;
+		Quaternion originalVerticalRot = verticalAxisParent.transform.rotation;
+		yield return null;
+		//thirdPersonPosition.SetParent(originalParent);
+		//playerRenderer.transform.rotation = originalHorizontalRot;
+		verticalAxisParent.transform.rotation = originalVerticalRot;
+	}
 }

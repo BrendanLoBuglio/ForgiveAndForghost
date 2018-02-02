@@ -11,6 +11,7 @@ public class PlayerGhost : MonoBehaviour {
     /*# Scene References #*/
     [SerializeField] private Node _startFromNode;
     [SerializeField] private Node _startToNode;
+	[SerializeField] private CameraController _cameraController;
 
     /*# Config #*/
     [SerializeField] private float _maxSpeed_c = 30f;
@@ -243,6 +244,8 @@ public class PlayerGhost : MonoBehaviour {
         this._currentlyOnRail?.setSelectionState(Rail.RailSelectionState.notSelected);
         this._currentlyOnRail = this._fromNode.getRailByDestinationNode(this._toNode);
         this._currentlyOnRail?.setSelectionState(Rail.RailSelectionState.currentlyOn);
+
+		_cameraController?.WaitAFrame();
     }
     
     private void updateWindParticles()
