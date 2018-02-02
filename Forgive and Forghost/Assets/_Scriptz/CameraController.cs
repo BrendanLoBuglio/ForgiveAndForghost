@@ -20,7 +20,8 @@ public class CameraController : MonoBehaviour {
 	public bool rotateYAroundGhosty;
 	public Transform verticalAxisParent;
 	public float verticalClampAngle;
-	public Camera camera;
+	public Camera myCamera;
+	public float fullspeedFov;
 
     private float lerpAmount = 0;
 
@@ -39,6 +40,9 @@ public class CameraController : MonoBehaviour {
     private float playerRotationDampVel;
 
 	private float _currentVerticalAngle = 0;
+	private float _minSpeedFov;
+	private float _targetLerpValue;
+	private float _currentLerpValue;
 
 	void Start () {
         Cursor.lockState = CursorLockMode.Locked;
@@ -48,16 +52,17 @@ public class CameraController : MonoBehaviour {
         playerStartRotation = playerRenderer.transform.localRotation;
         thirdPersonStartRotation = thirdPersonPosition.localRotation;
         firstPersonStartRotation = firstPersonPosition.localRotation;
+		_minSpeedFov = myCamera.fieldOfView;
 	}
 		
 	void Update () {
 		if (Input.GetKey(KeyCode.N))
 		{
-			camera.fieldOfView -= Time.deltaTime * 12f;
+			myCamera.fieldOfView -= Time.deltaTime * 12f;
 		}
 		else if (Input.GetKey(KeyCode.M))
 		{
-			camera.fieldOfView += Time.deltaTime * 12f;
+			myCamera.fieldOfView += Time.deltaTime * 12f;
 		}
 
 		if (Input.GetKey(KeyCode.Comma))
@@ -195,5 +200,13 @@ public class CameraController : MonoBehaviour {
 		//thirdPersonPosition.SetParent(originalParent);
 		//playerRenderer.transform.rotation = originalHorizontalRot;
 		verticalAxisParent.transform.rotation = originalVerticalRot;
+	}
+
+	public void UpdateSpeedRelatedLerpThings(float lerpAmount)
+	{
+		_targetLerpValue = lerpAmount;
+		_currentLerpValue = Mathf.Lerp(_currentLerpValue, _targetLerpValue, Time.deltaTime * 0.5f);
+
+		myCamera.fieldOfView = Mathf.Lerp(_minSpeedFov, fullspeedFov, _currentLerpValue);
 	}
 }

@@ -267,5 +267,7 @@ public class PlayerGhost : MonoBehaviour {
         rate = emiss.rateOverTime;
         rate.constant = Mathf.Lerp(0, this.flareEmissionRate, lerpAmount);
         emiss.rateOverTime = rate;
+
+		_cameraController?.UpdateSpeedRelatedLerpThings(lerpAmount);
     }
 }
