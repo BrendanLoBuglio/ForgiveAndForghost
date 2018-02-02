@@ -22,6 +22,7 @@ public class CameraController : MonoBehaviour {
 	public float verticalClampAngle;
 	public Camera myCamera;
 	public float fullspeedFov;
+	public float fullSpeedCameraPullbackDistance;
 
     private float lerpAmount = 0;
 
@@ -43,6 +44,7 @@ public class CameraController : MonoBehaviour {
 	private float _minSpeedFov;
 	private float _targetLerpValue;
 	private float _currentLerpValue;
+	private Vector3 _originalThirdPersonStartPosition;
 
 	void Start () {
         Cursor.lockState = CursorLockMode.Locked;
@@ -53,6 +55,7 @@ public class CameraController : MonoBehaviour {
         thirdPersonStartRotation = thirdPersonPosition.localRotation;
         firstPersonStartRotation = firstPersonPosition.localRotation;
 		_minSpeedFov = myCamera.fieldOfView;
+		_originalThirdPersonStartPosition = thirdPersonPosition.localPosition;
 	}
 		
 	void Update () {
@@ -208,5 +211,6 @@ public class CameraController : MonoBehaviour {
 		_currentLerpValue = Mathf.Lerp(_currentLerpValue, _targetLerpValue, Time.deltaTime * 0.5f);
 
 		myCamera.fieldOfView = Mathf.Lerp(_minSpeedFov, fullspeedFov, _currentLerpValue);
+		thirdPersonPosition.localPosition = Vector3.Lerp(_originalThirdPersonStartPosition, _originalThirdPersonStartPosition + (_originalThirdPersonStartPosition.normalized) * -fullSpeedCameraPullbackDistance, _currentLerpValue);
 	}
 }

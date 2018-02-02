@@ -1286,6 +1286,7 @@ MonoBehaviour:
   verticalClampAngle: 60
   myCamera: {fileID: 20076050938262032}
   fullspeedFov: 40
+  fullSpeedCameraPullbackDistance: 5
 --- !u!114 &114902507112739894
 MonoBehaviour:
   m_ObjectHideFlags: 1
