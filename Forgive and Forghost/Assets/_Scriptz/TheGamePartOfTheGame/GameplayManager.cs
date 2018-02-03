@@ -16,7 +16,7 @@ namespace _Scriptz.TheGamePartOfTheGame
         
         /*# Config #*/
 		public LevelData levelData;
-        public float messageDegredationDuration_c = 15f;
+        public float messageDegredationDuration_c = 30f;
         
         /*# State #*/
         public int missionIndex { get; private set; }
