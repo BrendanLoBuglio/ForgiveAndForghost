@@ -12,6 +12,7 @@ public class PlayerGhost : MonoBehaviour {
     [SerializeField] private Node _startFromNode;
     [SerializeField] private Node _startToNode;
 	[SerializeField] private CameraController _cameraController;
+	public CameraController cameraController { get { return _cameraController; } }
 
     /*# Config #*/
     [SerializeField] private float _maxSpeed_c = 30f;

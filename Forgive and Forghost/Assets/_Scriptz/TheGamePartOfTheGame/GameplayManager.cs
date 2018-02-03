@@ -11,10 +11,13 @@ namespace _Scriptz.TheGamePartOfTheGame
     public class GameplayManager : MonoBehaviour
     {
         /*# Scene References #*/
+		[Header("Scene References")]
         public List<PortalNode> hellPortals = new List<PortalNode>();
         public List<PortalNode> wotlPortals = new List<PortalNode>();
-        
+		public Camera aerialCamera;
+
         /*# Config #*/
+		[Header("Config")]
 		public LevelData levelData;
         public float messageDegredationDuration_c = 30f;
         
@@ -46,6 +49,11 @@ namespace _Scriptz.TheGamePartOfTheGame
         {
             this.currentMissionHalf = UniverseType_E.WOTL;
             this._messageDegradeTimer = this.messageDegredationDuration_c;
+
+			if (aerialCamera != null)
+			{
+				aerialCamera.enabled = false;
+			}
         }
 
 		protected void SetNewMessage()
@@ -185,6 +193,21 @@ namespace _Scriptz.TheGamePartOfTheGame
                     UIManager.singleton.SetNewMessage(this._currentMessage, true);
                 }
             }
+
+			if (aerialCamera != null && PlayerGhost.s != null)
+			{
+				if (Input.GetKeyDown(KeyCode.Q))
+				{
+					PlayerGhost.s.cameraController.myCamera.enabled = false;
+					aerialCamera.enabled = true;
+				}
+
+				if (Input.GetKeyUp(KeyCode.Q))
+				{
+					aerialCamera.enabled = false;
+					PlayerGhost.s.cameraController.myCamera.enabled = true;
+				}
+			}
         }
     }
 }
