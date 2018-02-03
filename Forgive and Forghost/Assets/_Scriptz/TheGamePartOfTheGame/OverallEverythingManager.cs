@@ -8,6 +8,7 @@ public class OverallEverythingManager : MonoBehaviour
 {
 	[Header("Build Settings")]
 	public int mainMenuSceneIndex;
+	public int controlsSceneIndex;
 	public int victorySceneIndex;
 
 	[Header("Other Settings")]
@@ -16,6 +17,9 @@ public class OverallEverythingManager : MonoBehaviour
 	[Header("Escape Screen References")]
 	public GameObject escapeScreenObject;
 	public Image escapeScreenCircleFill;
+
+	[Header("Other References")]
+	public HelpSheet helpSheet;
 
 	protected float _holdEscapeCounter;
 	protected bool _countingEscape;
@@ -46,6 +50,16 @@ public class OverallEverythingManager : MonoBehaviour
 			Time.timeScale = (Time.timeScale == 1 ? 2 : 1);
 		}
 
+		if (Input.GetKeyDown(KeyCode.H))
+		{
+			helpSheet.SetActive(true);
+		}
+
+		if (Input.GetKeyUp(KeyCode.H))
+		{
+			helpSheet.SetActive(false);
+		}
+
 		if (_allowedToHoldEscape)
 		{
 			if (Input.GetKeyDown(KeyCode.Escape))
@@ -55,7 +69,8 @@ public class OverallEverythingManager : MonoBehaviour
 				escapeScreenCircleFill.fillAmount = 0f;
 				escapeScreenObject.SetActive(true);
 			}
-			else if (Input.GetKeyUp(KeyCode.Escape))
+
+			if (Input.GetKeyUp(KeyCode.Escape))
 			{
 				escapeScreenObject.SetActive(false);
 			}
@@ -92,6 +107,20 @@ public class OverallEverythingManager : MonoBehaviour
 	protected void AllowMeToHoldEscapeAgain()
 	{
 		_allowedToHoldEscape = true;
+	}
+
+	public bool WeAreInALevel()
+	{
+		int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+		if (sceneIndex != mainMenuSceneIndex && sceneIndex != controlsSceneIndex && sceneIndex != victorySceneIndex)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	private static OverallEverythingManager _myPrivateSelf;

@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Skenes/TitleScreen.unity
     guid: 65e62b4b3ca774809b59f1d85b28d817
   - enabled: 1
+    path: Assets/Skenes/ControlsScreen.unity
+    guid: dc4a11368a3c345e5aebcc1012d5fecd
+  - enabled: 1
     path: Assets/Skenes/MapBlockOut_v2.unity
     guid: 9bfb1aaa5fefd4f4abd51284d8f52a06
   - enabled: 1

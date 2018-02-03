@@ -66,11 +66,11 @@ public class CameraController : MonoBehaviour {
 	}
 		
 	void Update () {
-		if (Input.GetKey(KeyCode.N))
+		if (Input.GetKey(KeyCode.M))
 		{
 			myCamera.fieldOfView -= Time.deltaTime * 12f;
 		}
-		else if (Input.GetKey(KeyCode.M))
+		else if (Input.GetKey(KeyCode.N))
 		{
 			myCamera.fieldOfView += Time.deltaTime * 12f;
 		}
@@ -84,11 +84,11 @@ public class CameraController : MonoBehaviour {
 			thirdPersonPosition.position += thirdPersonPosition.forward * Time.deltaTime * 12f;
 		}
 
-		if (Input.GetKey(KeyCode.H))
+		if (Input.GetKey(KeyCode.O))
 		{
 			mouseSensitivity -= Time.deltaTime * 20f;
 		}
-		else if (Input.GetKey(KeyCode.J))
+		else if (Input.GetKey(KeyCode.P))
 		{
 			mouseSensitivity += Time.deltaTime * 20f;
 		}
