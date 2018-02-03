@@ -31,6 +31,7 @@ namespace _Scriptz.TheGamePartOfTheGame
         private float _messageDegradeTimer;
         private PortalNode _currentGoalPortal;
 		private int _messagesDelivered;
+		protected CameraFacingBillboard _ghostyMapIcon;
 
         /*public static GameplayManager singleton => _singleton ?? (_singleton = FindObjectOfType<GameplayManager>());
         private static GameplayManager _singleton;*/ // commenting this out and doing it the other way cuz i was gettinga null ref but i think it was actually related to something else but idk how to fix the other thing
@@ -53,6 +54,12 @@ namespace _Scriptz.TheGamePartOfTheGame
 			if (aerialCamera != null)
 			{
 				aerialCamera.enabled = false;
+			}
+
+			if (_ghostyMapIcon == null)
+			{
+				_ghostyMapIcon = UnityEngine.Object.FindObjectOfType<CameraFacingBillboard>();
+				_ghostyMapIcon.gameObject.SetActive(false);
 			}
         }
 
@@ -200,12 +207,14 @@ namespace _Scriptz.TheGamePartOfTheGame
 				{
 					PlayerGhost.s.cameraController.myCamera.enabled = false;
 					aerialCamera.enabled = true;
+					_ghostyMapIcon.gameObject.SetActive(true);
 				}
 
 				if (Input.GetKeyUp(KeyCode.Q))
 				{
 					aerialCamera.enabled = false;
 					PlayerGhost.s.cameraController.myCamera.enabled = true;
+					_ghostyMapIcon.gameObject.SetActive(false);
 				}
 			}
         }
