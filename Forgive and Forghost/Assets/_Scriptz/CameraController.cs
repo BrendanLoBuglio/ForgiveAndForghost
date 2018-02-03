@@ -23,6 +23,8 @@ public class CameraController : MonoBehaviour {
 	public Camera myCamera;
 	public float fullspeedFov;
 	public float fullSpeedCameraPullbackDistance;
+	public bool unTopsyTurvyMode;
+	public FollowMyParentKindOf capsuleRotationalParent;
 
     private float lerpAmount = 0;
 
@@ -56,6 +58,11 @@ public class CameraController : MonoBehaviour {
         firstPersonStartRotation = firstPersonPosition.localRotation;
 		_minSpeedFov = myCamera.fieldOfView;
 		_originalThirdPersonStartPosition = thirdPersonPosition.localPosition;
+
+		if (unTopsyTurvyMode)
+		{
+			capsuleRotationalParent.SetupSemiParenting();
+		}
 	}
 		
 	void Update () {

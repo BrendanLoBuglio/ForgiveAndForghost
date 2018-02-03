@@ -8,15 +8,21 @@ public class FollowMyParentKindOf : MonoBehaviour
 	public Transform positionParent;
 	protected Quaternion _originalRotation;
 
-	void Awake()
-	{
-		transform.SetParent(null);
-		_originalRotation = transform.rotation;
-	}
+	protected bool _allSetUp;
 
 	void Update()
 	{
-		transform.position = positionParent.position;
-		transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Lerp(_originalRotation, positionParent.rotation, 0.15f), Time.deltaTime * 10f);
+		if (_allSetUp)
+		{
+			transform.position = positionParent.position;
+			transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Lerp(_originalRotation, positionParent.rotation, 0.15f), Time.deltaTime * 10f);
+		}
+	}
+
+	public void SetupSemiParenting()
+	{
+		transform.SetParent(null);
+		_originalRotation = transform.rotation;
+		_allSetUp = true;
 	}
 }

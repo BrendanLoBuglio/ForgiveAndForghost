@@ -31,6 +31,7 @@ GameObject:
   - component: {fileID: 64503470546109612}
   - component: {fileID: 64612389504268438}
   - component: {fileID: 64610581553278016}
+  - component: {fileID: 64554898928577240}
   m_Layer: 0
   m_Name: GhostyCloth
   m_TagString: Untagged
@@ -1066,6 +1067,20 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 54487d02f7f8b45e5b814167525731fd, type: 3}
+--- !u!64 &64554898928577240
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1036045706360554}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 54487d02f7f8b45e5b814167525731fd, type: 3}
 --- !u!64 &64582999189177168
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -1316,6 +1331,8 @@ MonoBehaviour:
   myCamera: {fileID: 20076050938262032}
   fullspeedFov: 40
   fullSpeedCameraPullbackDistance: 5
+  unTopsyTurvyMode: 1
+  capsuleRotationalParent: {fileID: 114150871190331478}
 --- !u!114 &114902507112739894
 MonoBehaviour:
   m_ObjectHideFlags: 1
