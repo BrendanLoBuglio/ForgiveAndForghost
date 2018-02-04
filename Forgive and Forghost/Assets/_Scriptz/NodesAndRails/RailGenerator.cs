@@ -30,6 +30,17 @@ public class RailGenerator : MonoBehaviour
 	protected List<Node> _currentNodes = new List<Node>();
 	protected List<Rail> _currentRails = new List<Rail>();
 	protected bool _numNodesCalculated = false;
+	protected List<RailGenerator> _overlappingGenerators = new List<RailGenerator>();
+
+	void OnTriggerStay(Collider other)
+	{
+		RailGenerator otherRailGenerator = other.GetComponentInParent<RailGenerator>();
+
+		if (otherRailGenerator != null)
+		{
+			Debug.LogFormat("this is {0} reporting that {1} has entered my trigger", name, otherRailGenerator.name);
+		}
+	}
 
 	void Start()
 	{
@@ -69,6 +80,11 @@ public class RailGenerator : MonoBehaviour
 		{
 			CheckDensity();
 		}
+	}
+
+	public List<Node> GetListOfMyNodes()
+	{
+		return new List<Node>(_currentNodes);
 	}
 
 	protected float GetVolume()
@@ -194,6 +210,34 @@ public class RailGenerator : MonoBehaviour
 		{
 			Debug.LogFormat("all {0} subgraphs have been merged, we are now 1 connected graph god bless", distinctSubGraphsCount);
 		}
+	}
+
+	public void MakeSureIAmConnectedToAllMyOverlappingGenerators()
+	{
+		for (int i = 0; i < _overlappingGenerators.Count; i++)
+		{
+			List<Node> overlappingGeneratorNodeList = _overlappingGenerators[i].GetListOfMyNodes();
+
+			if (TheseTwoGraphsAreConnected(_currentNodes, overlappingGeneratorNodeList))
+			{
+				// all good!
+			}
+			else
+			{
+				Debug.LogFormat("yuh oh! looks like i, {0}, am not connected with neighbor generator {1}. let's fix that!", name, _overlappingGenerators[i].name);
+				ConnectTwoGraphs(_currentNodes, overlappingGeneratorNodeList);
+			}
+		}
+	}
+
+	// graph a must be a connected graph and so must graph b for this to work!
+	public bool TheseTwoGraphsAreConnected(List<Node> graphA, List<Node> graphB)
+	{
+		List<Node> remainingNodesToSearch = new List<Node>(graphA);
+		remainingNodesToSearch.AddRange(new List<Node>(graphB));
+		List<Node> connectedNodes = new List<Node>();
+		dfs_whatDoesThatStandFor(remainingNodesToSearch[0], remainingNodesToSearch, connectedNodes);
+		return (remainingNodesToSearch.Count == 0);
 	}
 
 	protected void dfs_whatDoesThatStandFor(Node node, List<Node> listOfRemainingNodesToSearch, List<Node> listOfConnectedNodes)
@@ -365,5 +409,17 @@ public class RailGenerator : MonoBehaviour
 	public Node GetFirstNode()
 	{
 		return _currentNodes[0];
+	}
+
+	public void RegisterOverlappingGenerator(RailGenerator overlappingGenerator)
+	{
+		if (!_overlappingGenerators.Contains(overlappingGenerator))
+		{
+			_overlappingGenerators.Add(overlappingGenerator);
+		}
+		else
+		{
+			Debug.LogErrorFormat("{0} is already tracked in {1}'s list of overlapping generators. why are you trying to add it again?", overlappingGenerator.name, name);
+		}
 	}
 }

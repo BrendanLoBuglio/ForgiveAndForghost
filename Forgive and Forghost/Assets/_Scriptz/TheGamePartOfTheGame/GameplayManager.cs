@@ -32,6 +32,7 @@ namespace _Scriptz.TheGamePartOfTheGame
         private PortalNode _currentGoalPortal;
 		private int _messagesDelivered;
 		protected CameraFacingBillboard _ghostyMapIcon;
+		protected bool _theGameHasBegun;
 
         /*public static GameplayManager singleton => _singleton ?? (_singleton = FindObjectOfType<GameplayManager>());
         private static GameplayManager _singleton;*/ // commenting this out and doing it the other way cuz i was gettinga null ref but i think it was actually related to something else but idk how to fix the other thing
@@ -63,6 +64,17 @@ namespace _Scriptz.TheGamePartOfTheGame
 			}
         }
 
+		void Start()
+		{
+			StartCoroutine(DoStartGame());
+		}
+
+		protected IEnumerator DoStartGame()
+		{
+			yield return null; // waiting a frame so OnTriggerEnter can register all overlapping RailGenerator's! see "RegisterOverlappingGenerator()" in RailGenerator
+			initializeGame();
+		}
+
 		protected void SetNewMessage()
 		{
 			this._currentMessage = this.currentMissionHalf == UniverseType_E.WOTL
@@ -72,34 +84,44 @@ namespace _Scriptz.TheGamePartOfTheGame
 
         public void initializeGame()
         {
+			// Generate the level!
+			RailGeneratorManager.s.GenerateAllTheRails();
+
 			// Make sure we're referencing some level data
 			if (levelData == null)
 			{
 				Debug.LogError("There is no LevelData asset assigned in the inspector! Please create and assign one! Ty");
 			}
 
-            // Get starting portals:
-            var startingPortal = this.wotlPortals[Random.Range(0, this.wotlPortals.Count)];
-            this._currentGoalPortal = this.hellPortals[Random.Range(0, this.hellPortals.Count)];
-            this._usedNodes.Add(startingPortal);
-            this._usedNodes.Add(this._currentGoalPortal);
-            
-            // Initialize first mission:
-            this._currentGoalPortal.setIsGoal(true);
-            // Get new message:
+			SetupPortalsAndMissions();
+            PlayerGhost.s.Initialize();
+
+			_theGameHasBegun = true; // IT HAS BEGUN!
+        }
+
+		protected void SetupPortalsAndMissions()
+		{
+			// Get starting portals:
+			var startingPortal = this.wotlPortals[Random.Range(0, this.wotlPortals.Count)];
+			this._currentGoalPortal = this.hellPortals[Random.Range(0, this.hellPortals.Count)];
+			this._usedNodes.Add(startingPortal);
+			this._usedNodes.Add(this._currentGoalPortal);
+
+			// Initialize first mission:
+			this._currentGoalPortal.setIsGoal(true);
+			// Get new message:
 			SetNewMessage();
 
 			SetMessagesDelivered(0);
-            
-            UIManager.singleton.ShowWotlRecieved();
-            
-            Debug.Log($"The message is {this._currentMessage}");
-            UIManager.singleton.SetNewMessage(this._currentMessage, true);
-            
-            
-            PlayerGhost.s.setStartNodesAndGoal(startingPortal, startingPortal.GetFirstRail().endWhichIsNot(startingPortal), this._currentGoalPortal);
-            PlayerGhost.s.Initialize();
-        }
+
+			UIManager.singleton.ShowWotlRecieved();
+
+			Debug.Log($"The message is {this._currentMessage}");
+			UIManager.singleton.SetNewMessage(this._currentMessage, true);
+
+
+			PlayerGhost.s.setStartNodesAndGoal(startingPortal, startingPortal.GetFirstRail().endWhichIsNot(startingPortal), this._currentGoalPortal);
+		}
 
         public void finishCurrentMissionPart(Action<PortalNode> onCutsceneFinishedCallback)
         {
@@ -189,6 +211,11 @@ namespace _Scriptz.TheGamePartOfTheGame
 
         private void Update()
         {
+			if (!_theGameHasBegun)
+			{
+				return;
+			}
+
             // Lose letters over time:
             if (!this._isInCutscene && this._currentMessage.Length > 1) {
                 this._messageDegradeTimer -= Time.deltaTime;
