@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.48979986, g: 0.3214388, b: 0.63045585, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1890,25 +1890,35 @@ Prefab:
     - target: {fileID: 198201870415247288, guid: b0d984128ffccc244a3fb640468c9267,
         type: 2}
       propertyPath: randomSeed
-      value: -531509265
+      value: -1885980157
       objectReference: {fileID: 0}
     - target: {fileID: 198201870415247288, guid: b0d984128ffccc244a3fb640468c9267,
         type: 2}
       propertyPath: EmissionModule.rateOverTime.scalar
-      value: 1000
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 198857650730112532, guid: b0d984128ffccc244a3fb640468c9267,
         type: 2}
       propertyPath: randomSeed
-      value: 294588997
+      value: -1109471243
       objectReference: {fileID: 0}
     - target: {fileID: 198857650730112532, guid: b0d984128ffccc244a3fb640468c9267,
         type: 2}
       propertyPath: EmissionModule.rateOverTime.scalar
-      value: 1000
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1229368602309870, guid: b0d984128ffccc244a3fb640468c9267, type: 2}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198857650730112532, guid: b0d984128ffccc244a3fb640468c9267,
+        type: 2}
+      propertyPath: TrailModule.ratio
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198201870415247288, guid: b0d984128ffccc244a3fb640468c9267,
+        type: 2}
+      propertyPath: TrailModule.ratio
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
