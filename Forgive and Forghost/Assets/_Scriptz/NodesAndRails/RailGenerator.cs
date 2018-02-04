@@ -7,6 +7,13 @@ public class NodePair
 	public Node nodeA;
 	public Node nodeB;
 	public float distance;
+
+	public NodePair(Node _nodeA, Node _nodeB, float _distance)
+	{
+		nodeA = _nodeA;
+		nodeB = _nodeB;
+		distance = _distance;
+	}
 }
 
 public class RailGenerator : MonoBehaviour
@@ -149,7 +156,7 @@ public class RailGenerator : MonoBehaviour
 			_currentNodes[i].FindClosestNodes(new NodeSearchSettings(false));
 		}
 
-		//MakeSureAllNodesAreConnected(_currentNodes);
+		MakeSureAllNodesAreConnected(_currentNodes);
 
 		//Debug.Log("generated rails!");
 	}
@@ -167,34 +174,26 @@ public class RailGenerator : MonoBehaviour
 			distinctSubGraphs.Add(connectedNodes);
 		}
 
-		Debug.LogFormat("found {0} distinct subgraphs", distinctSubGraphs.Count);
+		int distinctSubGraphsCount = distinctSubGraphs.Count;
+
+		if (distinctSubGraphsCount > 1)
+		{
+			Debug.LogFormat("found {0} distinct subgraphs", distinctSubGraphsCount);
+		}
 
 		while (distinctSubGraphs.Count > 1)
 		{
 			List<Node> graphA = distinctSubGraphs[0];
 			List<Node> graphB = distinctSubGraphs[1];
-			distinctSubGraphs.RemoveAt(0);
 			distinctSubGraphs.RemoveAt(1);
+			distinctSubGraphs.RemoveAt(0);
 			distinctSubGraphs.Insert(0, ConnectTwoGraphs(graphA, graphB));
-			Debug.Log("connected 2 distinct subgraphs into 1 graph");
 		}
 
-		Debug.LogFormat("all subgraphs have been merged, we are now 1 connected graph god bless");
-	}
-
-	// a List<Node> is a graph?? let's go for it
-	protected List<Node> ConnectTwoGraphs(List<Node> graphA, List<Node> graphB)
-	{
-		List<Node> connectedGraphs = new List<Node>();
-		// IMPLEMENT
-		return connectedGraphs;
-	}
-
-	protected NodePair GetTwoClosestNodesFromTwoGraphs(List<Node> graphA, List<Node> graphB)
-	{
-		NodePair closestNodePair = null;
-		// IMPLEMENT
-		return closestNodePair;
+		if (distinctSubGraphsCount > 1)
+		{
+			Debug.LogFormat("all {0} subgraphs have been merged, we are now 1 connected graph god bless", distinctSubGraphsCount);
+		}
 	}
 
 	protected void dfs_whatDoesThatStandFor(Node node, List<Node> listOfRemainingNodesToSearch, List<Node> listOfConnectedNodes)
@@ -205,8 +204,7 @@ public class RailGenerator : MonoBehaviour
 		}
 		else
 		{
-			node.name = string.Format("Error Node {0}", UnityEngine.Random.Range(0, 999));
-			Debug.LogErrorFormat("i couldn't remove this fromt he list something is wrong: {0}", node.name);
+			return; // this case will get hit pretty often because of recursion in stuff! no worries
 		}
 
 		if (!listOfConnectedNodes.Contains(node))
@@ -215,8 +213,7 @@ public class RailGenerator : MonoBehaviour
 		}
 		else
 		{
-			node.name = string.Format("Error Node {0}", UnityEngine.Random.Range(0, 999));
-			Debug.LogErrorFormat("i wanted to add to list but it was alreay there, something is wrong: {0}", node.name);
+			return; // this case should NEVER get hit becaue the case above should catch it. idont wanna putt an error message though id just rather not KNOW
 		}
 
 		Node[] connectedNodeArray = node.GetConnectedNodes();
@@ -228,6 +225,58 @@ public class RailGenerator : MonoBehaviour
 				dfs_whatDoesThatStandFor(connectedNodeArray[i], listOfRemainingNodesToSearch, listOfConnectedNodes);
 			}
 		}
+	}
+
+	// a List<Node> is a graph?? let's go for it
+	protected List<Node> ConnectTwoGraphs(List<Node> graphA, List<Node> graphB)
+	{
+		List<Node> connectedGraph = new List<Node>();
+
+		// find 2 closest nodes and connect them with a rail
+		NodePair twoClosestNodes = GetTwoClosestNodesFromTwoGraphs(graphA, graphB);
+		twoClosestNodes.nodeA.ConnectMeToNode(twoClosestNodes.nodeB);
+
+		twoClosestNodes.nodeA.name = string.Format("Hand Connected Node {0}", UnityEngine.Random.Range(0, 999));
+		twoClosestNodes.nodeB.name = string.Format("Hand Connected Node {0}", UnityEngine.Random.Range(0, 999));
+
+		Debug.LogFormat("Hand connected the nodes {0} and {1}! Enjoy!", twoClosestNodes.nodeA.name, twoClosestNodes.nodeB.name);
+
+		// put 2 graphs into 1 list
+		connectedGraph.AddRange(graphA);
+		connectedGraph.AddRange(graphB);
+
+		return connectedGraph;
+	}
+
+	protected NodePair GetTwoClosestNodesFromTwoGraphs(List<Node> graphA, List<Node> graphB)
+	{
+		NodePair closestNodePair = null;
+
+		for (int i = 0; i < graphA.Count; i++)
+		{
+			for (int j = 0; j < graphB.Count; j++)
+			{
+				Node nodeA = graphA[i];
+				Node nodeB = graphB[j];
+				float distance = Vector3.Distance(nodeA.transform.position, nodeB.transform.position);
+
+				if (closestNodePair != null)
+				{
+					if (distance < closestNodePair.distance)
+					{
+						closestNodePair.nodeA = nodeA;
+						closestNodePair.nodeB = nodeB;
+						closestNodePair.distance = distance;
+					}
+				}
+				else
+				{
+					closestNodePair = new NodePair(nodeA, nodeB, distance);
+				}
+			}
+		}
+
+		return closestNodePair;
 	}
 
 	public void CheckAllMyNodes()

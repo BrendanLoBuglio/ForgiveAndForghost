@@ -168,6 +168,11 @@ public class Node : MonoBehaviour
 		}
 	}
 
+	public void ConnectMeToNode(Node node)
+	{
+		Rail newRail = RailGeneratorManager.GetNewRail();
+		newRail.initialize(this, node);
+	}
 
 	public void initialize(Color regionColorIn)
 	{
