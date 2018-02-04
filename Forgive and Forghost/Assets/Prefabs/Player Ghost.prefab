@@ -868,13 +868,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1050967785689526}
-  m_LocalRotation: {x: 0.03951675, y: 0.9941115, z: 0.099255115, w: -0.018148059}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.00000002454594, y: 0.99742955, z: -0.0716539, w: -0.00000019221363}
+  m_LocalPosition: {x: 3.2235988e-15, y: -0.00000018831554, z: -0.00000026875432}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4829016876040048}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -11.465, y: 181.65099, z: 4.387}
+  m_LocalEulerAnglesHint: {x: 8.218, y: 179.99998, z: 0}
 --- !u!20 &20076050938262032
 Camera:
   m_ObjectHideFlags: 1
@@ -6024,7 +6024,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1280067515
+  randomSeed: 741213775
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -6176,8 +6176,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1
-      minScalar: 0.5
+      scalar: 2
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -12767,14 +12767,14 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: -621978030
+  randomSeed: 1573382633
   InitialModule:
     serializedVersion: 3
     enabled: 1
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 0.7
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -12815,7 +12815,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 10
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -12907,8 +12907,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.05
-      minScalar: 0.01
+      scalar: 0.2
+      minScalar: 0.04
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -13133,7 +13133,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 1
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -13291,7 +13291,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 15
+      scalar: 30
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -15067,7 +15067,7 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 1
+    enabled: 0
     serializedVersion: 3
     type: 1
     collisionMode: 0
