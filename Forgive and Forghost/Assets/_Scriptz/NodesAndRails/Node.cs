@@ -228,6 +228,18 @@ public class Node : MonoBehaviour
 
 		Destroy(gameObject);
 	}
+
+	public Node[] GetConnectedNodes()
+	{
+		Node[] connectedNodeArray = new Node[rails.Count];
+
+		for (int i = 0; i < rails.Count; i++)
+		{
+			connectedNodeArray[i] = rails[i].endWhichIsNot(this);
+		}
+
+		return connectedNodeArray;
+	}
 	
 	#region aesthetic 
 	#endregion

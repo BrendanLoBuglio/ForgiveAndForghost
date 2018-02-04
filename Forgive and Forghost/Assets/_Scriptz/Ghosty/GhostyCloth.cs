@@ -25,8 +25,6 @@ public class GhostyCloth : MonoBehaviour
 			totalColliders.AddRange(delayedCapsuleColliders);
 			ghostyCloth.capsuleColliders = totalColliders.ToArray();
 		}
-
-		Debug.Log("Turned on delayed colliders!");
 	}
 
 	void Update()

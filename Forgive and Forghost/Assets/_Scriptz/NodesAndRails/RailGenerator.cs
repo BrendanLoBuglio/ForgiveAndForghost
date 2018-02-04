@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class NodePair
+{
+	public Node nodeA;
+	public Node nodeB;
+	public float distance;
+}
+
 public class RailGenerator : MonoBehaviour
 {
 	[Header("References")]
@@ -24,13 +31,24 @@ public class RailGenerator : MonoBehaviour
 		}
 	}
 
+	public void DoALittleTest(List<RailGenerator> railGeneratorList)
+	{
+		/*for (int i = 0; i < railGeneratorList.Count; i++)
+		{
+			if (railGeneratorList[i] != this)
+			{
+				RailGenerator otherGenerator = railGeneratorList[i];
+				Physics.
+			}
+		}*/
+	}
+
 	public int GetNumNodesToGenerate()
 	{
 		if (!_numNodesCalculated)
 		{
 			float density = nodeDensityInMillionths / 1000000f;
 			int numNodes = Mathf.RoundToInt(density * GetVolume());
-			Debug.LogFormat("i calculated {0} nodex", numNodes);
 			numNodesToGenerate = numNodes;
 			_numNodesCalculated = true;
 		}
@@ -131,7 +149,85 @@ public class RailGenerator : MonoBehaviour
 			_currentNodes[i].FindClosestNodes(new NodeSearchSettings(false));
 		}
 
+		//MakeSureAllNodesAreConnected(_currentNodes);
+
 		//Debug.Log("generated rails!");
+	}
+
+	// utility function
+	protected void MakeSureAllNodesAreConnected(List<Node> nodes)
+	{
+		List<Node> remainingNodesToSearch = new List<Node>(nodes);
+		List<List<Node>> distinctSubGraphs = new List<List<Node>>();
+
+		while (remainingNodesToSearch.Count > 0)
+		{
+			List<Node> connectedNodes = new List<Node>();
+			dfs_whatDoesThatStandFor(remainingNodesToSearch[0], remainingNodesToSearch, connectedNodes);
+			distinctSubGraphs.Add(connectedNodes);
+		}
+
+		Debug.LogFormat("found {0} distinct subgraphs", distinctSubGraphs.Count);
+
+		while (distinctSubGraphs.Count > 1)
+		{
+			List<Node> graphA = distinctSubGraphs[0];
+			List<Node> graphB = distinctSubGraphs[1];
+			distinctSubGraphs.RemoveAt(0);
+			distinctSubGraphs.RemoveAt(1);
+			distinctSubGraphs.Insert(0, ConnectTwoGraphs(graphA, graphB));
+			Debug.Log("connected 2 distinct subgraphs into 1 graph");
+		}
+
+		Debug.LogFormat("all subgraphs have been merged, we are now 1 connected graph god bless");
+	}
+
+	// a List<Node> is a graph?? let's go for it
+	protected List<Node> ConnectTwoGraphs(List<Node> graphA, List<Node> graphB)
+	{
+		List<Node> connectedGraphs = new List<Node>();
+		// IMPLEMENT
+		return connectedGraphs;
+	}
+
+	protected NodePair GetTwoClosestNodesFromTwoGraphs(List<Node> graphA, List<Node> graphB)
+	{
+		NodePair closestNodePair = null;
+		// IMPLEMENT
+		return closestNodePair;
+	}
+
+	protected void dfs_whatDoesThatStandFor(Node node, List<Node> listOfRemainingNodesToSearch, List<Node> listOfConnectedNodes)
+	{
+		if (listOfRemainingNodesToSearch.Contains(node))
+		{
+			listOfRemainingNodesToSearch.Remove(node);
+		}
+		else
+		{
+			node.name = string.Format("Error Node {0}", UnityEngine.Random.Range(0, 999));
+			Debug.LogErrorFormat("i couldn't remove this fromt he list something is wrong: {0}", node.name);
+		}
+
+		if (!listOfConnectedNodes.Contains(node))
+		{
+			listOfConnectedNodes.Add(node);
+		}
+		else
+		{
+			node.name = string.Format("Error Node {0}", UnityEngine.Random.Range(0, 999));
+			Debug.LogErrorFormat("i wanted to add to list but it was alreay there, something is wrong: {0}", node.name);
+		}
+
+		Node[] connectedNodeArray = node.GetConnectedNodes();
+
+		for (int i = 0; i < connectedNodeArray.Length; i++)
+		{
+			if (!listOfConnectedNodes.Contains(connectedNodeArray[i]))
+			{
+				dfs_whatDoesThatStandFor(connectedNodeArray[i], listOfRemainingNodesToSearch, listOfConnectedNodes);
+			}
+		}
 	}
 
 	public void CheckAllMyNodes()
