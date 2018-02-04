@@ -13,6 +13,8 @@ public class RailGeneratorManager : MonoBehaviour
 
 	public void GenerateAllTheRails()
 	{
+		TurnOffTheTriggersForPerformanceReasonsMaybe();
+
 		RailGenerator[] railGeneratorArray = Object.FindObjectsOfType<RailGenerator>();
 
 		for (int i = 0; i < railGeneratorArray.Length; i++)
@@ -24,6 +26,16 @@ public class RailGeneratorManager : MonoBehaviour
 		}
 
 		RunAllRailGeneration();
+	}
+
+	protected void TurnOffTheTriggersForPerformanceReasonsMaybe()
+	{
+		GeneratorTrigger[] generatorTrigger = Object.FindObjectsOfType<GeneratorTrigger>();
+
+		for (int i = 0; i < generatorTrigger.Length; i++)
+		{
+			generatorTrigger[i].gameObject.SetActive(false);
+		}
 	}
 
 	protected void RunAllRailGeneration()
