@@ -1985,7 +1985,7 @@ MonoBehaviour:
   endTransparencyLerpDistance: 1.4
   rotateYAroundGhosty: 1
   verticalAxisParent: {fileID: 4655492404429160}
-  verticalClampAngle: 60
+  verticalClampAngle: 67
   myCamera: {fileID: 20076050938262032}
   fullspeedFov: 40
   fullSpeedCameraPullbackDistance: 5
