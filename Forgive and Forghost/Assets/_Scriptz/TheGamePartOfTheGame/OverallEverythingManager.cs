@@ -47,7 +47,7 @@ public class OverallEverythingManager : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
-			Time.timeScale = (Time.timeScale == 1 ? 2 : 1);
+			Time.timeScale = (Time.timeScale == 1 ? 5 : 1);
 		}
 
 		if (Input.GetKeyDown(KeyCode.H))

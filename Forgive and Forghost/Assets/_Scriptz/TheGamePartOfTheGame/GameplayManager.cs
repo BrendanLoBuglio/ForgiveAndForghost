@@ -128,30 +128,30 @@ namespace _Scriptz.TheGamePartOfTheGame
             Debug.Log($"Finished the {this.currentMissionHalf} half of mission {this.missionIndex} with remaining message {this._currentMessage}");
             
             //Show our decoded message: 
-            UIManager.singleton.SetNewMessage(this._currentMessage, false);
+            //UIManager.singleton.SetNewMessage(this._currentMessage, false);
+			string decodedMessage = this._currentMessage;
             
             // Use up our last goal:
             this._currentGoalPortal.setIsGoal(false);
+			PortalNode portalNodeWeJustReached = _currentGoalPortal;
             this._usedNodes.Add(this._currentGoalPortal);
 
 			SetMessagesDelivered(_messagesDelivered + 1);
 
+			// Swap the message half, and if necessary increment the index
+			if (this.currentMissionHalf == UniverseType_E.WOTL)
+			{
+				this.currentMissionHalf = UniverseType_E.HELL;
+			}
+			else
+			{
+				this.currentMissionHalf = UniverseType_E.WOTL;
+
+				this.missionIndex++;
+			}
+
 			if (_messagesDelivered < (levelData.missions.Length * 2))
 			{
-				// Swap the message half, and if necessary increment the index
-				if (this.currentMissionHalf == UniverseType_E.WOTL)
-				{
-					this.currentMissionHalf = UniverseType_E.HELL;
-				}
-				else
-				{
-					this.currentMissionHalf = UniverseType_E.WOTL;
-                
-					this.missionIndex++;
-				}
-
-
-            
 				// Get new message:
 				SetNewMessage();
             
@@ -167,23 +167,17 @@ namespace _Scriptz.TheGamePartOfTheGame
 
 				this._currentGoalPortal = nextPortal;
 
-				this.StartCoroutine(this.finishedMissionCutscene(onCutsceneFinishedCallback, nextPortal));
+				this.StartCoroutine(this.finishedMissionCutscene(onCutsceneFinishedCallback, nextPortal, portalNodeWeJustReached, decodedMessage, false));
 			}
 			else
 			{
-				FinishFinalMission();
+				this.StartCoroutine(this.finishedMissionCutscene(onCutsceneFinishedCallback, null, portalNodeWeJustReached, decodedMessage, true));
 			}
         }
 
 		public void FinishFinalMission()
 		{
 			Debug.Log("you've done it!");
-			StartCoroutine(DoFinishFinalMission());
-		}
-
-		protected IEnumerator DoFinishFinalMission()
-		{
-			yield return new WaitForSeconds(8f);
 			UnityEngine.SceneManagement.SceneManager.LoadScene(OverallEverythingManager.s.victorySceneIndex);
 		}
 
@@ -193,21 +187,45 @@ namespace _Scriptz.TheGamePartOfTheGame
 			UIManager.singleton.SetMessagesDelieveredText(_messagesDelivered, levelData.missions.Length * 2);
 		}
 
-        private IEnumerator finishedMissionCutscene(Action<PortalNode> onCutsceneFinishedCallback, PortalNode nextGoal)
+		private IEnumerator finishedMissionCutscene(Action<PortalNode> onCutsceneFinishedCallback, PortalNode nextGoal, PortalNode goalWeJustReached, string decodedMessage, bool isFinalMessage)
         {
             this._isInCutscene = true;
-            yield return new WaitForSeconds(8f);
-            this._isInCutscene = false;
+			goalWeJustReached.cutsceneManager.OnCustceneComplete += HandleCutsceneComplete;
+			goalWeJustReached.cutsceneManager.StartCutscene(decodedMessage, isFinalMessage);
+
+			while (this._isInCutscene)
+			{
+				yield return null;
+			}
+
+			goalWeJustReached.cutsceneManager.OnCustceneComplete -= HandleCutsceneComplete;
+
+			if (isFinalMessage)
+			{
+				FinishFinalMission();
+			}
+			else
+			{
+				if (nextGoal != null)
+				{
+					nextGoal.setIsGoal(true);
+					if (this.currentMissionHalf == UniverseType_E.HELL) UIManager.singleton.ShowGhostRecieved();
+					else UIManager.singleton.ShowWotlRecieved();
             
-            nextGoal.setIsGoal(true);
-            if(this.currentMissionHalf == UniverseType_E.HELL)
-                UIManager.singleton.ShowGhostRecieved();
-            else
-                UIManager.singleton.ShowWotlRecieved();
-            
-            UIManager.singleton.SetNewMessage(this._currentMessage, true);
-            onCutsceneFinishedCallback(nextGoal);
+					UIManager.singleton.SetNewMessage(this._currentMessage, true);
+					onCutsceneFinishedCallback(nextGoal);
+				}
+				else
+				{
+					Debug.LogError("uh oh..");
+				}
+			}
         }
+
+		protected void HandleCutsceneComplete()
+		{
+			this._isInCutscene = false;
+		}
 
         private void Update()
         {

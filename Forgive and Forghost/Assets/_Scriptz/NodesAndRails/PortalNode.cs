@@ -8,6 +8,7 @@ public class PortalNode : Node
     public Color nodeColor;
     public PortalTower tower;
     public UniverseType_E universeType;
+	public PortalCutsceneManager cutsceneManager;
 
     private void Awake()
     {

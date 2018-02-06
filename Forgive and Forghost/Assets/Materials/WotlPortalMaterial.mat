@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: PortalMaterial
+  m_Name: WotlPortalMaterial
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _ALPHABLEND_ON _EMISSION _GLOSSYREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF
   m_LightmapFlags: 1
@@ -100,8 +100,8 @@ Material:
     - _VertexWidth: 0.1
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0.6914296, g: 0, b: 0.99264705, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 0}
     - _Diffuse: {r: 0.9117647, g: 0.8760425, b: 0.8179066, a: 1}
-    - _EmissionColor: {r: 0.8196719, g: 0.2356556, b: 1.2499999, a: 1}
+    - _EmissionColor: {r: 1.25, g: 1.0416666, b: 0.35569102, a: 1}
     - _GlowColor: {r: 1, g: 0.2391481, b: 0.1102941, a: 1}
     - _LightWrapping: {r: 0.9058824, g: 0.4941176, b: 0.4901961, a: 1}

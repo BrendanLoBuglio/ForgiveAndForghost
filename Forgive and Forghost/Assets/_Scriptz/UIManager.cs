@@ -21,6 +21,12 @@ public class UIManager : MonoBehaviour {
 
 	[SerializeField] private TextMeshProUGUI messagesDeliveredText;
 
+	[Header("Bloop")]
+	[SerializeField] private CanvasGroup hellLetter;
+	[SerializeField] private TextMeshProUGUI hellLetterText;
+	[SerializeField] private CanvasGroup wotlLetter;
+	[SerializeField] private TextMeshProUGUI wotlLetterText;
+
     //public static UIManager singleton => _singleton ?? (_singleton = FindObjectOfType<UIManager>());
     //private static UIManager _singleton;
 
@@ -32,6 +38,27 @@ public class UIManager : MonoBehaviour {
 			if (_singleton == null) _singleton = UnityEngine.Object.FindObjectOfType<UIManager>();
 			return _singleton;
 		}
+	}
+
+	public void ShowLetterContents(string letterContents, UniverseType_E universeType, float duration)
+	{
+		if (universeType == UniverseType_E.WOTL)
+		{
+			hellLetterText.text = letterContents;
+			hellLetter.alpha = 1;
+		}
+		else
+		{
+			wotlLetterText.text = letterContents;
+			wotlLetter.alpha = 1;
+		}
+
+		Invoke("HideLetterContents", duration);
+	}
+
+	protected void HideLetterContents()
+	{
+		hellLetter.alpha = wotlLetter.alpha = 0;
 	}
     
     // Use this for initialization

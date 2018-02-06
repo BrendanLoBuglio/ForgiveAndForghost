@@ -79,6 +79,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1160831400864190
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4479888220162870}
+  m_Layer: 0
+  m_Name: LetterHoverSpot
+  m_TagString: Untagged
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1163065488209556
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,6 +398,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1793533739083760
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4276142662027120}
+  m_Layer: 0
+  m_Name: LetterDeliveryPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1810331735825254
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,10 +535,11 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1163065488209556}
-  m_LocalRotation: {x: -0.00000003400604, y: 0.95844924, z: 6.996012e-18, w: -0.28526336}
-  m_LocalPosition: {x: 795, y: -373, z: -201}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -38, y: -82, z: 211}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 4276142662027120}
   - {fileID: 4970598052573832}
   - {fileID: 4792947148331342}
   - {fileID: 4117247825283664}
@@ -543,7 +574,7 @@ Transform:
   - {fileID: 4192861695866302}
   - {fileID: 4340870928980558}
   m_Father: {fileID: 4010041563117738}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4047608180415410
 Transform:
@@ -552,7 +583,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1904560568996028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -14.77, y: -0.8, z: -20.575191}
+  m_LocalPosition: {x: -10.77, y: -0.8, z: -20.575191}
   m_LocalScale: {x: 16, y: 0.4, z: 0.4}
   m_Children: []
   m_Father: {fileID: 4192861695866302}
@@ -617,7 +648,7 @@ Transform:
   - {fileID: 4805062666768488}
   - {fileID: 4011341614233610}
   m_Father: {fileID: 4010041563117738}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4135580515379732
 Transform:
@@ -689,6 +720,19 @@ Transform:
   m_Father: {fileID: 4663242231455390}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!4 &4276142662027120
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1793533739083760}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.2099991, y: -32.51937, z: 2.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4010041563117738}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4327834147512252
 Transform:
   m_ObjectHideFlags: 1
@@ -757,6 +801,19 @@ Transform:
   m_Father: {fileID: 4192861695866302}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 42.089, z: 0}
+--- !u!4 &4479888220162870
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1160831400864190}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.24, y: 5.21, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4970598052573832}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4481010112871792
 Transform:
   m_ObjectHideFlags: 1
@@ -848,7 +905,7 @@ Transform:
   m_LocalScale: {x: 21.823067, y: 0.1, z: 21.82307}
   m_Children: []
   m_Father: {fileID: 4010041563117738}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!4 &4805062666768488
 Transform:
@@ -897,12 +954,13 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1252800744212888}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.940001, y: -36.31937, z: 2.5}
+  m_LocalPosition: {x: 16.940002, y: -36.31937, z: 2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4056935434773642}
+  - {fileID: 4479888220162870}
   m_Father: {fileID: 4010041563117738}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23020239563051962
 MeshRenderer:
@@ -952,7 +1010,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 122ae5bab57587b42a792e193930bcc5, type: 2}
+  - {fileID: 2100000, guid: 8867209dca6edf54e8d28aed182a8fc9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2447,11 +2505,27 @@ MonoBehaviour:
   - {fileID: 4495652895195432}
   - {fileID: 4938851984699588}
   portalRenderer: {fileID: 23375371883415822}
+  letterHoverSpot: {fileID: 4479888220162870}
+  hellLetterPrefab: {fileID: 1152348236365276, guid: 7a65523558f75499d9aaf7628becaae2,
+    type: 2}
+  wotlLetterPrefab: {fileID: 1659121010111460, guid: 557157e7a375046d8a8215618ed934bb,
+    type: 2}
+  hellPortalMaterial: {fileID: 2100000, guid: fdac93021f9dd46aca63db8199efd831, type: 2}
+  wotlPortalMaterial: {fileID: 2100000, guid: 27aca30f7988648c4a9790e5c42d16f8, type: 2}
+  letterDeliveryPoint: {fileID: 4276142662027120}
   originalPortalOrbLocalY: 3
   animatePortalOrbsTo: 11
   animatePortalOrbsTime: 0.5
   animatePortalOrbsEase: 7
   portalFadeTime: 0.3
+  moveLetterToHoverSpotTime: 1.5
+  moveLetterToHoverSpotEase: 7
+  hoverAndWaitTime: 5
+  deliverLetterIntoPortalTime: 1
+  deliverLetterIntoPortalEase: 8
+  waitTimeBeforeReceiveLetter: 2
+  moveLetterToGhostyTime: 2
+  moveLetterToGhostyEase: 10
 --- !u!114 &114321684471778140
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2516,9 +2590,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rails: []
-  nodeColor: {r: 0.40784314, g: 0, b: 1, a: 1}
+  nodeColor: {r: 0, g: 0.29803923, b: 1, a: 1}
   tower: {fileID: 114939634644862754}
   universeType: 0
+  cutsceneManager: {fileID: 114307974051804706}
 --- !u!114 &114939634644862754
 MonoBehaviour:
   m_ObjectHideFlags: 1
