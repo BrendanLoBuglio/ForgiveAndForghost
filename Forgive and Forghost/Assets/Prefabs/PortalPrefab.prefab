@@ -2520,7 +2520,7 @@ MonoBehaviour:
   portalFadeTime: 0.3
   moveLetterToHoverSpotTime: 1.5
   moveLetterToHoverSpotEase: 7
-  hoverAndWaitTime: 5
+  hoverAndWaitTime: 6.5
   deliverLetterIntoPortalTime: 1
   deliverLetterIntoPortalEase: 8
   waitTimeBeforeReceiveLetter: 2
