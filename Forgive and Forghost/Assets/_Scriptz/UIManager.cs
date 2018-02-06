@@ -21,8 +21,18 @@ public class UIManager : MonoBehaviour {
 
 	[SerializeField] private TextMeshProUGUI messagesDeliveredText;
 
-    public static UIManager singleton => _singleton ?? (_singleton = FindObjectOfType<UIManager>());
-    private static UIManager _singleton;
+    //public static UIManager singleton => _singleton ?? (_singleton = FindObjectOfType<UIManager>());
+    //private static UIManager _singleton;
+
+	private static UIManager _singleton;
+	public static UIManager singleton
+	{
+		get
+		{
+			if (_singleton == null) _singleton = UnityEngine.Object.FindObjectOfType<UIManager>();
+			return _singleton;
+		}
+	}
     
     // Use this for initialization
     void Start() {
