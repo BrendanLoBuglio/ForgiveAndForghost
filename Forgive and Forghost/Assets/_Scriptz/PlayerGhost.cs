@@ -249,6 +249,8 @@ public class PlayerGhost : MonoBehaviour {
         this._currentlyOnRail = this._fromNode.getRailByDestinationNode(this._toNode);
         this._currentlyOnRail?.setSelectionState(Rail.RailSelectionState.currentlyOn);
 
+		this.transform.position = this._fromNode.transform.position;
+
 		_cameraController?.WaitAFrame();
     }
     
