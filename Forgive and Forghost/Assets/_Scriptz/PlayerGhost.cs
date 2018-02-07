@@ -15,6 +15,7 @@ public class PlayerGhost : MonoBehaviour {
 	public CameraController cameraController { get { return _cameraController; } }
 	public Transform letterDeliveryAndReceiptPoint;
 	public GhostyCloth ghostyCloth;
+	public STUPIDSINWAVE ghostySinWave;
 
     /*# Config #*/
     [SerializeField] private float _maxSpeed_c = 30f;
@@ -273,5 +274,6 @@ public class PlayerGhost : MonoBehaviour {
 
 		_cameraController?.UpdateSpeedRelatedLerpThings(lerpAmount);
 		ghostyCloth.UpdateXZValue(lerpAmount);
+		ghostySinWave.UpdateSinWave(lerpAmount);
     }
 }
