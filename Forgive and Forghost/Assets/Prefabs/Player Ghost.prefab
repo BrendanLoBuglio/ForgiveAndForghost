@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 64167334429089970}
   - component: {fileID: 64850849966762596}
   - component: {fileID: 64623693257352294}
+  - component: {fileID: 64565505723805862}
   m_Layer: 0
   m_Name: GhostyCloth
   m_TagString: Untagged
@@ -1705,6 +1706,20 @@ MeshCollider:
   m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 54487d02f7f8b45e5b814167525731fd, type: 3}
+--- !u!64 &64565505723805862
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1036045706360554}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 54487d02f7f8b45e5b814167525731fd, type: 3}
 --- !u!64 &64582999189177168
 MeshCollider:
   m_ObjectHideFlags: 1
@@ -2320,8 +2335,8 @@ SkinnedMeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1036045706360554}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
