@@ -11,8 +11,8 @@ public class GhostyCloth : MonoBehaviour
 
 	[Header("Settings")]
 	public float gravity;
-	public float minXZMagnitude = 30;
-	public float maxXZMagnitude = 80;
+	public float minXZMagnitude = 0;
+	public float maxXZMagnitude = 0;
 
 	protected float _currentXZMagnitude;
 

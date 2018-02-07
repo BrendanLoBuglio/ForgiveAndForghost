@@ -894,6 +894,16 @@ Prefab:
       propertyPath: m_AABB.m_Extent.z
       value: 0.0000029383712
       objectReference: {fileID: 0}
+    - target: {fileID: 114081538356920142, guid: 9b5866ae4377d4274a63f4a67ebba838,
+        type: 2}
+      propertyPath: minXZMagnitude
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114081538356920142, guid: 9b5866ae4377d4274a63f4a67ebba838,
+        type: 2}
+      propertyPath: maxXZMagnitude
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9b5866ae4377d4274a63f4a67ebba838, type: 2}
   m_IsPrefabParent: 0
@@ -926,6 +936,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frequency: 5
   amplitude: 0.3
+  minFrequency: 0
+  maxFrequency: 0
+  minAmplitude: 0
+  maxAmplitude: 0
 --- !u!4 &371990132
 Transform:
   m_ObjectHideFlags: 0
@@ -1780,6 +1794,25 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 937047509}
+--- !u!1 &990385239 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1228452839471914, guid: 9b5866ae4377d4274a63f4a67ebba838,
+    type: 2}
+  m_PrefabInternal: {fileID: 130488526}
+--- !u!64 &990385240
+MeshCollider:
+  m_ObjectHideFlags: 3
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 990385239}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 54487d02f7f8b45e5b814167525731fd, type: 3}
 --- !u!1 &1025600729
 GameObject:
   m_ObjectHideFlags: 0
