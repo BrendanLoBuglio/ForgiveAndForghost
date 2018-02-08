@@ -80,7 +80,10 @@ public class Node : MonoBehaviour
 			{
 				if (!IsConnectedTo(n))
 				{
-					return true;
+					if (!(n is PortalNode))
+					{
+						return true;
+					}
 				}
 			}
 		}

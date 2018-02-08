@@ -9,6 +9,7 @@ public class PortalNode : Node
     public PortalTower tower;
     public UniverseType_E universeType;
 	public PortalCutsceneManager cutsceneManager;
+	public Node portalConnectionNode;
 
     private void Awake()
     {

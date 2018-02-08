@@ -52,8 +52,19 @@ public class RailGeneratorManager : MonoBehaviour
 			_railGenerators[i].GenerateRails();
 		}
 
-		GeneratePortalNodeRails();
+		GeneratePortalNodeConnectionRails(); //GeneratePortalNodeRails();
 		MakeSureAllNodesHaveAtLeastTwoRails();
+		ConnectAllPortalNodesToTheirConnectionNodes();
+	}
+
+	protected void GeneratePortalNodeConnectionRails()
+	{
+		PortalNode[] portalNodeArray = Object.FindObjectsOfType<PortalNode>();
+
+		for (int i = 0; i < portalNodeArray.Length; i++)
+		{
+			portalNodeArray[i].portalConnectionNode.FindClosestNodes(new NodeSearchSettings(false));
+		}
 	}
 
 	protected void GeneratePortalNodeRails()
@@ -85,7 +96,17 @@ public class RailGeneratorManager : MonoBehaviour
 
 		for (int i = 0; i < portalNodeArray.Length; i++)
 		{
-			portalNodeArray[i].MakeSureIHaveAtLeastTwoRails();
+			portalNodeArray[i].portalConnectionNode.MakeSureIHaveAtLeastTwoRails();
+		}
+	}
+
+	protected void ConnectAllPortalNodesToTheirConnectionNodes()
+	{
+		PortalNode[] portalNodeArray = Object.FindObjectsOfType<PortalNode>();
+
+		for (int i = 0; i < portalNodeArray.Length; i++)
+		{
+			portalNodeArray[i].ConnectMeToNode(portalNodeArray[i].portalConnectionNode);
 		}
 	}
 
