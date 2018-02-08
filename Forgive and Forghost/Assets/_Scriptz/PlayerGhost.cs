@@ -111,7 +111,7 @@ public class PlayerGhost : MonoBehaviour {
 	    var railAxis = (toPos - fromPos).normalized;
 		
 		var maxSpeedModifier = 1f;
-	    var inSlowOnApproachMode = (!this._hasLockedIntoCurrentSelection && this._toNode != this._goalPortalNode &&
+		var inSlowOnApproachMode = (!this._hasLockedIntoCurrentSelection && this._toNode != this._goalPortalNode && this._currentlySelectedRail != null &&
 	                                (this.transform.position - toPos).sqrMagnitude <=
 	                                this._easeIntoNodeDistance_c * this._easeIntoNodeDistance_c);
 	    
@@ -192,14 +192,19 @@ public class PlayerGhost : MonoBehaviour {
             // Just going to a new rail:
             else {
                 // If I have a selected rail, go to it:
-                if (this._currentlySelectedRail != null)
+				if (this._currentlySelectedRail != null)
+				{
 					// If I have selected it officially:
 					if (this._hasLockedIntoCurrentSelection)
                     	// If so, move to the next rail:
                     	this.changeRail(this._currentlySelectedRail.endWhichIsNot(this._toNode));
+				}
                 // Otherwise, dead end! Just stop me in my tracks:
                 else
-                    this.transform.position = this._toNode.transform.position;
+				{
+					this.transform.position = this._toNode.transform.position;
+					this.changeRail(this._toNode.GetFirstRail().endWhichIsNot(this._toNode));
+				}
             }
         }
         this.updateWindParticles();
