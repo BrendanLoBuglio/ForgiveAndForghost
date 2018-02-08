@@ -9,6 +9,7 @@ namespace _Scriptz.NodesAndRails
         public Renderer[] decoMeshRenderers;
 
         private Color _portalColor;
+		public Color portalColor { get { return _portalColor; } }
 
         public void initialize(Color portalColor)
         {

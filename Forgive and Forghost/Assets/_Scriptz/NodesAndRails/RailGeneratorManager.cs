@@ -106,7 +106,7 @@ public class RailGeneratorManager : MonoBehaviour
 
 		for (int i = 0; i < portalNodeArray.Length; i++)
 		{
-			portalNodeArray[i].ConnectMeToNode(portalNodeArray[i].portalConnectionNode);
+			portalNodeArray[i].ConnectMeToMyConnectionNode();
 		}
 	}
 

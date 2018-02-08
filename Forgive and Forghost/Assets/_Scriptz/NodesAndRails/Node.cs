@@ -177,8 +177,13 @@ public class Node : MonoBehaviour
 		newRail.initialize(this, node);
 	}
 
-	public void initialize(Color regionColorIn)
+	public void SetupColor(Color regionColorIn)
 	{
+		if (this._renderer == null)
+		{
+			this._renderer = GetComponentInChildren<Renderer>();
+		}
+
 		float h, s, v;
 		Color.RGBToHSV(regionColorIn, out h, out s, out v);
 		var satOffset = 1000f;

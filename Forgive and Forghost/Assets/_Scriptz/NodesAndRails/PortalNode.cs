@@ -20,4 +20,11 @@ public class PortalNode : Node
     {
         this.tower.setIsTargetTower(isGoal);
     }
+
+	public void ConnectMeToMyConnectionNode()
+	{
+		SetupColor(tower.portalColor);
+		portalConnectionNode.SetupColor(tower.portalColor);
+		ConnectMeToNode(portalConnectionNode);
+	}
 }

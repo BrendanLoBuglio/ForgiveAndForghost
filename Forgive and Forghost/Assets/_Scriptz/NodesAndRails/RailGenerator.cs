@@ -154,7 +154,7 @@ public class RailGenerator : MonoBehaviour
 				Node newNode = Instantiate(RailGeneratorManager.s.nodePrefab);
 				newNode.transform.position = randomPos;
 				_currentNodes.Add(newNode);
-				newNode.initialize(this.nodeColor);
+				newNode.SetupColor(this.nodeColor);
 			}
 			else
 			{
